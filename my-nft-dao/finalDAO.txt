@@ -1,0 +1,8 @@
+Dao deployed to:  {
+  governorExpectedAddress: '0xDC4697b7cfDE006be7a76fDa0853880d561DEA01',
+  governor: '0xDC4697b7cfDE006be7a76fDa0853880d561DEA01',
+  timelock: '0xe284d7059D7333d31236507abBcc14D523cDe4c5',
+  token: '0xBc1819647A8EC1B97Da50dd144f45b479Cc15b1a',
+  box: '0xb764A15f61566676a10f3A55f8b1116741E8F768'
+}
+

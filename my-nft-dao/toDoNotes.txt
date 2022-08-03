@@ -1,0 +1,4 @@
+    //! 1. method to get the funds out of the contract
+    //! 2. list NFTs on opensea again bookmarks
+    //! 3. add contract to react App
+
