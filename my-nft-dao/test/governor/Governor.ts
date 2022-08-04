@@ -1,19 +1,28 @@
 import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signer-with-address";
 import { artifacts, ethers, waffle } from "hardhat";
 import type { Artifact } from "hardhat/types";
-
 import { getExpectedContractAddress } from "../../tasks/utils";
 
 import type { Timelock } from "../../typechain/contracts/Timelock";
 import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
 import type { MyNftToken} from "../../typechain/contracts/MyNftToken";
 import type { Box } from "../../typechain/contracts/Box";
-// import type { Timelock } from "../../src/types/contracts/Timelock";
+import {
+    developmentChains,
+    VOTING_DELAY,
+    proposalsFile,
+    FUNC,
+    PROPOSAL_DESCRIPTION,
+    NEW_STORE_VALUE,
+  } from "../../helper-hardhat-config"
 
+// before it was this path;
+// import type { Timelock } from "../../src/types/contracts/Timelock";
 // import type { MyNftToken } from "../../src/types/contracts/MyNftToken";
 // import type { MyGovernor } from "../../src/types/contracts/MyGovernor";
+
 import { Signers } from "../types";
-import { getInitialNftBalance, mintNft, submitProposalFails } from "./Governor.behavior";
+import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseNfts } from "./Governor.behavior";
 import { NetworkUserConfig } from "hardhat/types";
 const hre = require("hardhat");
 
@@ -61,13 +70,7 @@ describe("Unit tests", function () {
       await this.token.deployed();
       await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('10').toHexString()] });
 
-
 //     const newBalance = ethers.utils.parseEther("1000000000000000000");
-    
-//     // const newBalance2 = ethers.utils.formatUnits("1000000000000000000", "wei");
-
-// // this is necessary because hex quantities with leading zeros are not valid at the JSON-RPC layer
-// // toHexString()
 //     const newBalanceHex = newBalance.toHexString().replace("0x0", "0x");
 //     console.log(newBalanceHex)
 
@@ -79,13 +82,9 @@ describe("Unit tests", function () {
     // console.log(balance.toString()); // 0
     //   console.log(this.signers.admin);
 
-
     this.provider = ethers.provider; 
-    //getDefaultProvider();
-
     let lance = ethers.BigNumber.from("1000000000000000000");
     const newBalance = ethers.utils.parseUnits("1000000000000000000000000", 'ether')
-    //parseEther("100");
 
 // this is necessary because hex quantities with leading zeros are not valid at the JSON-RPC layer
     const newBalanceHex = newBalance.toHexString().replace("0x0", "0x");
@@ -97,11 +96,13 @@ describe("Unit tests", function () {
     console.log("Balance is: ", await this.provider.getBalance(this.signers.admin.address));
 
     });
-    getInitialNftBalance();
-    // console.log("Balance is: ", await hre.network.provider.getBalance(this.signers.admin.address);)
-    mintNft();
-    // getInitialVotes();
-    submitProposalFails()
 
+    getInitialNftBalance();
+
+    mintNft();
+
+    submitProposalFailsBecauseNoNFTs();
+
+    submitProposalPassesBecauseNfts();
   });
 });
