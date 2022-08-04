@@ -86,18 +86,18 @@ export function submitProposalFails(): void {
       functionToCall,
       args
     );
-    const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
-      gasLimit: 450000,
-      //   gasPrice: gwei,
-    });
-    await myFirstMint.wait();
+    // const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
+    //   gasLimit: 450000,
+    //   //   gasPrice: gwei,
+    // });
+    // await myFirstMint.wait();
     await expect(
       this.governor.propose(
         [this.box.address],
         [0],
         [encodedFunctionCall],
         "life's a piece of shit, when you look at it.",
-        { gasLimit: 250000, value: ethers.utils.parseUnits("0.03", "ether") }
+        { gasLimit: 250000 }
       )
     ).to.be.revertedWith("Governor: proposer votes below proposal threshold");
   });
