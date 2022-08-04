@@ -2,8 +2,11 @@ import type { SignerWithAddress } from "@nomiclabs/hardhat-ethers/dist/src/signe
 import { artifacts, ethers, waffle } from "hardhat";
 import type { Artifact } from "hardhat/types";
 
-import type { Greeter } from "../../src/types/Greeter";
-import type { MyGovernor } from "../../src/types/contracts/MyGovernor";
+
+import type { Greeter } from "../../typechain/contracts/Greeter";
+import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
+// import type { Greeter } from "../../src/types/Greeter";
+// import type { MyGovernor } from "../../src/types/contracts/MyGovernor";
 import { Signers } from "../types";
 import { shouldBehaveLikeGreeter } from "./Greeter.behavior";
 

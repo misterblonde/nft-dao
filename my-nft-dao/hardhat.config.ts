@@ -1,3 +1,5 @@
+import "./tasks/accounts";
+import "./tasks/deploy";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-waffle";
 import "@typechain/hardhat";
@@ -7,9 +9,6 @@ import { HardhatUserConfig } from "hardhat/config";
 import { NetworkUserConfig } from "hardhat/types";
 import { resolve } from "path";
 import "solidity-coverage";
-
-import "./tasks/accounts";
-import "./tasks/deploy";
 
 dotenvConfig({ path: resolve(__dirname, "./.env") });
 
@@ -51,6 +50,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
   return {
     accounts: {
       count: 10,
+      accountsBalance: "1000000000000000000000000",
       mnemonic,
       path: "m/44'/60'/0'/0",
     },
@@ -92,6 +92,8 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: {
         mnemonic,
+        accountsBalance: "10000000000000000000000",
+        count: 1000,
       },
       chainId: chainIds.hardhat,
     },
