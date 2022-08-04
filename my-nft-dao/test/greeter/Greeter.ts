@@ -3,7 +3,7 @@ import { artifacts, ethers, waffle } from "hardhat";
 import type { Artifact } from "hardhat/types";
 
 import type { Greeter } from "../../src/types/Greeter";
-import type { MyGovernor } from "../../src/types/MyGovernor";
+import type { MyGovernor } from "../../src/types/contracts/MyGovernor";
 import { Signers } from "../types";
 import { shouldBehaveLikeGreeter } from "./Greeter.behavior";
 
