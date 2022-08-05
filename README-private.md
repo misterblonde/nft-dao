@@ -1,5 +1,25 @@
 
 
+// bug fixed via TDD: 
+
+- all IN voting did not add to the total vote count, whilst the vote simple
+  voting did add to the total count
+- fixed that anyone needs to be a token holder to be allowed to vote,
+  openzeppelin is that anyone can vote. 
+- added quadratic voting limit to voteAllIn functionality
+
+
+- TEST:  Vote Should Fail Because Already Voted
+	- catches error if VoteSimple is used twice by the same address. 
+	- need to also catch it if it uses: VoteSimple- VoteAllIn
+			VoteAllIn - VoteAllIn, and VoteAllIn - VoteSimple
+
+- TEST: VOTE ALL IN (not working yet)
+//! vote is cast without pre-delegation BUG
+
+
+
+
 // PART I _____________________________________________
 // yarn hardhat test 
 

@@ -37,6 +37,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "EXTENDED_BALLOT_TYPEHASH()": FunctionFragment;
     "__acceptAdmin()": FunctionFragment;
     "castVote(uint256,uint8)": FunctionFragment;
+    "castVoteAllIn(uint256,uint8)": FunctionFragment;
     "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": FunctionFragment;
     "castVoteSimple(uint256,uint8)": FunctionFragment;
     "castVoteWithReason(uint256,uint8,string)": FunctionFragment;
@@ -51,12 +52,14 @@ export interface MyGovernorInterface extends utils.Interface {
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
     "onERC721Received(address,address,uint256,bytes)": FunctionFragment;
+    "owner()": FunctionFragment;
     "proposalDeadline(uint256)": FunctionFragment;
     "proposalEta(uint256)": FunctionFragment;
     "proposalSnapshot(uint256)": FunctionFragment;
     "proposalThreshold()": FunctionFragment;
     "proposalVotes(uint256)": FunctionFragment;
     "propose(address[],uint256[],bytes[],string)": FunctionFragment;
+    "quadraticVoting(uint256)": FunctionFragment;
     "queue(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "quorum(uint256)": FunctionFragment;
     "relay(address,uint256,bytes)": FunctionFragment;
@@ -67,6 +70,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "timelock()": FunctionFragment;
     "token()": FunctionFragment;
+    "tokenContract()": FunctionFragment;
     "updateTimelock(address)": FunctionFragment;
     "version()": FunctionFragment;
     "votingDelay()": FunctionFragment;
@@ -80,6 +84,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "EXTENDED_BALLOT_TYPEHASH"
       | "__acceptAdmin"
       | "castVote"
+      | "castVoteAllIn"
       | "castVoteBySig"
       | "castVoteSimple"
       | "castVoteWithReason"
@@ -94,12 +99,14 @@ export interface MyGovernorInterface extends utils.Interface {
       | "onERC1155BatchReceived"
       | "onERC1155Received"
       | "onERC721Received"
+      | "owner"
       | "proposalDeadline"
       | "proposalEta"
       | "proposalSnapshot"
       | "proposalThreshold"
       | "proposalVotes"
       | "propose"
+      | "quadraticVoting"
       | "queue"
       | "quorum"
       | "relay"
@@ -110,6 +117,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "supportsInterface"
       | "timelock"
       | "token"
+      | "tokenContract"
       | "updateTimelock"
       | "version"
       | "votingDelay"
@@ -134,6 +142,10 @@ export interface MyGovernorInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "castVote",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "castVoteAllIn",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -243,6 +255,7 @@ export interface MyGovernorInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "proposalDeadline",
     values: [PromiseOrValue<BigNumberish>]
@@ -271,6 +284,10 @@ export interface MyGovernorInterface extends utils.Interface {
       PromiseOrValue<BytesLike>[],
       PromiseOrValue<string>
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "quadraticVoting",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "queue",
@@ -316,6 +333,10 @@ export interface MyGovernorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "timelock", values?: undefined): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "tokenContract",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "updateTimelock",
     values: [PromiseOrValue<string>]
   ): string;
@@ -346,6 +367,10 @@ export interface MyGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "castVoteAllIn",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "castVoteBySig",
     data: BytesLike
@@ -390,6 +415,7 @@ export interface MyGovernorInterface extends utils.Interface {
     functionFragment: "onERC721Received",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "proposalDeadline",
     data: BytesLike
@@ -411,6 +437,10 @@ export interface MyGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "propose", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "quadraticVoting",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "queue", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "quorum", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "relay", data: BytesLike): Result;
@@ -433,6 +463,10 @@ export interface MyGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "timelock", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "tokenContract",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "updateTimelock",
     data: BytesLike
@@ -651,6 +685,12 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    castVoteAllIn(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     castVoteBySig(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -755,6 +795,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<[string]>;
+
     proposalDeadline(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -789,6 +831,11 @@ export interface MyGovernor extends BaseContract {
       calldatas: PromiseOrValue<BytesLike>[],
       description: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    quadraticVoting(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     queue(
@@ -840,6 +887,8 @@ export interface MyGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<[string]>;
 
+    tokenContract(overrides?: CallOverrides): Promise<[string]>;
+
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -866,6 +915,12 @@ export interface MyGovernor extends BaseContract {
     proposalId: PromiseOrValue<BigNumberish>,
     support: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  castVoteAllIn(
+    proposalId: PromiseOrValue<BigNumberish>,
+    support: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   castVoteBySig(
@@ -972,6 +1027,8 @@ export interface MyGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  owner(overrides?: CallOverrides): Promise<string>;
+
   proposalDeadline(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -1006,6 +1063,11 @@ export interface MyGovernor extends BaseContract {
     calldatas: PromiseOrValue<BytesLike>[],
     description: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  quadraticVoting(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   queue(
@@ -1057,6 +1119,8 @@ export interface MyGovernor extends BaseContract {
 
   token(overrides?: CallOverrides): Promise<string>;
 
+  tokenContract(overrides?: CallOverrides): Promise<string>;
+
   updateTimelock(
     newTimelock: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1078,6 +1142,12 @@ export interface MyGovernor extends BaseContract {
     __acceptAdmin(overrides?: CallOverrides): Promise<void>;
 
     castVote(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    castVoteAllIn(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1187,6 +1257,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    owner(overrides?: CallOverrides): Promise<string>;
+
     proposalDeadline(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1222,6 +1294,11 @@ export interface MyGovernor extends BaseContract {
       description: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    quadraticVoting(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     queue(
       targets: PromiseOrValue<string>[],
@@ -1271,6 +1348,8 @@ export interface MyGovernor extends BaseContract {
     timelock(overrides?: CallOverrides): Promise<string>;
 
     token(overrides?: CallOverrides): Promise<string>;
+
+    tokenContract(overrides?: CallOverrides): Promise<string>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
@@ -1406,6 +1485,12 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    castVoteAllIn(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     castVoteBySig(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1510,6 +1595,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    owner(overrides?: CallOverrides): Promise<BigNumber>;
+
     proposalDeadline(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1538,6 +1625,11 @@ export interface MyGovernor extends BaseContract {
       calldatas: PromiseOrValue<BytesLike>[],
       description: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    quadraticVoting(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     queue(
@@ -1589,6 +1681,8 @@ export interface MyGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
+    tokenContract(overrides?: CallOverrides): Promise<BigNumber>;
+
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1618,6 +1712,12 @@ export interface MyGovernor extends BaseContract {
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    castVoteAllIn(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     castVoteBySig(
@@ -1724,6 +1824,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     proposalDeadline(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1752,6 +1854,11 @@ export interface MyGovernor extends BaseContract {
       calldatas: PromiseOrValue<BytesLike>[],
       description: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    quadraticVoting(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     queue(
@@ -1802,6 +1909,8 @@ export interface MyGovernor extends BaseContract {
     timelock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    tokenContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
