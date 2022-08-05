@@ -6,9 +6,11 @@ import {
   PROPOSAL_DESCRIPTION,
   NEW_STORE_VALUE,
 } from "../../helper-hardhat-config";
+import { VOTING_PERIOD } from "../../helper-hardhat-config";
 import { moveBlocks } from "../../tasks/move-blocks";
 import { expect, assert } from "chai";
 import { ethers } from "ethers";
+import * as fs from "fs";
 import { network } from "hardhat";
 
 const { solidity } = require("ethereum-waffle");
@@ -70,8 +72,8 @@ export function submitProposalFailsBecauseNoNFTs(): void {
   });
 }
 
-export function submitProposalPassesBecauseNfts(): void {
-  it("not enough nfts to propose", async function () {
+export function submitProposalPassesBecauseDelegatedNfts(): void {
+  it("enough nfts to propose", async function () {
     const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
       value: ethers.utils.parseUnits("0.03", "ether"),
       gasLimit: 250000,
@@ -111,38 +113,142 @@ export function submitProposalPassesBecauseNfts(): void {
       [this.box.address],
       [0],
       [encodedFunctionCall],
-      "life's a piece of shit, when you look at it.",
-      { gasLimit: 250000 }
+      "test",
+      {
+        gasLimit: 250000,
+      }
     );
+
     if (developmentChains.includes(network.name)) {
       await moveBlocks(VOTING_DELAY + 1);
     }
     const proposalTxn = await txn.wait(1);
-    const proposalId = proposalTxn.events[0].args.proposalId;
+    console.log(this.proposalID);
+
+    console.log("Proposal Transaction Result: ", proposalTxn);
+    this.proposalId = proposalTxn.events[0].args.proposalId;
+    console.log("Proposal ID: ", this.proposalId);
     console.log(proposalTxn.events[0].event);
 
+    const proposalState = await this.governor.state(this.proposalId);
+    console.log("Proposal State: ", proposalState);
+    // store proposals ID in file?
+    let proposals = JSON.parse(fs.readFileSync(proposalsFile, "utf8"));
+    proposals[network.config.chainId!.toString()].push(
+      this.proposalId.toString()
+    );
+    fs.writeFileSync(proposalsFile, JSON.stringify(proposals));
+
     expect(proposalTxn.events[0].event).to.equal("ProposalCreated");
+    // save the proposalId
   });
 }
 
-// export function getInitialVotes(): void {
-//   it("initial number of votes is zero", async function () {
-//     let latestBlock = await hre.ethers.provider.getBlock("latest");
-//     // let oldbalance = (
-//     //   await this.governor.getVotes(this.signers.admin.address, latestBlock);
-//     // ).toNumber();
-//     // console.log(latestBlock);
-//     expect(
-//       await this.governor.getVotes(this.signers.admin.address, latestBlock)
-//     ).to.equal(0);
+export function voteOnSubmittedProposal(): void {
+  it("vote cast (simple and all) on proposal", async function () {
+    const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myFirstMint.wait();
+    const mySecondMint = await this.token.safeMint(this.signers.admin.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await mySecondMint.wait();
+    const myThirdMint = await this.token.safeMint(this.signers.admin.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myThirdMint.wait();
+    console.log(
+      "NFTs owned: ",
+      await this.token.balanceOf(this.signers.admin.address)
+    );
 
-//     let votes = await this.governor.getVotes(
-//       this.signers.admin.address,
-//       latestBlock
-//     );
-//     await votes.wait();
-//     console.log("Waiting for voting transaction to go through");
+    const blockNum = await this.provider.getBlockNumber("latest");
+    console.log("Block number: ", blockNum);
+    // there are two get votes: (1 arg inside token, 2 args inside gov)
+    console.log(
+      "Votes Delegated to Gov: ",
+      await this.token.getVotes(this.signers.admin.address) //, blockNum)
+    );
+    //delegate votes
+    await this.token.delegate(this.signers.admin.address);
+    const functionToCall = "store";
+    const args = [77];
+    const encodedFunctionCall = this.box.interface.encodeFunctionData(
+      functionToCall,
+      args
+    );
+    const txn = await this.governor.propose(
+      [this.box.address],
+      [0],
+      [encodedFunctionCall],
+      "test",
+      {
+        gasLimit: 250000,
+      }
+    );
+    //   .call({ from: this.signers.admin.address });
 
-//     await this.governor.getVotes(this.signers.admin.address, latestBlock);
-//   });
-// }
+    if (developmentChains.includes(network.name)) {
+      await moveBlocks(VOTING_DELAY + 1);
+    }
+    const proposalTxn = await txn.wait(1);
+    console.log(this.proposalID);
+
+    console.log("Proposal Transaction Result: ", proposalTxn);
+    this.proposalId = proposalTxn.events[0].args.proposalId;
+    console.log("Proposal ID: ", this.proposalId);
+    console.log(proposalTxn.events[0].event);
+
+    const proposalState = await this.governor.state(this.proposalId);
+    console.log("Proposal State: ", proposalState);
+    // store proposals ID in file?
+    let proposals = JSON.parse(fs.readFileSync(proposalsFile, "utf8"));
+    proposals[network.config.chainId!.toString()].push(
+      this.proposalId.toString()
+    );
+    fs.writeFileSync(proposalsFile, JSON.stringify(proposals));
+
+    // const test = this.proposalId.toString();
+    const voteTxn = await this.governor.castVoteSimple(
+      this.proposalId.toString(),
+      1,
+      {
+        gasLimit: 250000,
+      }
+    );
+    voteTxn.wait(1);
+    console.log("vote Txn: ", voteTxn);
+    // expect(voteTxn.events[0].event).to.equal("VoteCast");
+    // save the proposalId
+  });
+}
+
+export function successfullyCastVote(): void {
+  it("proposal creator casts vote", async function () {
+    submitProposalPassesBecauseDelegatedNfts();
+    const proposals = JSON.parse(fs.readFileSync(proposalsFile, "utf8"));
+    // You could swap this out for the ID you want to use too
+    const proposalId = proposals[network.config.chainId!][0];
+
+    const test = proposalId.toString();
+    const txn = await this.governor.castVote(test, 1, {
+      gasLimit: 250000,
+    });
+    const voteTxn = txn.wait(12);
+    console.log(voteTxn.events);
+    expect(voteTxn.events[0].event).to.equal("CastVote");
+
+    const txn2 = await this.governor
+      .connect(this.addr1)
+      .this.governor.castVoteSimple(test, 1, {
+        gasLimit: 250000,
+      });
+    //! signer twice the same?
+    const voteTxn2 = txn2.wait(12);
+    expect(voteTxn2.events[0].event).to.equal("CastVote");
+  });
+}

@@ -22,7 +22,7 @@ import {
 // import type { MyGovernor } from "../../src/types/contracts/MyGovernor";
 
 import { Signers } from "../types";
-import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseNfts } from "./Governor.behavior";
+import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseDelegatedNfts, successfullyCastVote, voteOnSubmittedProposal } from "./Governor.behavior";
 import { NetworkUserConfig } from "hardhat/types";
 const hre = require("hardhat");
 
@@ -70,18 +70,6 @@ describe("Unit tests", function () {
       await this.token.deployed();
       await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('10').toHexString()] });
 
-//     const newBalance = ethers.utils.parseEther("1000000000000000000");
-//     const newBalanceHex = newBalance.toHexString().replace("0x0", "0x");
-//     console.log(newBalanceHex)
-
-    // let topup = await hre.network.provider.send("hardhat_setBalance", [
-    // this.signers.admin.address,
-    // newBalanceHex,
-    // ]);
-    // let balance = await hre.network.provider.getBalance(this.signers.admin.address);
-    // console.log(balance.toString()); // 0
-    //   console.log(this.signers.admin);
-
     this.provider = ethers.provider; 
     let lance = ethers.BigNumber.from("1000000000000000000");
     const newBalance = ethers.utils.parseUnits("1000000000000000000000000", 'ether')
@@ -97,12 +85,17 @@ describe("Unit tests", function () {
 
     });
 
+
     getInitialNftBalance();
 
     mintNft();
 
     submitProposalFailsBecauseNoNFTs();
 
-    submitProposalPassesBecauseNfts();
+    submitProposalPassesBecauseDelegatedNfts();
+
+    voteOnSubmittedProposal();
+     //successfullyCastVote();
+
   });
 });
