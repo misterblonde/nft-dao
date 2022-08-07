@@ -123,12 +123,8 @@ export function submitProposalPassesBecauseDelegatedNfts(): void {
       await moveBlocks(VOTING_DELAY + 1);
     }
     const proposalTxn = await txn.wait(1);
-    console.log(this.proposalID);
 
-    console.log("Proposal Transaction Result: ", proposalTxn);
     this.proposalId = proposalTxn.events[0].args.proposalId;
-    console.log("Proposal ID: ", this.proposalId);
-    console.log(proposalTxn.events[0].event);
 
     const proposalState = await this.governor.state(this.proposalId);
     console.log("Proposal State: ", proposalState);
@@ -208,8 +204,15 @@ export function voteOnSubmittedProposal(): void {
       }
     );
     const voted = await voteTxn.wait(1);
-    console.log("vote Txn: ", voted);
-    console.log(voted.events);
+
+    console.log(
+      "Proposal snapshot: ",
+      await this.governor.proposalSnapshot(this.proposalId)
+    );
+    const votingResults = await this.governor.proposalVotes(
+      this.proposalId.toString()
+    );
+    console.log("PROPOSAL RESULTS: ", votingResults);
     expect(voted.events[0].event).to.equal("VoteCast");
   });
 }
@@ -220,7 +223,7 @@ export function voteFailsBecauseNonTokenHolder(): void {
     const proposalId = proposals[network.config.chainId!][0];
 
     const proposalIdInput = proposalId.toString();
-    console.log("julia rocks");
+
     await expect(
       this.governor.connect(this.addr1).castVoteSimple(proposalIdInput, 1, {
         gasLimit: 250000,

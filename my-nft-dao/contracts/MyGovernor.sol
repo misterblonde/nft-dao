@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import { MyNftToken } from "./MyNftToken.sol";
 
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
@@ -14,6 +15,12 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     MyNftToken public tokenContract;
     address public owner;
 
+    struct ProposerCore {
+        address name;
+        uint256 budget;
+    }
+
+    mapping(uint256 => ProposerCore) private _proposers;
 
     constructor(IVotes _token, ICompoundTimelock _timelock)
         Governor("MyGovernor")
@@ -91,6 +98,11 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         bytes[] memory calldatas,
         string memory description
     ) public override(Governor, IGovernor) returns (uint256) {
+
+        uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+        ProposerCore storage proposer = _proposers[proposalId];
+        proposer.name = msg.sender;
+        proposer.budget = values[0];
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -139,21 +151,30 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
 
         // quadraticVoting(proposalId);
         address voter = _msgSender();
-        uint256 weight = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
-        _countVote(proposalId, voter, support, weight, "");
         return  super._castVote(proposalId, voter, support, "", "");
     }
 
-    function castVoteAllIn(uint256 proposalId, uint8 support) public payable virtual returns (uint256) {
-         // ProposalCore storage proposal = _proposals[proposalId];
-        uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
-        uint256 cost = (nVotes * nVotes);
-        if (cost > 1000){
-            cost = 1000;
-        }
-        require(msg.value >= cost, "Quadratic voting: You need more ether to cover your vote weight.");
+    function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
+        // require that token holder can only vote:
+        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
 
-        return castVote(proposalId, support);
+        uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
+        uint256 quadcost = (nVotes * nVotes);
+        uint256 fee;
+        uint256 multiplier = 10000000000000000; // 0.01 ether == 16 euro
+        if (nVotes == 1){
+            fee = 0;
+        } else {
+            fee = (quadcost*multiplier);
+        }
+        // string calldata mystring = Strings.toString(fee);
+        // string memory errorMessage = string.concat("Quadratic voting: You need ", Strings.toString(fee));
+        // string memory myMsg = string.concat(errorMessage, " wei to cover your vote weight.");
+        
+        require(msg.value >= fee, "You need to supply more ether to vote with all your tokens. Cost is (nVotes)^2 * 0.01 ether");
+
+        address voter = _msgSender();
+        return  _castVoteAllIn(proposalId, voter, support, "", "");
     }
 
     function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
@@ -184,7 +205,31 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
 
         return weight;
     }
- 
+
+
+    function _castVoteAllIn(
+            uint256 proposalId,
+            address account,
+            uint8 support,
+            string memory reason,
+            bytes memory params
+        ) internal virtual returns (uint256) {
+
+        // ProposalCore storage proposal = _proposals[proposalId];
+        require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
+
+        uint256 weight = _getVotes(account, proposalSnapshot(proposalId), params);
+        _countVote(proposalId, account, support, weight, params);
+
+        if (params.length == 0) {
+            emit VoteCast(account, proposalId, support, weight, reason);
+        } else {
+            emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
+        }
+
+        return weight;
+    }
+
 
  
 }

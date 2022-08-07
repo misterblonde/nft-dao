@@ -17,6 +17,15 @@
 - TEST: VOTE ALL IN (not working yet)
 //! vote is cast without pre-delegation BUG
 
+// _____________________ To Do ________________________
+
+- test the voting options are working fine; 
+	- all in vote quadratic ?
+	- weight 1 vote (working fine)
+- make funds transferred to winner/automatic
+- glitter dynamic NFT mode - interactions with dao measure social score
+- delegation testing - how long does it last for?
+- sybil attack prevention (LATER)
 
 
 

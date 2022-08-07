@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1659719173510,
-      "contentHash": "d2329469a054b873867fa3d8f88c3e65",
+      "lastModificationDate": 1659906204773,
+      "contentHash": "3e1c4f170697d44851efb0aba5aff2d6",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1246,6 +1246,7 @@
         "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
         "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol",
         "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
         "./MyNftToken.sol"
       ],
       "versionPragmas": [
