@@ -73,6 +73,11 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         _;
     }
 
+    // modifier onlyTimelock() {
+    //      require(msg.sender == address(timelockAddress), "Only Timelock is permitted to execute this.");
+    //     _;
+    // }
+
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
         // Underscore is a special character only used inside
@@ -135,7 +140,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
         ProposerCore storage proposer = _proposers[proposalId];
         proposer.name = msg.sender;
-        proposer.budget = values[0];
+        // proposer.budget = values[0];
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -148,6 +153,19 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return address(this).balance;
     }
 
+    //!TOdO currently hard-coded amount, needs to be input parameter, budget stored inside contract
+    function execute(
+        address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        bytes32 descriptionHash) public payable membersOnly virtual override(Governor, IGovernor) returns(uint256) {
+        uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
+        uint256 someEtherInWei = 10000000000000000; // 0.01 ether
+        withdrawETH(_proposers[proposalId].name,someEtherInWei);
+        super._execute(proposalId, targets, values, calldatas, descriptionHash);
+        return proposalId; 
+    }
+
     function _execute(
         uint256 proposalId,
         address[] memory targets,
@@ -158,10 +176,13 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         // address self = address(this);
         // uint256 balance = self.balance;
         // require(_proposers[proposalId].budget < getBalance(), "The amount of budget requested by the proposal is lower than the funds inside the contract.");
-        // withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget);
+        uint256 someEtherInWei = 10000000000000000; 
+        withdrawETH(_proposers[proposalId].name, someEtherInWei);
+        // withdrawETH(_proposers[proposalId].name,_proposers[proposalId].budget);
 
         // deploy a new contract
         // newProject(proposalId);
+        // execute(targets, values, calldatas,descriptionHash);
 
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
     }

@@ -6,8 +6,10 @@ import {
   FUNC,
   PROPOSAL_DESCRIPTION,
   NEW_STORE_VALUE,
+  MIN_DELAY,
 } from "../../helper-hardhat-config";
 import { moveBlocks } from "../../tasks/move-blocks";
+import { moveTime } from "../../tasks/move-time";
 import { getExpectedContractAddress } from "../../tasks/utils";
 import type { Box } from "../../typechain/contracts/Box";
 import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
@@ -338,7 +340,7 @@ export function proposalPassesQuorum(): void {
       args
     );
 
-    console.log("BALANCE IS: ", await this.governor.getBalance());
+    console.log("Governor BALANCE IS: ", await this.governor.getBalance());
 
     // submit proposal
     const txn = await this.governor
@@ -442,18 +444,19 @@ export function proposalPassesQuorum(): void {
       //   const governor = await ethers.getContract("GovernorContract")
       console.log("Queueing...");
 
-      const setPendingTimelockAdmin = await this.timelock
-        // .connect(this.timelock)
-        .setPendingAdmin(this.signers.admin.address, {
-          gasLimit: 1 * 10 ** 6,
-        });
-      console.log("Pending admin set");
-      const setTimelockAdmin = await this.timelock.acceptAdmin({
-        gasLimit: 1 * 10 ** 6,
-      });
-      console.log("Pending admin: ", this.timelock.pendingAdmin);
-      console.log("admin: ", this.timelock.admin);
-      console.log("New admin set");
+      //   const setPendingTimelockAdmin = await this.timelock
+      //     .connect(this.provider.getSigner(this.timelock.admin))
+      //     // .connect(this.signers.admin)
+      //     .setPendingAdmin(this.signers.admin.address, {
+      //       gasLimit: 1 * 10 ** 6,
+      //     });
+      //   console.log("Pending admin set");
+      //   const setTimelockAdmin = await this.timelock.acceptAdmin({
+      //     gasLimit: 1 * 10 ** 6,
+      //   });
+      //   console.log("Pending admin: ", this.timelock.pendingAdmin);
+      //   console.log("admin: ", this.timelock.admin);
+      //   console.log("New admin set");
       const queueTx = await this.governor.connect(this.signers.admin).queue(
         [this.box.address],
         [0],
@@ -476,7 +479,60 @@ export function proposalPassesQuorum(): void {
         );
         await moveBlocks(1);
       }
-      //   await expect(await this.governor.state(proposalIdInput)).to.equal(4);
+
+      const balanceOld = await this.provider.getBalance(this.governor.address);
+      console.log(
+        "Prior to execute Balance: ",
+        ethers.utils.formatEther(balanceOld)
+      );
+      console.log(
+        "Governor BALANCE IS: ",
+        ethers.utils.formatEther(await this.governor.getBalance())
+      );
+
+      // await web3.utils.fromWei(parseInt(balanceOld)));
+
+      if (developmentChains.includes(network.name)) {
+        await moveTime(MIN_DELAY + 1);
+        await moveBlocks(1);
+      }
+
+      console.log("Executing...");
+      console.log(
+        "Proposal State: ",
+        await this.governor.state(proposalIdInput)
+      );
+      // this will fail on a testnet because you need to wait for the MIN_DELAY!
+      const executeTx = await this.governor
+        .connect(this.signers.admin)
+        .execute(
+          [this.box.address],
+          [0],
+          [encodedFunctionCall],
+          descriptionHash,
+          {
+            gasLimit: 1 * 10 ** 6,
+            value: ethers.utils.parseUnits("0.03", "ether"),
+          }
+        );
+      //   await executeTx.wait(1);
+
+      await executeTx.wait(1);
+
+      console.log(`Box value: ${await this.box.retrieve()}`);
+      //   console.log(`Box value: ${await box.retrieve()}`)
+
+      const balanceNew = await this.provider.getBalance(this.governor.address);
+      console.log(
+        "Governor BALANCE IS: ",
+        ethers.utils.formatEther(await this.governor.getBalance())
+      );
+
+      console.log(
+        "After execution balance: ",
+        ethers.utils.formatEther(balanceNew)
+      );
+      await expect(await this.governor.state(proposalIdInput)).to.equal(5);
     }
   });
 }

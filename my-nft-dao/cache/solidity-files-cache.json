@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1660000109647,
-      "contentHash": "dab3ace3b64fab54206b9a9734576564",
+      "lastModificationDate": 1660058392434,
+      "contentHash": "c7cb49f4f2dc786e1421aab4554e1663",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1378,8 +1378,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Timelock.sol": {
-      "lastModificationDate": 1660008565473,
-      "contentHash": "b408ce58a35f5902fd957ba281dadf3c",
+      "lastModificationDate": 1660056517905,
+      "contentHash": "4203264f761fc5b8eea902c2fb0fae74",
       "sourceName": "contracts/Timelock.sol",
       "solcConfig": {
         "version": "0.8.6",
