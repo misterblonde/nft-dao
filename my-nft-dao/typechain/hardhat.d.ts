@@ -101,6 +101,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Greeter__factory>;
     getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
       name: "MyGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyGovernor__factory>;
@@ -108,6 +112,18 @@ declare module "hardhat/types/runtime" {
       name: "MyNftToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyNftToken__factory>;
+    getContractFactory(
+      name: "IERC20",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC20__factory>;
+    getContractFactory(
+      name: "ProjectGovernor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ProjectGovernor__factory>;
+    getContractFactory(
+      name: "ProjectNftToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ProjectNftToken__factory>;
     getContractFactory(
       name: "Timelock",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -224,6 +240,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Greeter>;
     getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
       name: "MyGovernor",
       address: string,
       signer?: ethers.Signer
@@ -233,6 +254,21 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.MyNftToken>;
+    getContractAt(
+      name: "IERC20",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "ProjectGovernor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ProjectGovernor>;
+    getContractAt(
+      name: "ProjectNftToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ProjectNftToken>;
     getContractAt(
       name: "Timelock",
       address: string,

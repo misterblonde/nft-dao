@@ -58,6 +58,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
     url: jsonRpcUrl,
     gas: 2100000,
     gasPrice: 8000000000,
+    allowUnlimitedContractSize: true,
     // gas: 60000, // 50582
     // gasPrice: 800000, // 1122680
     // saveDeployments: true,

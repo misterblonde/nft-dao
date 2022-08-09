@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Box.sol": {
-      "lastModificationDate": 1659536606564,
-      "contentHash": "91de49afba1b26b143799b31904f8399",
+      "lastModificationDate": 1660002351779,
+      "contentHash": "c5b1b3719b52e0c94a75726d92014760",
       "sourceName": "contracts/Box.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1659906204773,
-      "contentHash": "3e1c4f170697d44851efb0aba5aff2d6",
+      "lastModificationDate": 1660000109647,
+      "contentHash": "dab3ace3b64fab54206b9a9734576564",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1247,12 +1247,15 @@
         "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol",
         "@openzeppelin/contracts/utils/math/SafeMath.sol",
         "@openzeppelin/contracts/utils/Strings.sol",
-        "./MyNftToken.sol"
+        "./MyNftToken.sol",
+        "./ProjectGovernor.sol",
+        "./ProjectNftToken.sol"
       ],
       "versionPragmas": [
         "0.8.6"
       ],
       "artifacts": [
+        "IERC20",
         "MyGovernor"
       ]
     },
@@ -1375,7 +1378,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Timelock.sol": {
-      "lastModificationDate": 1659536606562,
+      "lastModificationDate": 1660008565473,
       "contentHash": "b408ce58a35f5902fd957ba281dadf3c",
       "sourceName": "contracts/Timelock.sol",
       "solcConfig": {
@@ -1491,6 +1494,98 @@
       ],
       "artifacts": [
         "Greeter"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
+      "lastModificationDate": 1659994567595,
+      "contentHash": "07bcb17fb7a30b340f0c20330bad0470",
+      "sourceName": "contracts/ProjectNftToken.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 800
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
+        "@openzeppelin/contracts/utils/Counters.sol"
+      ],
+      "versionPragmas": [
+        "0.8.6"
+      ],
+      "artifacts": [
+        "ProjectNftToken"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectGovernor.sol": {
+      "lastModificationDate": 1659995018085,
+      "contentHash": "3aad701128bc43abc2de18269b2f710f",
+      "sourceName": "contracts/ProjectGovernor.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 800
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/governance/Governor.sol",
+        "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol",
+        "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol",
+        "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
+        "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "./ProjectNftToken.sol"
+      ],
+      "versionPragmas": [
+        "0.8.6"
+      ],
+      "artifacts": [
+        "IERC20",
+        "ProjectGovernor"
       ]
     }
   }

@@ -25,7 +25,7 @@ import {
 
 import { Signers } from "../types";
 import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseDelegatedNfts, voteFailsBecauseNonTokenHolder, voteOnSubmittedProposal } from "./Governor.behavior";
-import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks } from "./Governor.voting";
+import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks, proposalPassesQuorum } from "./Governor.voting";
 import { NetworkUserConfig } from "hardhat/types";
 const hre = require("hardhat");
 
@@ -41,6 +41,7 @@ describe("Unit tests", function () {
 
     this.addr1 = signers[1];
     this.addr2 = signers[2];
+    this.addr3 = signers[3];
     const hre = require("hardhat");
 
     // const wallet =  wallet.connect(ethers.provider);
@@ -325,7 +326,7 @@ describe("Unit tests", function () {
 
     votingWithAllNftsWorks();
     // analyse results
-
+    proposalPassesQuorum();
 
     // queue/execute
   });
