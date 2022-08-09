@@ -129,19 +129,13 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     {
         return super.state(proposalId);
     }
-
-    function proposeInclBudget(address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        string memory description) public membersOnly returns(uint256) {
-            // require(budgetGwei > , "Budget input must be integer value.");
-            uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+    
+    function setProposalBudget(uint256 proposalId, uint256 budget) public {
+            require(msg.sender == _proposers[proposalId].name, "Governor: only the proposer can set the budget of the proposal.");
+            require(state(proposalId) == ProposalState.Pending, "Governor: cannot change budget. Proposal vote already started.");
             ProposerCore storage proposer = _proposers[proposalId];
-            proposer.name = msg.sender;
-            uint256 budgetGwei = values[0];
-            proposer.budget = budgetGwei;
-            return proposalId; 
-        }
+            proposer.budget = budget;
+    }
 
     function propose(
         address[] memory targets,
@@ -149,6 +143,9 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         bytes[] memory calldatas,
         string memory description
     ) public override(Governor, IGovernor) returns (uint256) {
+        uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+        ProposerCore storage proposer = _proposers[proposalId];
+        proposer.name = msg.sender;
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -161,16 +158,14 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return address(this).balance;
     }
 
-    //!TOdO currently hard-coded amount, needs to be input parameter, budget stored inside contract
+    // amount withdrawn as budget is converted from Gwei to Wei.
     function execute(
         address[] memory targets,
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash) public payable membersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
-        uint256 someEtherInWei = 10000000000000000; // 0.01 ether
-        // uint256 budgetAmount = (ethers.utils.parseUnits(_proposers[proposalId].budget, 'wei')).toNumber();
-        withdrawETH(_proposers[proposalId].name, someEtherInWei);
+        withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget*10**9);
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -192,7 +187,6 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         // deploy a new contract
         // newProject(proposalId);
         // execute(targets, values, calldatas,descriptionHash);
-
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
     }
 

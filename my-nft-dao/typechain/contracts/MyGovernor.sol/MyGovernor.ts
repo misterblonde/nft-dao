@@ -65,6 +65,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "queue(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "quorum(uint256)": FunctionFragment;
     "relay(address,uint256,bytes)": FunctionFragment;
+    "setProposalBudget(uint256,uint256)": FunctionFragment;
     "setProposalThreshold(uint256)": FunctionFragment;
     "setVotingDelay(uint256)": FunctionFragment;
     "setVotingPeriod(uint256)": FunctionFragment;
@@ -115,6 +116,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "queue"
       | "quorum"
       | "relay"
+      | "setProposalBudget"
       | "setProposalThreshold"
       | "setVotingDelay"
       | "setVotingPeriod"
@@ -330,6 +332,10 @@ export interface MyGovernorInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "setProposalBudget",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setProposalThreshold",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -472,6 +478,10 @@ export interface MyGovernorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "queue", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "quorum", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "relay", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setProposalBudget",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "setProposalThreshold",
     data: BytesLike
@@ -900,6 +910,12 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setProposalBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      budget: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1148,6 +1164,12 @@ export interface MyGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setProposalBudget(
+    proposalId: PromiseOrValue<BigNumberish>,
+    budget: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setProposalThreshold(
     newProposalThreshold: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1391,6 +1413,12 @@ export interface MyGovernor extends BaseContract {
       target: PromiseOrValue<string>,
       value: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setProposalBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      budget: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1742,6 +1770,12 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setProposalBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      budget: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1984,6 +2018,12 @@ export interface MyGovernor extends BaseContract {
       target: PromiseOrValue<string>,
       value: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setProposalBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      budget: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

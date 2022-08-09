@@ -1,5 +1,12 @@
 
 
+challenges DAO development
+- challenges: overflow and underflow with ether/gwei/wei values in solidity
+- not being able to use floats
+- security of functionality, make some functions protected by making them owner
+  only
+-
+
 // bug fixed via TDD: 
 
 - all IN voting did not add to the total vote count, whilst the vote simple

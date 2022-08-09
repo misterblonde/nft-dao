@@ -293,7 +293,7 @@ export function votingWithAllNftsWorks(): void {
   });
 }
 
-export function proposalPassesQuorum(): void {
+export function proposalPassesQuorumBudgetAmountProvidedToProposer(): void {
   it("Enough members vote to Pass Proposal", async function () {
     // mint 3 NFTS
     const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
@@ -356,13 +356,20 @@ export function proposalPassesQuorum(): void {
         }
       );
 
-    if (developmentChains.includes(network.name)) {
-      await moveBlocks(VOTING_DELAY + 1);
-    }
     const proposalTxn = await txn.wait(1);
 
     this.proposalId = proposalTxn.events[0].args.proposalId;
     const proposalIdInput = this.proposalId.toString();
+    await this.governor
+      .connect(this.signers.admin) // 0.02 ether
+      .setProposalBudget(proposalIdInput, 20000000, {
+        gasLimit: 250000,
+        // value: 0.002,
+      });
+
+    if (developmentChains.includes(network.name)) {
+      await moveBlocks(VOTING_DELAY + 1);
+    }
 
     const voteTxn = await this.governor
       .connect(this.signers.admin)
