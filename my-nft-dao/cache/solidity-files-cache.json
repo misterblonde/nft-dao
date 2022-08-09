@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1660058392434,
-      "contentHash": "c7cb49f4f2dc786e1421aab4554e1663",
+      "lastModificationDate": 1660063520177,
+      "contentHash": "83e224c10f94734ebdfe02412b4b36d1",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",

@@ -130,17 +130,25 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return super.state(proposalId);
     }
 
+    function proposeInclBudget(address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        string memory description) public membersOnly returns(uint256) {
+            // require(budgetGwei > , "Budget input must be integer value.");
+            uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+            ProposerCore storage proposer = _proposers[proposalId];
+            proposer.name = msg.sender;
+            uint256 budgetGwei = values[0];
+            proposer.budget = budgetGwei;
+            return proposalId; 
+        }
+
     function propose(
         address[] memory targets,
         uint256[] memory values,
         bytes[] memory calldatas,
         string memory description
     ) public override(Governor, IGovernor) returns (uint256) {
-
-        uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
-        ProposerCore storage proposer = _proposers[proposalId];
-        proposer.name = msg.sender;
-        // proposer.budget = values[0];
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -161,7 +169,8 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         bytes32 descriptionHash) public payable membersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         uint256 someEtherInWei = 10000000000000000; // 0.01 ether
-        withdrawETH(_proposers[proposalId].name,someEtherInWei);
+        // uint256 budgetAmount = (ethers.utils.parseUnits(_proposers[proposalId].budget, 'wei')).toNumber();
+        withdrawETH(_proposers[proposalId].name, someEtherInWei);
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -298,7 +307,6 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return weight;
     }
 
-
     function _castVoteAllIn(
             uint256 proposalId,
             address account,
@@ -321,7 +329,5 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
 
         return weight;
     }
-
-
  
 }
