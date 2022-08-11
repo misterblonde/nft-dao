@@ -6,17 +6,13 @@ import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import { ProjectNftToken } from "./ProjectNftToken.sol";
 
 interface IERC20 {
     function transfer(address _to, uint256 _amount) external returns (bool);
 }
 
 contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
-
-    ProjectNftToken public tokenContract;
+    address public tokenAddress;
     address public owner;
 
     uint256 public initialBudget; 
@@ -37,7 +33,8 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         )
         GovernorVotes(_token)
         GovernorTimelockCompound(_timelock)
-        { tokenContract = ProjectNftToken(address(_token));
+        { 
+        tokenAddress = address(_token);
         owner = msg.sender;
         initialBudget = budget;
         initialProposer = proposer; 
@@ -49,34 +46,32 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     }
 
     modifier membersOnly() {
-         require(tokenContract.balanceOf(msg.sender) >= proposalThreshold(), "You don't own enough Genesis NFTs to propose.");
+        (bool success, bytes memory balanceUser) = tokenAddress.call(abi.encode("balanceOf(address)", msg.sender));
+        uint256 decoded = abi.decode(balanceUser, (uint256));
+        require(decoded >= proposalThreshold(), "You don't own enough Genesis NFTs to propose.");
         _;
     }
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
-        // Underscore is a special character only used inside
-        // a function modifier and it tells Solidity to
+        // Underscore is a function modifier and tells Solidity to
         // execute the rest of the code.
         _;
     }
 
     function quadraticVoting(uint256 proposalId) public payable {
-        // ProposalCore storage proposal = _proposals[proposalId];
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
         uint256 cost = (nVotes * nVotes);
         if (cost > 1000){
             cost = 1000;
         }
         require(msg.value >= cost, "Quadratic voting: You need more ether to cover your vote weight.");
-        // return cost;
     }
 
     function quorum(uint256 blockNumber) public pure override returns (uint256) {
         return 3;
     }
 
-    // The following functions are overrides required by Solidity.
     function votingDelay() public view override(IGovernor, GovernorSettings) returns (uint256) {
         return super.votingDelay();
     }
@@ -94,8 +89,6 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         return super.state(proposalId);
     }
 
-
-// project specific proposals
     function propose(
         address[] memory targets,
         uint256[] memory values,
@@ -125,14 +118,6 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         bytes[] memory calldatas,
         bytes32 descriptionHash
     ) internal override(Governor, GovernorTimelockCompound) {
-        // address self = address(this);
-        // uint256 balance = self.balance;
-        // require(_proposers[proposalId].budget < getBalance(), "The amount of budget requested by the proposal is lower than the funds inside the contract.");
-        // withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget);
-
-          // deploy a new contract
-        // newProject(proposalId);
-
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
     }
 
@@ -159,16 +144,14 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     }
 
     function castVote(uint256 proposalId, uint8 support) public virtual override(IGovernor, Governor) returns (uint256) {
-        // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
-        // quadraticVoting(proposalId);
+        require(getVotes(msg.sender,  proposalSnapshot(proposalId)) >= 1, "You must be a token holder to vote.");
         address voter = _msgSender();
         return  super._castVote(proposalId, voter, support, "", "");
     }
 
     function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
         // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
+        require(getVotes(msg.sender,  proposalSnapshot(proposalId)) >= 1, "You must be a token holder to vote.");
 
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
         uint256 quadcost = (nVotes * nVotes);
@@ -178,11 +161,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
             fee = 0;
         } else {
             fee = (quadcost*multiplier);
-        }
-        // string calldata mystring = Strings.toString(fee);
-        // string memory errorMessage = string.concat("Quadratic voting: You need ", Strings.toString(fee));
-        // string memory myMsg = string.concat(errorMessage, " wei to cover your vote weight.");
-        
+        }        
         require(msg.value >= fee, "You need to supply more ether to vote with all your tokens. Cost is (nVotes)^2 * 0.01 ether");
 
         address voter = _msgSender();
@@ -190,8 +169,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     }
 
     function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
-        // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
+        require(getVotes(msg.sender,  proposalSnapshot(proposalId)) >= 1, "You must be a token holder to vote.");
         address voter = _msgSender();
         return  _castVoteSimple(proposalId, voter, support, "", "");
     }
@@ -225,8 +203,6 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
             string memory reason,
             bytes memory params
         ) internal virtual returns (uint256) {
-
-        // ProposalCore storage proposal = _proposals[proposalId];
         require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
 
         uint256 weight = _getVotes(account, proposalSnapshot(proposalId), params);
@@ -239,5 +215,4 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         }
         return weight;
     }
- 
 }

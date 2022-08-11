@@ -73,7 +73,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "supportsInterface(bytes4)": FunctionFragment;
     "timelock()": FunctionFragment;
     "token()": FunctionFragment;
-    "tokenContract()": FunctionFragment;
+    "tokenAddress()": FunctionFragment;
     "updateTimelock(address)": FunctionFragment;
     "version()": FunctionFragment;
     "votingDelay()": FunctionFragment;
@@ -123,7 +123,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "supportsInterface"
       | "timelock"
       | "token"
-      | "tokenContract"
+      | "tokenAddress"
       | "updateTimelock"
       | "version"
       | "votingDelay"
@@ -351,7 +351,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(functionFragment: "timelock", values?: undefined): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "tokenContract",
+    functionFragment: "tokenAddress",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -491,7 +491,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "timelock", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "tokenContract",
+    functionFragment: "tokenAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -920,7 +920,7 @@ export interface ProjectGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<[string]>;
 
-    tokenContract(overrides?: CallOverrides): Promise<[string]>;
+    tokenAddress(overrides?: CallOverrides): Promise<[string]>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
@@ -1158,7 +1158,7 @@ export interface ProjectGovernor extends BaseContract {
 
   token(overrides?: CallOverrides): Promise<string>;
 
-  tokenContract(overrides?: CallOverrides): Promise<string>;
+  tokenAddress(overrides?: CallOverrides): Promise<string>;
 
   updateTimelock(
     newTimelock: PromiseOrValue<string>,
@@ -1394,7 +1394,7 @@ export interface ProjectGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<string>;
 
-    tokenContract(overrides?: CallOverrides): Promise<string>;
+    tokenAddress(overrides?: CallOverrides): Promise<string>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
@@ -1732,7 +1732,7 @@ export interface ProjectGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenContract(overrides?: CallOverrides): Promise<BigNumber>;
+    tokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,
@@ -1967,7 +1967,7 @@ export interface ProjectGovernor extends BaseContract {
 
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    tokenContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    tokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     updateTimelock(
       newTimelock: PromiseOrValue<string>,

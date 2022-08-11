@@ -293,7 +293,7 @@ export function votingWithAllNftsWorks(): void {
   });
 }
 
-export function proposalPassesQuorumBudgetAmountProvidedToProposer(): void {
+export function proposalPassesQuorumBudgetTransferredToProposer(): void {
   it("Enough members vote to Pass Proposal", async function () {
     // mint 3 NFTS
     const myFirstMint = await this.token.safeMint(this.signers.admin.address, {

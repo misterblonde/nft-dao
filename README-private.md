@@ -5,7 +5,18 @@ challenges DAO development
 - not being able to use floats
 - security of functionality, make some functions protected by making them owner
   only
--
+- "Trying to deploy a contract whose code is too large" maximum file size limit reached -> could not deploy to the ethereum blockchain. This was
+  reached when I tried to have a subgovernor contract called by the Governor
+upon positive result of a proposal.
+-  
+
+
+hardhat localhost challenges
+- adding the signer wallets and giving them enough ether to pay for all the
+  minting
+- minting fee + gas fee prediction
+
+
 
 // bug fixed via TDD: 
 

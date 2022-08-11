@@ -180,8 +180,8 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         // address self = address(this);
         // uint256 balance = self.balance;
         // require(_proposers[proposalId].budget < getBalance(), "The amount of budget requested by the proposal is lower than the funds inside the contract.");
-        uint256 someEtherInWei = 10000000000000000; 
-        withdrawETH(_proposers[proposalId].name, someEtherInWei);
+        // uint256 someEtherInWei = 10000000000000000; 
+        // withdrawETH(_proposers[proposalId].name, someEtherInWei);
         // withdrawETH(_proposers[proposalId].name,_proposers[proposalId].budget);
 
         // deploy a new contract

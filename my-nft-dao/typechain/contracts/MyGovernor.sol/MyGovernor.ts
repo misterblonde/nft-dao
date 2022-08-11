@@ -60,7 +60,6 @@ export interface MyGovernorInterface extends utils.Interface {
     "proposalThreshold()": FunctionFragment;
     "proposalVotes(uint256)": FunctionFragment;
     "propose(address[],uint256[],bytes[],string)": FunctionFragment;
-    "proposeInclBudget(address[],uint256[],bytes[],string)": FunctionFragment;
     "quadraticVoting(uint256)": FunctionFragment;
     "queue(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "quorum(uint256)": FunctionFragment;
@@ -111,7 +110,6 @@ export interface MyGovernorInterface extends utils.Interface {
       | "proposalThreshold"
       | "proposalVotes"
       | "propose"
-      | "proposeInclBudget"
       | "quadraticVoting"
       | "queue"
       | "quorum"
@@ -298,15 +296,6 @@ export interface MyGovernorInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "proposeInclBudget",
-    values: [
-      PromiseOrValue<string>[],
-      PromiseOrValue<BigNumberish>[],
-      PromiseOrValue<BytesLike>[],
-      PromiseOrValue<string>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "quadraticVoting",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -467,10 +456,6 @@ export interface MyGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "propose", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "proposeInclBudget",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "quadraticVoting",
     data: BytesLike
@@ -877,14 +862,6 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    proposeInclBudget(
-      targets: PromiseOrValue<string>[],
-      values: PromiseOrValue<BigNumberish>[],
-      calldatas: PromiseOrValue<BytesLike>[],
-      description: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     quadraticVoting(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -1131,14 +1108,6 @@ export interface MyGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  proposeInclBudget(
-    targets: PromiseOrValue<string>[],
-    values: PromiseOrValue<BigNumberish>[],
-    calldatas: PromiseOrValue<BytesLike>[],
-    description: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   quadraticVoting(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -1376,14 +1345,6 @@ export interface MyGovernor extends BaseContract {
     >;
 
     propose(
-      targets: PromiseOrValue<string>[],
-      values: PromiseOrValue<BigNumberish>[],
-      calldatas: PromiseOrValue<BytesLike>[],
-      description: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    proposeInclBudget(
       targets: PromiseOrValue<string>[],
       values: PromiseOrValue<BigNumberish>[],
       calldatas: PromiseOrValue<BytesLike>[],
@@ -1737,14 +1698,6 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    proposeInclBudget(
-      targets: PromiseOrValue<string>[],
-      values: PromiseOrValue<BigNumberish>[],
-      calldatas: PromiseOrValue<BytesLike>[],
-      description: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     quadraticVoting(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -1981,14 +1934,6 @@ export interface MyGovernor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     propose(
-      targets: PromiseOrValue<string>[],
-      values: PromiseOrValue<BigNumberish>[],
-      calldatas: PromiseOrValue<BytesLike>[],
-      description: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    proposeInclBudget(
       targets: PromiseOrValue<string>[],
       values: PromiseOrValue<BigNumberish>[],
       calldatas: PromiseOrValue<BytesLike>[],
