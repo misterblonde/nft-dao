@@ -518,7 +518,7 @@ export function proposalPassesQuorumBudgetTransferredToProposer(): void {
           [encodedFunctionCall],
           descriptionHash,
           {
-            gasLimit: 1 * 10 ** 6,
+            gasLimit: 3 * 10 ** 6,
             value: ethers.utils.parseUnits("0.03", "ether"),
           }
         );

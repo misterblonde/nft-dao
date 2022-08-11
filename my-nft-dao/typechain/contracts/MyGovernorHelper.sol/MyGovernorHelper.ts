@@ -10,7 +10,11 @@ import type {
   OnEvent,
   PromiseOrValue,
 } from "../../common";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
+import type {
+  FunctionFragment,
+  Result,
+  EventFragment,
+} from "@ethersproject/abi";
 import type { Listener, Provider } from "@ethersproject/providers";
 import type {
   BaseContract,
@@ -27,20 +31,42 @@ import type {
 
 export interface MyGovernorHelperInterface extends utils.Interface {
   functions: {
+    "daughterToken()": FunctionFragment;
     "newProject(uint256,address)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "newProject"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "daughterToken" | "newProject"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "daughterToken",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "newProject",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "daughterToken",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "newProject", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "Log(uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "Log"): EventFragment;
 }
+
+export interface LogEventObject {
+  gas: BigNumber;
+}
+export type LogEvent = TypedEvent<[BigNumber], LogEventObject>;
+
+export type LogEventFilter = TypedEventFilter<LogEvent>;
 
 export interface MyGovernorHelper extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -69,12 +95,16 @@ export interface MyGovernorHelper extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    daughterToken(overrides?: CallOverrides): Promise<[string]>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  daughterToken(overrides?: CallOverrides): Promise<string>;
 
   newProject(
     proposalId: PromiseOrValue<BigNumberish>,
@@ -83,6 +113,8 @@ export interface MyGovernorHelper extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    daughterToken(overrides?: CallOverrides): Promise<string>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
@@ -90,9 +122,14 @@ export interface MyGovernorHelper extends BaseContract {
     ): Promise<string>;
   };
 
-  filters: {};
+  filters: {
+    "Log(uint256)"(gas?: null): LogEventFilter;
+    Log(gas?: null): LogEventFilter;
+  };
 
   estimateGas: {
+    daughterToken(overrides?: CallOverrides): Promise<BigNumber>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
@@ -101,6 +138,8 @@ export interface MyGovernorHelper extends BaseContract {
   };
 
   populateTransaction: {
+    daughterToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,

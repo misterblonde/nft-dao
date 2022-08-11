@@ -2,4 +2,5 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IERC721 } from "./IERC721";
+export type { IMyGovernorHelper } from "./IMyGovernorHelper";
 export type { MyGovernor } from "./MyGovernor";

@@ -308,6 +308,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "ApprovalForAll(address,address,bool)": EventFragment;
     "DelegateChanged(address,address,address)": EventFragment;
     "DelegateVotesChanged(address,uint256,uint256)": EventFragment;
+    "Log(uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
     "Transfer(address,address,uint256)": EventFragment;
   };
@@ -316,6 +317,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "ApprovalForAll"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DelegateChanged"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "DelegateVotesChanged"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "Log"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
@@ -368,6 +370,13 @@ export type DelegateVotesChangedEvent = TypedEvent<
 
 export type DelegateVotesChangedEventFilter =
   TypedEventFilter<DelegateVotesChangedEvent>;
+
+export interface LogEventObject {
+  gas: BigNumber;
+}
+export type LogEvent = TypedEvent<[BigNumber], LogEventObject>;
+
+export type LogEventFilter = TypedEventFilter<LogEvent>;
 
 export interface OwnershipTransferredEventObject {
   previousOwner: string;
@@ -888,6 +897,9 @@ export interface ProjectNftToken extends BaseContract {
       previousBalance?: null,
       newBalance?: null
     ): DelegateVotesChangedEventFilter;
+
+    "Log(uint256)"(gas?: null): LogEventFilter;
+    Log(gas?: null): LogEventFilter;
 
     "OwnershipTransferred(address,address)"(
       previousOwner?: PromiseOrValue<string> | null,

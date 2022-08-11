@@ -12,9 +12,14 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.s
 // import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 // import { ProjectGovernor } from "./ProjectGovernor.sol";
 // import { ProjectNftToken } from "./ProjectNftToken.sol";
+// import { MyGovernorHelper } from "./MyGovernorHelper.sol";
 
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
+}
+
+interface IMyGovernorHelper {
+    function newProject(uint256 proposalId, ICompoundTimelock _timelock) external payable returns(address newContract);
 }
 
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
@@ -22,6 +27,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     address public tokenAddress;
     ICompoundTimelock public timelockAddress; 
     address public owner;
+    address helper;
 
     struct ProposerCore {
         address name;
@@ -36,7 +42,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     mapping(uint256 => ProjectCore) internal _projects;
     mapping(uint256 => ProposerCore) internal _proposers;
 
-    constructor(IVotes _token, ICompoundTimelock _timelock)
+    constructor(IVotes _token, ICompoundTimelock _timelock, IMyGovernorHelper _helper)
         Governor("MyGovernor")
         GovernorSettings(
             1, /* 1 block voting delay*/
@@ -48,8 +54,9 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     { 
         // tokenContract = MyNftToken(address(_token));
         tokenAddress = address(_token);
-    timelockAddress = _timelock; 
-    owner = msg.sender;
+        helper = address(_helper);
+        timelockAddress = _timelock; 
+        owner = msg.sender;
      }
 
     function withdrawETH(address recipient, uint256 amount) internal {
@@ -149,6 +156,10 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         bytes32 descriptionHash) public payable superMembersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget*10**9);
+
+        // MyGovernorHelper helper = MyGovernorHelper(address(this));
+        address hello = IMyGovernorHelper(helper).newProject(proposalId, timelockAddress);
+        
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -196,7 +207,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     }
 
     function transferFunds(address payable _receiver, uint256 amount) external payable {
-        require(msg.sender == owner, "Not owner");
+        require((msg.sender == owner) || (msg.sender == helper), "Not owner");
     _receiver.transfer(amount);
     }
     

@@ -12,6 +12,8 @@ import {
   Box__factory,
   MyGovernor,
   MyGovernor__factory,
+  MyGovernorHelper,
+  MyGovernorHelper__factory,
   MyNftToken,
   MyNftToken__factory,
   Timelock,
@@ -36,8 +38,13 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
   const timelock: Timelock = <Timelock>await timelockFactory.deploy(governorExpectedAddress, timelockDelay);
   await timelock.deployed();
 
+  const governorHelperFactory: MyGovernorHelper__factory = await ethers.getContractFactory("MyGovernorHelper");
+  const governorHelper: MyGovernorHelper = <MyGovernorHelper>await governorHelperFactory.deploy(governorExpectedAddress);
+  await governorHelper.deployed();
+  console.log(governorHelper)
+
   const governorFactory: MyGovernor__factory = await ethers.getContractFactory("MyGovernor");
-  const governor: MyGovernor = <MyGovernor>await governorFactory.deploy(token.address, timelock.address);
+  const governor: MyGovernor = <MyGovernor> await governorFactory.deploy(token.address, timelock.address, governorHelper.address);
   await governor.deployed();
 
   // ___________ deploy the Box and transfer ownership to timlock: ___________
@@ -57,6 +64,7 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
     timelock: timelock.address,
     token: token.address,
     box: box.address,
+    helper: governorHelper.address,
   });
 
   // We'll mint enough NFTs to be able to pass a proposal!

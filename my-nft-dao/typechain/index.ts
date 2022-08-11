@@ -54,6 +54,8 @@ export type { Box } from "./contracts/Box";
 export { Box__factory } from "./factories/contracts/Box__factory";
 export type { Greeter } from "./contracts/Greeter";
 export { Greeter__factory } from "./factories/contracts/Greeter__factory";
+export type { IMyGovernorHelper } from "./contracts/MyGovernor.sol/IMyGovernorHelper";
+export { IMyGovernorHelper__factory } from "./factories/contracts/MyGovernor.sol/IMyGovernorHelper__factory";
 export type { MyGovernor } from "./contracts/MyGovernor.sol/MyGovernor";
 export { MyGovernor__factory } from "./factories/contracts/MyGovernor.sol/MyGovernor__factory";
 export type { IMyGovernor } from "./contracts/MyGovernorHelper.sol/IMyGovernor";

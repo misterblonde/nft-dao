@@ -16,11 +16,13 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     uint public constant MAX_SUPPLY = 600;
     uint256 public constant PRICE = 20000000000000000; //0.02 ETH
     // uint public constant PRICE = 0.00001 ether; // change units or add gas limit?
+    event Log(uint256 gas);
+    
     // uint public constant gasLimit = 0.000021 ether;
     uint public constant MAX_PER_MINT = 5;
     string public baseTokenURI = "https://gateway.pinata.cloud/ipfs/QmR1yHJYafBkwCXMfnytoQXryiyWWiCncTotkKxsHghTGX/";
 
-    constructor() ERC721("ProjectToken", "GT") EIP712("ProjectToken", "1") {
+    constructor() ERC721("ProjectToken", "GT") EIP712("ProjectToken", "1") public payable {
         // EIP712( name, version)
         //setBaseURI(baseURI);
         creator = owner();
@@ -72,5 +74,10 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
 
     function _getVotingUnits(address account) internal view virtual override returns (uint256) {
         return balanceOf(account);
+    }
+
+        // Fallback function must be declared as external.
+    fallback() external payable {
+        emit Log(gasleft());
     }
 }

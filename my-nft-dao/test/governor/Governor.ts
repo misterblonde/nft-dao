@@ -27,6 +27,7 @@ import { Signers } from "../types";
 import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseDelegatedNfts, voteFailsBecauseNonTokenHolder, voteOnSubmittedProposal } from "./Governor.behavior";
 import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks, proposalPassesQuorumBudgetTransferredToProposer } from "./Governor.voting";
 import { NetworkUserConfig } from "hardhat/types";
+import { MyGovernorHelper } from "../../typechain";
 const hre = require("hardhat");
 
 describe("Unit tests", function () {
@@ -166,6 +167,7 @@ describe("Unit tests", function () {
 
   describe("Governor", function () {
     beforeEach(async function () {
+    //   await hre.network.provider.send("hardhat_reset");
       const governorArtifact: Artifact = await artifacts.readArtifact("MyGovernor");
       const timelockArtifact: Artifact = await artifacts.readArtifact("Timelock");
 
@@ -175,17 +177,33 @@ describe("Unit tests", function () {
       const governorExpectedAddress = await getExpectedContractAddress(this.signers.admin);
       this.timelock = <Timelock>await waffle.deployContract(this.signers.admin, timelockArtifact,[governorExpectedAddress, 2]);
  
-      this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address]);
+
+      const governorHelperArtifact: Artifact = await artifacts.readArtifact("MyGovernorHelper");
+      this.governorHelper = <MyGovernorHelper>await waffle.deployContract(this.signers.admin, governorHelperArtifact, [governorExpectedAddress]);
+
+      this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address, this.governorHelper.address]);
+      //, [this.signers.admin.address, 300000000]);
 
       const boxArtifact: Artifact = await artifacts.readArtifact("Box");
       this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact);
       await this.token.deployed();
+
       await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('10').toHexString()] });
+
+    //   await this.governorHelper.connect(this.signers.admin).function({
+    //     value: ethers.utils.parseUnits("1","ether") });
+
+    const tx = {
+            to: this.governorHelper.address,
+            value: ethers.utils.parseUnits('2', 'ether'),
+            gasLimit: 250000,
+        };
+    const transaction = await this.signers.admin.sendTransaction(tx);
 
     this.provider = ethers.provider; 
     let lance = ethers.BigNumber.from("1000000000000000000");
     const newBalance = ethers.utils.parseUnits("1000000000000000000000000", 'ether')
-
+  
 // this is necessary because hex quantities with leading zeros are not valid at the JSON-RPC layer
     const newBalanceHex = newBalance.toHexString().replace("0x0", "0x");
 
