@@ -45,6 +45,8 @@ export interface MyGovernorInterface extends utils.Interface {
     "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "getBalance()": FunctionFragment;
+    "getProposerBudget(uint256)": FunctionFragment;
+    "getProposerName(uint256)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
     "getVotesWithParams(address,uint256,bytes)": FunctionFragment;
     "hasVoted(uint256,address)": FunctionFragment;
@@ -71,8 +73,9 @@ export interface MyGovernorInterface extends utils.Interface {
     "state(uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "timelock()": FunctionFragment;
+    "timelockAddress()": FunctionFragment;
     "token()": FunctionFragment;
-    "tokenContract()": FunctionFragment;
+    "tokenAddress()": FunctionFragment;
     "transferFunds(address,uint256)": FunctionFragment;
     "updateTimelock(address)": FunctionFragment;
     "version()": FunctionFragment;
@@ -95,6 +98,8 @@ export interface MyGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "execute"
       | "getBalance"
+      | "getProposerBudget"
+      | "getProposerName"
       | "getVotes"
       | "getVotesWithParams"
       | "hasVoted"
@@ -121,8 +126,9 @@ export interface MyGovernorInterface extends utils.Interface {
       | "state"
       | "supportsInterface"
       | "timelock"
+      | "timelockAddress"
       | "token"
-      | "tokenContract"
+      | "tokenAddress"
       | "transferFunds"
       | "updateTimelock"
       | "version"
@@ -209,6 +215,14 @@ export interface MyGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProposerBudget",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getProposerName",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getVotes",
@@ -345,9 +359,13 @@ export interface MyGovernorInterface extends utils.Interface {
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "timelock", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "timelockAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "tokenContract",
+    functionFragment: "tokenAddress",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -411,6 +429,14 @@ export interface MyGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getProposerBudget",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getProposerName",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getVotesWithParams",
@@ -485,9 +511,13 @@ export interface MyGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "timelock", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "timelockAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "tokenContract",
+    functionFragment: "tokenAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -769,6 +799,16 @@ export interface MyGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getProposerBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    getProposerName(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     getVotes(
       account: PromiseOrValue<string>,
       blockNumber: PromiseOrValue<BigNumberish>,
@@ -920,9 +960,11 @@ export interface MyGovernor extends BaseContract {
 
     timelock(overrides?: CallOverrides): Promise<[string]>;
 
+    timelockAddress(overrides?: CallOverrides): Promise<[string]>;
+
     token(overrides?: CallOverrides): Promise<[string]>;
 
-    tokenContract(overrides?: CallOverrides): Promise<[string]>;
+    tokenAddress(overrides?: CallOverrides): Promise<[string]>;
 
     transferFunds(
       _receiver: PromiseOrValue<string>,
@@ -1014,6 +1056,16 @@ export interface MyGovernor extends BaseContract {
   ): Promise<ContractTransaction>;
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getProposerBudget(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  getProposerName(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   getVotes(
     account: PromiseOrValue<string>,
@@ -1166,9 +1218,11 @@ export interface MyGovernor extends BaseContract {
 
   timelock(overrides?: CallOverrides): Promise<string>;
 
+  timelockAddress(overrides?: CallOverrides): Promise<string>;
+
   token(overrides?: CallOverrides): Promise<string>;
 
-  tokenContract(overrides?: CallOverrides): Promise<string>;
+  tokenAddress(overrides?: CallOverrides): Promise<string>;
 
   transferFunds(
     _receiver: PromiseOrValue<string>,
@@ -1258,6 +1312,16 @@ export interface MyGovernor extends BaseContract {
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getProposerBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getProposerName(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -1410,9 +1474,11 @@ export interface MyGovernor extends BaseContract {
 
     timelock(overrides?: CallOverrides): Promise<string>;
 
+    timelockAddress(overrides?: CallOverrides): Promise<string>;
+
     token(overrides?: CallOverrides): Promise<string>;
 
-    tokenContract(overrides?: CallOverrides): Promise<string>;
+    tokenAddress(overrides?: CallOverrides): Promise<string>;
 
     transferFunds(
       _receiver: PromiseOrValue<string>,
@@ -1611,6 +1677,16 @@ export interface MyGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getProposerBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getProposerName(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getVotes(
       account: PromiseOrValue<string>,
       blockNumber: PromiseOrValue<BigNumberish>,
@@ -1756,9 +1832,11 @@ export interface MyGovernor extends BaseContract {
 
     timelock(overrides?: CallOverrides): Promise<BigNumber>;
 
+    timelockAddress(overrides?: CallOverrides): Promise<BigNumber>;
+
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
-    tokenContract(overrides?: CallOverrides): Promise<BigNumber>;
+    tokenAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     transferFunds(
       _receiver: PromiseOrValue<string>,
@@ -1853,6 +1931,16 @@ export interface MyGovernor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getProposerBudget(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getProposerName(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getVotes(
       account: PromiseOrValue<string>,
@@ -1999,9 +2087,11 @@ export interface MyGovernor extends BaseContract {
 
     timelock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    timelockAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    tokenContract(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    tokenAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     transferFunds(
       _receiver: PromiseOrValue<string>,

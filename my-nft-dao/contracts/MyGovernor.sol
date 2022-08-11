@@ -6,20 +6,21 @@ import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
-import "@openzeppelin/contracts/utils/Strings.sol";
-import { MyNftToken } from "./MyNftToken.sol";
-import { ProjectGovernor } from "./ProjectGovernor.sol";
-import { ProjectNftToken } from "./ProjectNftToken.sol";
+// import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+// import "@openzeppelin/contracts/utils/Strings.sol";
+// import { MyNftToken } from "./MyNftToken.sol";
+// import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+// import { ProjectGovernor } from "./ProjectGovernor.sol";
+// import { ProjectNftToken } from "./ProjectNftToken.sol";
 
-interface IERC20 {
-    function transfer(address _to, uint256 _amount) external returns (bool);
+interface IERC721 {
+     function balanceOf(address account) external view returns (uint256);
 }
 
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
 
-    MyNftToken public tokenContract;
-    ICompoundTimelock timelockAddress; 
+    address public tokenAddress;
+    ICompoundTimelock public timelockAddress; 
     address public owner;
 
     struct ProposerCore {
@@ -32,8 +33,8 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         address creator; 
     }
 
-    mapping(uint256 => ProjectCore) private _projects;
-    mapping(uint256 => ProposerCore) private _proposers;
+    mapping(uint256 => ProjectCore) internal _projects;
+    mapping(uint256 => ProposerCore) internal _proposers;
 
     constructor(IVotes _token, ICompoundTimelock _timelock)
         Governor("MyGovernor")
@@ -44,39 +45,35 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         )
         GovernorVotes(_token)
         GovernorTimelockCompound(_timelock)
-    {tokenContract = MyNftToken(address(_token));
+    { 
+        // tokenContract = MyNftToken(address(_token));
+        tokenAddress = address(_token);
     timelockAddress = _timelock; 
     owner = msg.sender;
      }
-
-
-    // function withdrawMoney() private payable {
-    //     address payable to = payable(msg.sender);
-    //     to.transfer(getBalance());
-    // }
 
     function withdrawETH(address recipient, uint256 amount) internal {
         (bool succeed, bytes memory data) = recipient.call{value: amount}("");
         require(succeed, "Failed to withdraw Ether");
     }
 
-    //  function withdrawToken(address _tokenContract, uint256 _amount) external {
-    //     IERC20 tokenContract = IERC20(_tokenContract);
-        
-    //     // transfer the token from address of this contract
-    //     // to address of the user (executing the withdrawToken() function)
-    //     this.transfer(msg.sender, _amount);
-    // }
+    function getProposerName(uint256 proposalId) external view returns (address){
+        return _proposers[proposalId].name;
+    }
+
+    function getProposerBudget(uint256 proposalId) external view returns (uint256){
+        return _proposers[proposalId].budget;
+    }
 
     modifier membersOnly() {
-         require(tokenContract.balanceOf(msg.sender) >= proposalThreshold(), "You don't own enough Genesis NFTs to propose.");
+         require(IERC721(tokenAddress).balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
         _;
     }
 
-    // modifier onlyTimelock() {
-    //      require(msg.sender == address(timelockAddress), "Only Timelock is permitted to execute this.");
-    //     _;
-    // }
+    modifier superMembersOnly() {
+         require(IERC721(tokenAddress).balanceOf(msg.sender) >= proposalThreshold(), "Governor: proposer votes below proposal threshold");
+        _;
+    }
 
     modifier onlyOwner() {
         require(msg.sender == owner, "Not owner");
@@ -87,32 +84,19 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     }
 
     function quadraticVoting(uint256 proposalId) public payable {
-        // ProposalCore storage proposal = _proposals[proposalId];
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
         uint256 cost = (nVotes * nVotes);
         if (cost > 1000){
             cost = 1000;
         }
         require(msg.value >= cost, "Quadratic voting: You need more ether to cover your vote weight.");
-        // return cost;
     }
 
-    // function _countVote(
-    //     uint256 proposalId,
-    //     address account,
-    //     uint8 support,
-    //     uint256 weight,
-    //     bytes memory // params
-    // ) internal override(Governor, GovernorCountingSimple) {
-    //     return super._countVote(proposalId, account, support, weight, "");
-    // }
-
-    function quorum(uint256 blockNumber) public pure override returns (uint256) {
+    function quorum(uint256 blockNumber) public pure override returns (uint256){
         return 3;
     }
 
     // The following functions are overrides required by Solidity.
-
     function votingDelay() public view override(IGovernor, GovernorSettings) returns (uint256) {
         return super.votingDelay();
     }
@@ -142,7 +126,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         uint256[] memory values,
         bytes[] memory calldatas,
         string memory description
-    ) public override(Governor, IGovernor) returns (uint256) {
+    ) public override(Governor, IGovernor) superMembersOnly returns (uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
         ProposerCore storage proposer = _proposers[proposalId];
         proposer.name = msg.sender;
@@ -154,7 +138,6 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     }
 
     function getBalance() public view returns (uint256){
-
         return address(this).balance;
     }
 
@@ -163,7 +146,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         address[] memory targets,
         uint256[] memory values,
         bytes[] memory calldatas,
-        bytes32 descriptionHash) public payable membersOnly virtual override(Governor, IGovernor) returns(uint256) {
+        bytes32 descriptionHash) public payable superMembersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget*10**9);
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
@@ -212,47 +195,19 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return super.supportsInterface(interfaceId);
     }
 
-    function transferFunds(address payable _receiver, uint256 amount) public payable onlyOwner {
+    function transferFunds(address payable _receiver, uint256 amount) external payable {
+        require(msg.sender == owner, "Not owner");
     _receiver.transfer(amount);
     }
     
-    // function newProject(uint256 proposalId) internal returns(address newContract){
-
-    //     ProjectNftToken newTokenContract = new ProjectNftToken(); 
-    //     ProjectGovernor p = new ProjectGovernor(newTokenContract, timelockAddress, proposalId, _proposers[proposalId].name, _proposers[proposalId].budget);
-    //     // transfer budget to other contract
-    //     address payable receiver = payable(address(p)); // cast goes her
-    //     transferFunds(receiver, _proposers[proposalId].budget);
-    //     // keep record of all offspring and who created it
-    //     // ProposerCore storage proposer = _proposers[proposalId];
-    //     // proposer.name = msg.sender;
-    //     // proposer.budget = values[0];
-
-    //     // ProposerCore memory proposer = ProposerCore(msg.value, block.timestamp);
-    //     // balanceReceived[msg.sender].payments[balanceReceived[msg.sender].numPayments] = payment;
-    //     // balanceReceived[msg.sender].numPayments++;
-
-
-    //     // ProposerCore storage project = _projects[proposalId];
-    //     // project.projectAddress = address(p);
-    //     // project.creator = msg.sender;
-    //     return address(p);
-    // }
-
-    function castVote(uint256 proposalId, uint8 support) public virtual override(IGovernor, Governor) returns (uint256) {
+    function castVote(uint256 proposalId, uint8 support) public virtual override(IGovernor, Governor) membersOnly returns (uint256) {
         // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
-
-
-        // quadraticVoting(proposalId);
         address voter = _msgSender();
         return  super._castVote(proposalId, voter, support, "", "");
     }
 
-    function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
+    function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
         // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
-
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
         uint256 quadcost = (nVotes * nVotes);
         uint256 fee;
@@ -266,15 +221,13 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         // string memory errorMessage = string.concat("Quadratic voting: You need ", Strings.toString(fee));
         // string memory myMsg = string.concat(errorMessage, " wei to cover your vote weight.");
         
-        require(msg.value >= fee, "You need to supply more ether to vote with all your tokens. Cost is (nVotes)^2 * 0.01 ether");
+        require(msg.value >= fee, "You need more ether to vote with all NFTs. (cost = (nVotes)^2 * 0.01 ether)");
 
         address voter = _msgSender();
         return  _castVoteAllIn(proposalId, voter, support, "", "");
     }
 
-    function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
-        // require that token holder can only vote:
-        require(tokenContract.balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
+    function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
         address voter = _msgSender();
         return  _castVoteSimple(proposalId, voter, support, "", "");
     }
@@ -308,10 +261,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
             string memory reason,
             bytes memory params
         ) internal virtual returns (uint256) {
-
-        // ProposalCore storage proposal = _proposals[proposalId];
         require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
-
         uint256 weight = _getVotes(account, proposalSnapshot(proposalId), params);
         _countVote(proposalId, account, support, weight, params);
 
@@ -320,7 +270,6 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         } else {
             emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
         }
-
         return weight;
     }
  

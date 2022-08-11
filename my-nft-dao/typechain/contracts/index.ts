@@ -4,9 +4,12 @@
 
 /* eslint-disable */
 import type * as myGovernorSol from "./MyGovernor.sol";
+import type * as myGovernorHelperSol from "./MyGovernorHelper.sol";
 import type * as projectGovernorSol from "./ProjectGovernor.sol";
 
 export type { myGovernorSol };
+
+export type { myGovernorHelperSol };
 
 export type { projectGovernorSol };
 export type { Box } from "./Box";

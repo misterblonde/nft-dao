@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export * as myGovernorSol from "./MyGovernor.sol";
+export * as myGovernorHelperSol from "./MyGovernorHelper.sol";
 export * as projectGovernorSol from "./ProjectGovernor.sol";
 export { Box__factory } from "./Box__factory";
 export { Greeter__factory } from "./Greeter__factory";
