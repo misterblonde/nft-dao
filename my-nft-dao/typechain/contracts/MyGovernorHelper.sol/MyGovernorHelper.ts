@@ -23,6 +23,7 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -31,28 +32,54 @@ import type {
 
 export interface MyGovernorHelperInterface extends utils.Interface {
   functions: {
-    "daughterToken()": FunctionFragment;
+    "_children(uint256)": FunctionFragment;
+    "getTokenAddress(uint256)": FunctionFragment;
+    "myGovernor()": FunctionFragment;
     "newProject(uint256,address)": FunctionFragment;
+    "setProposerTokenSpecial(uint256)": FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "daughterToken" | "newProject"
+    nameOrSignatureOrTopic:
+      | "_children"
+      | "getTokenAddress"
+      | "myGovernor"
+      | "newProject"
+      | "setProposerTokenSpecial"
   ): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "daughterToken",
+    functionFragment: "_children",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTokenAddress",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myGovernor",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "newProject",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "setProposerTokenSpecial",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
 
+  decodeFunctionResult(functionFragment: "_children", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "daughterToken",
+    functionFragment: "getTokenAddress",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "myGovernor", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "newProject", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setProposerTokenSpecial",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Log(uint256)": EventFragment;
@@ -95,16 +122,41 @@ export interface MyGovernorHelper extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    daughterToken(overrides?: CallOverrides): Promise<[string]>;
+    _children(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    getTokenAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
+    myGovernor(overrides?: CallOverrides): Promise<[string]>;
 
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    setProposerTokenSpecial(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
-  daughterToken(overrides?: CallOverrides): Promise<string>;
+  _children(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  getTokenAddress(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
+
+  myGovernor(overrides?: CallOverrides): Promise<string>;
 
   newProject(
     proposalId: PromiseOrValue<BigNumberish>,
@@ -112,14 +164,34 @@ export interface MyGovernorHelper extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setProposerTokenSpecial(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
-    daughterToken(overrides?: CallOverrides): Promise<string>;
+    _children(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    getTokenAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
+    myGovernor(overrides?: CallOverrides): Promise<string>;
 
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    setProposerTokenSpecial(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -128,22 +200,52 @@ export interface MyGovernorHelper extends BaseContract {
   };
 
   estimateGas: {
-    daughterToken(overrides?: CallOverrides): Promise<BigNumber>;
+    _children(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getTokenAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    myGovernor(overrides?: CallOverrides): Promise<BigNumber>;
 
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    setProposerTokenSpecial(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    daughterToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    _children(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getTokenAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    myGovernor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setProposerTokenSpecial(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -67,16 +67,6 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
     helper: governorHelper.address,
   });
 
-  // We'll mint enough NFTs to be able to pass a proposal!
-  //   const myFirstMint = await token.safeMint(signerAddress);
-  // await myFirstMint.wait();
-
-  //   await token.safeMint(signerAddress);
-  //   await token.safeMint(signerAddress);
-  //   await token.safeMint(signerAddress);
-
-  //   console.log("Minted 1 NFT to get us started");
-
   // Transfer ownership to the timelock to allow it to perform actions on the NFT contract as part of proposal execution
   await token.transferOwnership(timelock.address);
 

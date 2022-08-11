@@ -13,41 +13,44 @@ interface IMyGovernor{
 
 
 contract MyGovernorHelper {
-    address myGovernor;
+    address public myGovernor;
     event Log(uint256 gas);
-    ProjectNftToken public daughterToken;
+
+    mapping(uint256 => ProjectNftToken) public _children;
 
     constructor(address myGovernorX) public payable {
         myGovernor = myGovernorX;
     }
 
     function newProject(uint256 proposalId, ICompoundTimelock _timelock) external payable returns(address newContract){
-            // require()
-            // uint256 
-            //{value: 5000000000000000}
-            daughterToken = new ProjectNftToken();
+            require(msg.sender == myGovernor, "Gov Helper: Only Governor can set up sub DAOs.");
+           
+            // require( msg.value == 5000000000000000) ideally set minimum value required?
 
-            // ProjectGovernor projectGov = new ProjectGovernor(newTokenContract, _timelock, proposalId, IMyGovernor(myGovernor).getProposerName(proposalId), IMyGovernor(myGovernor).getProposerBudget(proposalId));
-            // transfer budget to other contract
-            address payable receiver = payable(address(daughterToken)); // cast goes her
-            IMyGovernor(myGovernor).transferFunds(receiver, IMyGovernor(myGovernor).getProposerBudget(proposalId));
+            // create child nft contract and store address
+            _children[proposalId] = new ProjectNftToken();
 
-            // newTokenContract.transferOwnership(address(_timelock));
-    
+            // ProjectGovernor projectGov = new ProjectGovernor(_children[proposalId], _timelock, proposalId, IMyGovernor(myGovernor).getProposerName(proposalId), IMyGovernor(myGovernor).getProposerBudget(proposalId));
+
+            // transfer budget to child contract
+            // address payable receiver = payable(address(_children[proposalId])); // cast goes her
+            // IMyGovernor(myGovernor).transferFunds(receiver, IMyGovernor(myGovernor).getProposerBudget(proposalId));
+
+         
         // keep record of all offspring and who created it
         // ProposerCore storage proposer = _proposers[proposalId];
         // proposer.name = msg.sender;
         // proposer.budget = values[0];
+        return address(_children[proposalId]);
+    }
 
-        // ProposerCore memory proposer = ProposerCore(msg.value, block.timestamp);
-        // balanceReceived[msg.sender].payments[balanceReceived[msg.sender].numPayments] = payment;
-        // balanceReceived[msg.sender].numPayments++;
+    function getTokenAddress(uint256 proposalId) public view returns(address) {
+        return address(_children[proposalId]);
+    }
 
-
-        // ProposerCore storage project = _projects[proposalId];
-        // project.projectAddress = address(p);
-        // project.creator = msg.sender;
-        return address(daughterToken);
+    function setProposerTokenSpecial(uint256 proposalId) public {
+        require(msg.sender == IMyGovernor(myGovernor).getProposerName(proposalId), "Only initial proposer can request special token sub DAO rights.");
+        _children[proposalId].setInitialProposer(msg.sender);
     }
 
 
@@ -55,10 +58,5 @@ contract MyGovernorHelper {
     fallback() external payable {
         emit Log(gasleft());
     }
-
-    // function withdrawETH(address recipient, uint256 amount) internal {
-    //     (bool succeed, bytes memory data) = recipient.call{value: amount}("");
-    //     require(succeed, "Failed to withdraw Ether");
-    // }
 
 }

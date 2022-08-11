@@ -51,6 +51,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "getVotesWithParams(address,uint256,bytes)": FunctionFragment;
     "hasVoted(uint256,address)": FunctionFragment;
     "hashProposal(address[],uint256[],bytes[],bytes32)": FunctionFragment;
+    "helper()": FunctionFragment;
     "name()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
@@ -104,6 +105,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "getVotesWithParams"
       | "hasVoted"
       | "hashProposal"
+      | "helper"
       | "name"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
@@ -249,6 +251,7 @@ export interface MyGovernorInterface extends utils.Interface {
       PromiseOrValue<BytesLike>
     ]
   ): string;
+  encodeFunctionData(functionFragment: "helper", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "onERC1155BatchReceived",
@@ -447,6 +450,7 @@ export interface MyGovernorInterface extends utils.Interface {
     functionFragment: "hashProposal",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "helper", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
@@ -836,6 +840,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    helper(overrides?: CallOverrides): Promise<[string]>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     onERC1155BatchReceived(
@@ -1094,6 +1100,8 @@ export interface MyGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  helper(overrides?: CallOverrides): Promise<string>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   onERC1155BatchReceived(
@@ -1349,6 +1357,8 @@ export interface MyGovernor extends BaseContract {
       descriptionHash: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    helper(overrides?: CallOverrides): Promise<string>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1714,6 +1724,8 @@ export interface MyGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    helper(overrides?: CallOverrides): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
@@ -1968,6 +1980,8 @@ export interface MyGovernor extends BaseContract {
       descriptionHash: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    helper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

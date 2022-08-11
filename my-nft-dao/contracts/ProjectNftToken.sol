@@ -11,15 +11,15 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
-
     address creator;
+    address public initialProposer; 
     uint public constant MAX_SUPPLY = 600;
     uint256 public constant PRICE = 20000000000000000; //0.02 ETH
-    // uint public constant PRICE = 0.00001 ether; // change units or add gas limit?
     event Log(uint256 gas);
     
     // uint public constant gasLimit = 0.000021 ether;
     uint public constant MAX_PER_MINT = 5;
+    // NFT Jsons linK:
     string public baseTokenURI = "https://gateway.pinata.cloud/ipfs/QmR1yHJYafBkwCXMfnytoQXryiyWWiCncTotkKxsHghTGX/";
 
     constructor() ERC721("ProjectToken", "GT") EIP712("ProjectToken", "1") public payable {
@@ -27,9 +27,6 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
         //setBaseURI(baseURI);
         creator = owner();
     }
-    // NFT Jsons linK:
-    //QmaSFfxno1hRqBave6RVgEvYvGiWzhK3Cyytyxnp4MSVod
-    // https://gateway.pinata.cloud/ipfs/QmaSFfxno1hRqBave6RVgEvYvGiWzhK3Cyytyxnp4MSVod
 
     modifier restricted() {
         require((msg.sender == creator || msg.sender == owner()), "You do not have permission to use this function.");
@@ -45,24 +42,12 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
         baseTokenURI = _baseTokenURI;
     }
 
-    // function tokenURI(uint256 _tokenId) public view override returns (string memory) {
-    // return Strings.strConcat(
-    //     baseTokenURI(),
-    //     Strings.uint2str(_tokenId),
-    //     ".json"
-    // );
-    // }
-
     function safeMint(address to) public payable {
-        // minting via etherscan.io works, but not through website. 
         require(msg.value >= (PRICE), "Not enough ether to purchase NFTs.");
-        // require(apePrice.mul(numberOfTokens) <= msg.value, "Ether value sent is not correct");
         uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
         _tokenIdCounter.increment();
     }
-
-    // The following functions are overrides required by Solidity.
 
     function _afterTokenTransfer(
         address from,
@@ -76,7 +61,12 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
         return balanceOf(account);
     }
 
-        // Fallback function must be declared as external.
+    function setInitialProposer(address account) external {
+        require(msg.sender == creator, "The proposer can only be set by the gov helper.");
+        initialProposer = account;
+    }
+
+    // Fallback function must be external.
     fallback() external payable {
         emit Log(gasleft());
     }

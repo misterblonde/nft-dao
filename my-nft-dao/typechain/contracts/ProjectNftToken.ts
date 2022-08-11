@@ -46,6 +46,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "getPastTotalSupply(uint256)": FunctionFragment;
     "getPastVotes(address,uint256)": FunctionFragment;
     "getVotes(address)": FunctionFragment;
+    "initialProposer()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -57,6 +58,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setBaseURI(string)": FunctionFragment;
+    "setInitialProposer(address)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
@@ -80,6 +82,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "getPastTotalSupply"
       | "getPastVotes"
       | "getVotes"
+      | "initialProposer"
       | "isApprovedForAll"
       | "name"
       | "nonces"
@@ -91,6 +94,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "safeTransferFrom(address,address,uint256,bytes)"
       | "setApprovalForAll"
       | "setBaseURI"
+      | "setInitialProposer"
       | "supportsInterface"
       | "symbol"
       | "tokenURI"
@@ -159,6 +163,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "initialProposer",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
@@ -203,6 +211,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "setBaseURI",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setInitialProposer",
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
@@ -263,6 +275,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "getVotes", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "initialProposer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
@@ -288,6 +304,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setInitialProposer",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -491,6 +511,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    initialProposer(overrides?: CallOverrides): Promise<[string]>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -543,6 +565,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setBaseURI(
       _baseTokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setInitialProposer(
+      account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -633,6 +660,8 @@ export interface ProjectNftToken extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  initialProposer(overrides?: CallOverrides): Promise<string>;
+
   isApprovedForAll(
     owner: PromiseOrValue<string>,
     operator: PromiseOrValue<string>,
@@ -685,6 +714,11 @@ export interface ProjectNftToken extends BaseContract {
 
   setBaseURI(
     _baseTokenURI: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setInitialProposer(
+    account: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -775,6 +809,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    initialProposer(overrides?: CallOverrides): Promise<string>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -825,6 +861,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setBaseURI(
       _baseTokenURI: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setInitialProposer(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -985,6 +1026,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    initialProposer(overrides?: CallOverrides): Promise<BigNumber>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -1037,6 +1080,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setBaseURI(
       _baseTokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setInitialProposer(
+      account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1128,6 +1176,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    initialProposer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     isApprovedForAll(
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
@@ -1180,6 +1230,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setBaseURI(
       _baseTokenURI: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setInitialProposer(
+      account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
