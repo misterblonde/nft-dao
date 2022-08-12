@@ -1,3 +1,7 @@
+MILESTONES
+- initial openzeppelin setup - any wallet address (even without token) could
+  vote once
+
 
 TO DO:
 - what happens to cancelled/failed projects -> delete from struct and proposers
