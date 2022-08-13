@@ -24,11 +24,18 @@ contract MyGovernorHelper {
 
     function newProject(uint256 proposalId, ICompoundTimelock _timelock, bool fundsToContract) external payable returns(address newContract){
             require(msg.sender == myGovernor, "Gov Helper: Only Governor can set up sub DAOs.");
+            // require(msg.value >= 5000000000000000, "not enough ether supplied to fulfill transaction" );
            
             // require( msg.value == 5000000000000000) ideally set minimum value required?
 
+            // /.send(msg.value/2);
             // create child nft contract and store address
             _children[proposalId] = new ProjectNftToken();
+
+            // ProjectNftToken newProj =  _children[proposalId];
+
+            // proposer becomes admin person on new nft contract
+            _children[proposalId].setAdminMember(IMyGovernor(myGovernor).getProposerName(proposalId)); 
 
             // ProjectGovernor projectGov = new ProjectGovernor(_children[proposalId], _timelock, proposalId, IMyGovernor(myGovernor).getProposerName(proposalId), IMyGovernor(myGovernor).getProposerBudget(proposalId));
 

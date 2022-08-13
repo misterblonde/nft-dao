@@ -257,7 +257,7 @@ export function transferBudgetToNewContract(): void {
 // ____________________________________________________________________
 
 export function userMintsProjectNft(): void {
-  it("Proposal approved and budget sent to new token child contract", async function () {
+  it("New Member mints a Project NFT", async function () {
     // const test = await loadFixture(setupInitialState);
     // mint 3 NFTS
     const myFirstMint = await this.token.safeMint(this.signers.admin.address, {

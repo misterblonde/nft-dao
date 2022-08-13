@@ -36,9 +36,11 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "MAX_PER_MINT()": FunctionFragment;
     "MAX_SUPPLY()": FunctionFragment;
     "PRICE()": FunctionFragment;
+    "adminMembers(address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "baseTokenURI()": FunctionFragment;
+    "creator()": FunctionFragment;
     "delegate(address)": FunctionFragment;
     "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "delegates(address)": FunctionFragment;
@@ -59,6 +61,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "safeMint(address)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256,bytes)": FunctionFragment;
+    "setAdminMember(address)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setBaseURI(string)": FunctionFragment;
     "setInitialProposer(address)": FunctionFragment;
@@ -76,9 +79,11 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "MAX_PER_MINT"
       | "MAX_SUPPLY"
       | "PRICE"
+      | "adminMembers"
       | "approve"
       | "balanceOf"
       | "baseTokenURI"
+      | "creator"
       | "delegate"
       | "delegateBySig"
       | "delegates"
@@ -99,6 +104,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "safeMint"
       | "safeTransferFrom(address,address,uint256)"
       | "safeTransferFrom(address,address,uint256,bytes)"
+      | "setAdminMember"
       | "setApprovalForAll"
       | "setBaseURI"
       | "setInitialProposer"
@@ -124,6 +130,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "PRICE", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "adminMembers",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "approve",
     values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -135,6 +145,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     functionFragment: "baseTokenURI",
     values?: undefined
   ): string;
+  encodeFunctionData(functionFragment: "creator", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "delegate",
     values: [PromiseOrValue<string>]
@@ -226,6 +237,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "setAdminMember",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "setApprovalForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<boolean>]
   ): string;
@@ -273,12 +288,17 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "MAX_SUPPLY", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "PRICE", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "adminMembers",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "baseTokenURI",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "creator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "delegate", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "delegateBySig",
@@ -330,6 +350,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom(address,address,uint256,bytes)",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setAdminMember",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -494,6 +518,11 @@ export interface ProjectNftToken extends BaseContract {
 
     PRICE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -506,6 +535,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<[BigNumber]>;
 
     baseTokenURI(overrides?: CallOverrides): Promise<[string]>;
+
+    creator(overrides?: CallOverrides): Promise<[string]>;
 
     delegate(
       delegatee: PromiseOrValue<string>,
@@ -605,6 +636,11 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setAdminMember(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -659,6 +695,11 @@ export interface ProjectNftToken extends BaseContract {
 
   PRICE(overrides?: CallOverrides): Promise<BigNumber>;
 
+  adminMembers(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   approve(
     to: PromiseOrValue<string>,
     tokenId: PromiseOrValue<BigNumberish>,
@@ -671,6 +712,8 @@ export interface ProjectNftToken extends BaseContract {
   ): Promise<BigNumber>;
 
   baseTokenURI(overrides?: CallOverrides): Promise<string>;
+
+  creator(overrides?: CallOverrides): Promise<string>;
 
   delegate(
     delegatee: PromiseOrValue<string>,
@@ -770,6 +813,11 @@ export interface ProjectNftToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setAdminMember(
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   setApprovalForAll(
     operator: PromiseOrValue<string>,
     approved: PromiseOrValue<boolean>,
@@ -824,6 +872,11 @@ export interface ProjectNftToken extends BaseContract {
 
     PRICE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -836,6 +889,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<BigNumber>;
 
     baseTokenURI(overrides?: CallOverrides): Promise<string>;
+
+    creator(overrides?: CallOverrides): Promise<string>;
 
     delegate(
       delegatee: PromiseOrValue<string>,
@@ -928,6 +983,11 @@ export interface ProjectNftToken extends BaseContract {
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setAdminMember(
+      account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1055,6 +1115,11 @@ export interface ProjectNftToken extends BaseContract {
 
     PRICE(overrides?: CallOverrides): Promise<BigNumber>;
 
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -1067,6 +1132,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<BigNumber>;
 
     baseTokenURI(overrides?: CallOverrides): Promise<BigNumber>;
+
+    creator(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegate(
       delegatee: PromiseOrValue<string>,
@@ -1166,6 +1233,11 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    setAdminMember(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     setApprovalForAll(
       operator: PromiseOrValue<string>,
       approved: PromiseOrValue<boolean>,
@@ -1221,6 +1293,11 @@ export interface ProjectNftToken extends BaseContract {
 
     PRICE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     approve(
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
@@ -1233,6 +1310,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     baseTokenURI(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    creator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     delegate(
       delegatee: PromiseOrValue<string>,
@@ -1329,6 +1408,11 @@ export interface ProjectNftToken extends BaseContract {
       to: PromiseOrValue<string>,
       tokenId: PromiseOrValue<BigNumberish>,
       data: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setAdminMember(
+      account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

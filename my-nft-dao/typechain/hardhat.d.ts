@@ -53,6 +53,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Votes__factory>;
     getContractFactory(
+      name: "Pausable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.Pausable__factory>;
+    getContractFactory(
       name: "IERC1155Receiver",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC1155Receiver__factory>;
@@ -64,6 +68,14 @@ declare module "hardhat/types/runtime" {
       name: "ERC721Votes",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ERC721Votes__factory>;
+    getContractFactory(
+      name: "ERC721Enumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ERC721Enumerable__factory>;
+    getContractFactory(
+      name: "IERC721Enumerable",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721Enumerable__factory>;
     getContractFactory(
       name: "IERC721Metadata",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -125,10 +137,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyNftToken__factory>;
     getContractFactory(
-      name: "IERC20",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IERC20__factory>;
-    getContractFactory(
       name: "IERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721__factory>;
@@ -140,6 +148,10 @@ declare module "hardhat/types/runtime" {
       name: "ProjectGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProjectGovernor__factory>;
+    getContractFactory(
+      name: "ProjectNftToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ProjectNftToken__factory>;
     getContractFactory(
       name: "ProjectNftToken",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -200,6 +212,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Votes>;
     getContractAt(
+      name: "Pausable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.Pausable>;
+    getContractAt(
       name: "IERC1155Receiver",
       address: string,
       signer?: ethers.Signer
@@ -214,6 +231,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ERC721Votes>;
+    getContractAt(
+      name: "ERC721Enumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ERC721Enumerable>;
+    getContractAt(
+      name: "IERC721Enumerable",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721Enumerable>;
     getContractAt(
       name: "IERC721Metadata",
       address: string,
@@ -290,11 +317,6 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MyNftToken>;
     getContractAt(
-      name: "IERC20",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IERC20>;
-    getContractAt(
       name: "IERC721",
       address: string,
       signer?: ethers.Signer
@@ -309,6 +331,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ProjectGovernor>;
+    getContractAt(
+      name: "ProjectNftToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ProjectNftToken>;
     getContractAt(
       name: "ProjectNftToken",
       address: string,

@@ -7,6 +7,15 @@ import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
 
+// interface IBox {
+//     function setAdmin(address account) public daoOnly onlyOwner; 
+//     function removeAdmin(address account) public daoOnly onlyOwner;
+//         modifier daoOnly() {
+//          require((msg.sender == governor) || (msg.sender == governorHelper), "Only DAO can update.");
+//         _;
+//     }
+// }
+
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
 }
@@ -120,6 +129,10 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
             proposer.budget = budget;
     }
 
+    // function setProjectAdmins() superMembersOnly {
+        
+    // }
+
     function propose(
         address[] memory targets,
         uint256[] memory values,
@@ -148,6 +161,9 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         bytes32 descriptionHash) public payable superMembersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         require(_proposers[proposalId].budget < (getBalance() + msg.value), "Governor: budget requested exceeds funds available.");
+
+        // address payable mysubcontract = payable(address(helper));
+        // mysubcontract.send(msg.value/4);
 
         address childNft = IMyGovernorHelper(helper).newProject(proposalId, timelockAddress, true);
         

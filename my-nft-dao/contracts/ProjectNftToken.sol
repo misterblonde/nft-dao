@@ -5,14 +5,21 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+// import "@openzeppelin/contracts/security/Pausable.sol";
+
+
 
 contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
 
-    Counters.Counter private _tokenIdCounter;
-    Counters.Counter private _numAddressesWhitelisted; //numberOfAddressesWhitelisted = 0;
-    address creator;
+    // Counters.Counter private _tokenIdCounter;
+    uint256 _tokenIdCounter = 200;
+    Counters.Counter private _tokenWhitelistCounter; //numberOfAddressesWhitelisted = 0;
+    address public creator;
+    mapping(address => bool) public adminMembers;
     address public initialProposer; 
     uint public constant MAX_SUPPLY = 600;
     uint256 public constant PRICE = 20000000000000000; //0.02 ETH
@@ -27,19 +34,25 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
         bool whitelisted;
         uint mintAllowance;
     }
-        mapping(address => local) private whitelistedAddresses;
+    mapping(address => local) internal whitelistedAddresses;
+    uint maxNumberOfWhitelistedAddresses = 200;
 
-    uint maxNumberOfWhitelistedAddresses = MAX_SUPPLY * 1/4;
     bool isWhitelistActive = true; 
 
-    constructor() ERC721("ProjectToken", "GT") EIP712("ProjectToken", "1") public payable {
+    constructor() ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
+    public payable {
         // EIP712( name, version)
         //setBaseURI(baseURI);
         creator = owner();
     }
 
     modifier restricted() {
-        require((msg.sender == creator || msg.sender == owner()), "You do not have permission to use this function.");
+        require((msg.sender == creator || msg.sender == owner()), "Proj Nft: You do not have permission to use this function.");
+        _;
+    }
+
+    modifier adminOnly() {
+        require((adminMembers[msg.sender] == true || msg.sender == owner()), "Proj Nft: Only DAO admin can execute this function.");
         _;
     }
 
@@ -48,37 +61,42 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     return baseTokenURI;
     }
 
+    function setAdminMember(address account) public restricted adminOnly {
+        adminMembers[account] = true;
+    }
+
     function setBaseURI(string memory _baseTokenURI) public restricted {
         baseTokenURI = _baseTokenURI;
     }
 
-    function setWhitelist(address[] calldata addresses) external restricted {
+    function setWhitelist(address[] calldata addresses) external adminOnly {
         for (uint256 i = 0; i < addresses.length; i++) {
             address _addressToWhitelist = addresses[i];
             // Validate the caller is not already part of the whitelist.
             require(!whitelistedAddresses[_addressToWhitelist].whitelisted, "Error: Sender already been whitelisted");
             // Validate if the maximum number of whitelisted addresses is not reached. If not, then throw an error.
-            require(_numAddressesWhitelisted.current() < maxNumberOfWhitelistedAddresses, "Error: Whitelist Limit exceeded");
+            // require(_tokenWhitelistCounter.current() < maxNumberOfWhitelistedAddresses, "Error: Whitelist Limit exceeded");
             // allow each local wallet address holder to mint 1 NFT beforehand
             whitelistedAddresses[addresses[i]].mintAllowance = 1;
             whitelistedAddresses[addresses[i]].whitelisted = true;
-            _numAddressesWhitelisted.increment();
+            // _tokenWhitelistCounter.increment();
         }
     }
 
     // numberOfTokens = 1
     function mintWhitelist() external payable {
-        uint256 ts = _tokenIdCounter.current();
+        uint256 ts = _tokenWhitelistCounter.current();
         require(isWhitelistActive, "Allow list is not active");
-        require(1 <= whitelistedAddresses[msg.sender].mintAllowance, "Exceeded max available to purchase");
-        require(ts + 1 <= MAX_SUPPLY, "Purchase would exceed max tokens");
+        require(1 <= whitelistedAddresses[msg.sender].mintAllowance, "Caller not allowed to purchase whitelist NFT");
+        require(ts + 1 <= maxNumberOfWhitelistedAddresses, "Purchase would exceed max whitelist tokens");
         require(PRICE * 1 <= msg.value, "Ether value sent is not correct");
 
         whitelistedAddresses[msg.sender].mintAllowance -= 1;
-        // for (uint256 i = 0; i < 1; i++) {
-        uint256 tokenId = _tokenIdCounter.current();
+        // for (uint256 i = 0; i < 1; i++) 
+        uint256 tokenId = _tokenWhitelistCounter.current(); 
+        //_tokenIdCounter; //.current();
         _safeMint(msg.sender, tokenId);
-        _tokenIdCounter.increment();
+        _tokenWhitelistCounter.increment(); // += 1; //.increment();
     }
 
     // Is the user whitelisted?
@@ -93,21 +111,13 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
 
     function safeMint(address to) public payable {
         require(msg.value >= (PRICE), "Not enough ether to purchase NFTs.");
-        uint256 tokenId = _tokenIdCounter.current();
+        uint256 tokenId = _tokenIdCounter; //.current();
         _safeMint(to, tokenId);
-        _tokenIdCounter.increment();
+        _tokenIdCounter += 1; //.increment();
     }
 
     function getBalance() public view returns (uint256){
         return address(this).balance;
-    }
-
-    function _afterTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override(ERC721, ERC721Votes) {
-        super._afterTokenTransfer(from, to, tokenId);
     }
 
     function _getVotingUnits(address account) internal view virtual override returns (uint256) {
@@ -123,4 +133,12 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     fallback() external payable {
         emit Log(gasleft());
     }
+    
+    function _afterTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        override(ERC721, ERC721Votes)
+    {
+        super._afterTokenTransfer(from, to, tokenId);
+    }
+    
 }

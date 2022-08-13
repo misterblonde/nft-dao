@@ -73,4 +73,5 @@ contract MyNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     function _getVotingUnits(address account) internal view virtual override returns (uint256) {
         return balanceOf(account);
     }
+    
 }

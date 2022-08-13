@@ -31,28 +31,61 @@ import type {
 
 export interface BoxInterface extends utils.Interface {
   functions: {
+    "adminMembers(address)": FunctionFragment;
+    "governor()": FunctionFragment;
+    "governorHelper()": FunctionFragment;
+    "isAdmin(address)": FunctionFragment;
     "owner()": FunctionFragment;
+    "removeAdmin(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "retrieve()": FunctionFragment;
+    "setAdmin(address)": FunctionFragment;
     "store(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "adminMembers"
+      | "governor"
+      | "governorHelper"
+      | "isAdmin"
       | "owner"
+      | "removeAdmin"
       | "renounceOwnership"
       | "retrieve"
+      | "setAdmin"
       | "store"
       | "transferOwnership"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "adminMembers",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(functionFragment: "governor", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "governorHelper",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isAdmin",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "removeAdmin",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "retrieve", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setAdmin",
+    values: [PromiseOrValue<string>]
+  ): string;
   encodeFunctionData(
     functionFragment: "store",
     values: [PromiseOrValue<BigNumberish>]
@@ -62,12 +95,27 @@ export interface BoxInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "adminMembers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "governor", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "governorHelper",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "removeAdmin",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "retrieve", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "setAdmin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "store", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -132,13 +180,37 @@ export interface Box extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    governor(overrides?: CallOverrides): Promise<[string]>;
+
+    governorHelper(overrides?: CallOverrides): Promise<[string]>;
+
+    isAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     owner(overrides?: CallOverrides): Promise<[string]>;
+
+    removeAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     retrieve(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    setAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     store(
       newValue: PromiseOrValue<BigNumberish>,
@@ -151,13 +223,37 @@ export interface Box extends BaseContract {
     ): Promise<ContractTransaction>;
   };
 
+  adminMembers(
+    arg0: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  governor(overrides?: CallOverrides): Promise<string>;
+
+  governorHelper(overrides?: CallOverrides): Promise<string>;
+
+  isAdmin(
+    account: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
   owner(overrides?: CallOverrides): Promise<string>;
+
+  removeAdmin(
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   retrieve(overrides?: CallOverrides): Promise<BigNumber>;
+
+  setAdmin(
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   store(
     newValue: PromiseOrValue<BigNumberish>,
@@ -170,11 +266,35 @@ export interface Box extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    governor(overrides?: CallOverrides): Promise<string>;
+
+    governorHelper(overrides?: CallOverrides): Promise<string>;
+
+    isAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     owner(overrides?: CallOverrides): Promise<string>;
+
+    removeAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     retrieve(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     store(
       newValue: PromiseOrValue<BigNumberish>,
@@ -202,13 +322,37 @@ export interface Box extends BaseContract {
   };
 
   estimateGas: {
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    governor(overrides?: CallOverrides): Promise<BigNumber>;
+
+    governorHelper(overrides?: CallOverrides): Promise<BigNumber>;
+
+    isAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     owner(overrides?: CallOverrides): Promise<BigNumber>;
+
+    removeAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     retrieve(overrides?: CallOverrides): Promise<BigNumber>;
+
+    setAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     store(
       newValue: PromiseOrValue<BigNumberish>,
@@ -222,13 +366,37 @@ export interface Box extends BaseContract {
   };
 
   populateTransaction: {
+    adminMembers(
+      arg0: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    governor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    governorHelper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    isAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    removeAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     retrieve(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    setAdmin(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     store(
       newValue: PromiseOrValue<BigNumberish>,

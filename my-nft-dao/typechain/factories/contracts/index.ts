@@ -4,6 +4,7 @@
 export * as myGovernorSol from "./MyGovernor.sol";
 export * as myGovernorHelperSol from "./MyGovernorHelper.sol";
 export * as projectGovernorSol from "./ProjectGovernor.sol";
+export * as projectNftTokenExtensiveSol from "./ProjectNftToken extensive.sol";
 export { Box__factory } from "./Box__factory";
 export { Greeter__factory } from "./Greeter__factory";
 export { MyNftToken__factory } from "./MyNftToken__factory";

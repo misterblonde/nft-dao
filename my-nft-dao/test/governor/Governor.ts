@@ -9,6 +9,7 @@ import type { Timelock } from "../../typechain/contracts/Timelock";
 import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
 import type { MyNftToken} from "../../typechain/contracts/MyNftToken";
 import type { Box } from "../../typechain/contracts/Box";
+import { whitelistedUserMintsProjectNft } from "./Governor.project"
 
 import {
     developmentChains,
@@ -29,7 +30,7 @@ import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submit
 import { transferBudgetToNewContract, userMintsProjectNft } from "./Governor.execute";
 import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks, proposalPassesQuorumBudgetTransferredToProposer } from "./Governor.voting";
 import { NetworkUserConfig } from "hardhat/types";
-import { MyGovernorHelper } from "../../typechain";
+import { GovernorCountingSimple__factory, MyGovernorHelper } from "../../typechain";
 const hre = require("hardhat");
 
 describe("Unit tests", function () {
@@ -70,7 +71,7 @@ describe("Unit tests", function () {
         
             await hre.network.provider.send("hardhat_setBalance", [
                 this.signers.admin.address,
-                "0xFFFFFFFFFFFFEEEEEEEEEEEE", //"0x537B950", //AA87BEE538000", // 4096 wei
+                "0xFFFFFFFFFFFFEEEEEEEFFFFFFEEEEE", //"0x537B950", //AA87BEE538000", // 4096 wei
               ]);
             const governorArtifact: Artifact = await artifacts.readArtifact("MyGovernor");
             const timelockArtifact: Artifact = await artifacts.readArtifact("Timelock");
@@ -88,9 +89,9 @@ describe("Unit tests", function () {
             this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address, this.governorHelper.address]);
       
             const boxArtifact: Artifact = await artifacts.readArtifact("Box");
-            this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact);
+            this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact, [this.governor.address, this.governorHelper.address]);
             await this.token.deployed();
-            await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('10').toHexString()] });
+            await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('20').toHexString()] });
       
           this.provider = ethers.provider; 
           let lance = ethers.BigNumber.from("1000000000000000000");
@@ -192,20 +193,29 @@ describe("Unit tests", function () {
       //, [this.signers.admin.address, 300000000]);
 
       const boxArtifact: Artifact = await artifacts.readArtifact("Box");
-      this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact);
+      this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact, [this.governor.address, this.governorHelper.address]);
       await this.token.deployed();
 
-      await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('10').toHexString()] });
+      await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.signers.admin.address, ethers.utils.parseEther('18').toHexString()] });
 
     //   await this.governorHelper.connect(this.signers.admin).function({
     //     value: ethers.utils.parseUnits("1","ether") });
 
+    await hre.network.provider.request({ method: 'hardhat_setBalance', params: [this.addr1.address, ethers.utils.parseEther('10').toHexString()] });
+
     const tx = {
             to: this.governorHelper.address,
-            value: ethers.utils.parseUnits('2', 'ether'),
+            value: ethers.utils.parseUnits('4', 'ether'),
             gasLimit: 250000,
         };
-    const transaction = await this.signers.admin.sendTransaction(tx);
+    const transaction1 = await this.signers.admin.sendTransaction(tx);
+
+    const tx2 = {
+        to: this.governorHelper.address,
+        value: ethers.utils.parseUnits('4', 'ether'),
+        gasLimit: 250000,
+    };
+    const transaction2 = await this.addr1.sendTransaction(tx2);
 
     this.provider = ethers.provider; 
     let lance = ethers.BigNumber.from("1000000000000000000");
@@ -217,7 +227,7 @@ describe("Unit tests", function () {
     const balance = await this.provider.getBalance(this.signers.admin.address);
     await this.provider.send("hardhat_setBalance", [
         this.signers.admin.address,
-      "0xFFFFFFFFFFFFFFFFFFEEEEEEEEEEEEA0F", ]);
+      "0xFFFFFFFFFFFFFFFFFFEEEEEEEEEEEEA0FEEEEE", ]);
     console.log("Balance is: ", await this.provider.getBalance(this.signers.admin.address));
 
     });
@@ -330,6 +340,7 @@ describe("Unit tests", function () {
       };
 
 
+    
     getInitialNftBalance();
 
     // mint
@@ -357,5 +368,8 @@ describe("Unit tests", function () {
     // queue/execute
 
     userMintsProjectNft();
+
+
+    whitelistedUserMintsProjectNft();
   });
 });

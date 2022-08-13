@@ -5,22 +5,53 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Box is Ownable {
-  uint256 private value;
+    address public governor;
+    address public governorHelper;
 
-  // Emitted when the stored value changes
-  event ValueChanged(uint256 newValue);
+    uint256 private value;
 
-  // Stores a new value in the contract
-  function store(uint256 newValue) public onlyOwner {
-    value = newValue;
-    emit ValueChanged(newValue);
-  }
+    mapping(address => bool) public adminMembers;
+
+    // Emitted when the stored value changes
+    event ValueChanged(uint256 newValue);
+
+    constructor(address myGovernor, address myGovernorHelper){
+        governor = myGovernor;
+        governorHelper = myGovernorHelper;
+    }
+
+    modifier daoOnly() {
+         require((msg.sender == governor) || (msg.sender == governorHelper), "Only DAO can update.");
+        _;
+    }
+    // Stores a new value in the contract
+    function store(uint256 newValue) public daoOnly onlyOwner {
+        value = newValue;
+        emit ValueChanged(newValue);
+    }
 
   // Reads the last stored value
-  function retrieve() public view returns (uint256) {
-    return value;
-  }
-  
+    function retrieve() public view returns (uint256) {
+        return value;
+    }
+
+    function isAdmin(address account) public view returns (bool) {
+        return adminMembers[account];
+    }
+//daoOnly onlyOwner
+    function setAdmin(address account) public {
+        adminMembers[account] = true;
+    }
+
+
+//daoOnly onlyOwner
+    function removeAdmin(address account) public  {
+        adminMembers[account] = false;
+    }
+}
+
+
+
 //   function newProject(uint256 proposalId) internal returns(address newContract){
 //         ProjectNftToken newTokenContract = new ProjectNftToken(); 
 //         ProjectGovernor p = new ProjectGovernor(newTokenContract, timelockAddress, proposalId, _proposers[proposalId].name, _proposers[proposalId].budget);
@@ -42,4 +73,4 @@ contract Box is Ownable {
 //         // project.creator = msg.sender;
 //         return address(p);
 //     }
-}
+

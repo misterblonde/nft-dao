@@ -52,7 +52,7 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
   console.log("Deploying Box and transfering ownership to timelock...");
   // Deploy according to dao.ts style deployment:
   const boxFactory: Box__factory = await ethers.getContractFactory("Box");
-  const box: Box = <Box>await boxFactory.deploy();
+  const box: Box = <Box>await boxFactory.deploy(governor.address,governorHelper.address);
   await box.deployed();
 
   await box.transferOwnership(timelock.address);

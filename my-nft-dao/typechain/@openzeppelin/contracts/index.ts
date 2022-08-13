@@ -5,6 +5,7 @@
 /* eslint-disable */
 import type * as access from "./access";
 import type * as governance from "./governance";
+import type * as security from "./security";
 import type * as token from "./token";
 import type * as utils from "./utils";
 import type * as vendor from "./vendor";
@@ -12,6 +13,8 @@ import type * as vendor from "./vendor";
 export type { access };
 
 export type { governance };
+
+export type { security };
 
 export type { token };
 
