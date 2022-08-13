@@ -58,6 +58,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
     "pause()": FunctionFragment;
+    "pauseLocalsOnly()": FunctionFragment;
     "paused()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeMint(address)": FunctionFragment;
@@ -77,6 +78,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unpause()": FunctionFragment;
+    "whitelistPaused()": FunctionFragment;
   };
 
   getFunction(
@@ -107,6 +109,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "owner"
       | "ownerOf"
       | "pause"
+      | "pauseLocalsOnly"
       | "paused"
       | "renounceOwnership"
       | "safeMint"
@@ -126,6 +129,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "transferFrom"
       | "transferOwnership"
       | "unpause"
+      | "whitelistPaused"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -224,6 +228,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "pauseLocalsOnly",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
@@ -304,6 +312,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "whitelistPaused",
+    values?: undefined
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "DOMAIN_SEPARATOR",
@@ -367,6 +379,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "pauseLocalsOnly",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
@@ -425,6 +441,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistPaused",
+    data: BytesLike
+  ): Result;
 
   events: {
     "Approval(address,address,uint256)": EventFragment;
@@ -676,6 +696,10 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    pauseLocalsOnly(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
     renounceOwnership(
@@ -768,6 +792,8 @@ export interface ProjectNftToken extends BaseContract {
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    whitelistPaused(overrides?: CallOverrides): Promise<[boolean]>;
   };
 
   DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
@@ -876,6 +902,10 @@ export interface ProjectNftToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  pauseLocalsOnly(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   paused(overrides?: CallOverrides): Promise<boolean>;
 
   renounceOwnership(
@@ -968,6 +998,8 @@ export interface ProjectNftToken extends BaseContract {
   unpause(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  whitelistPaused(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
     DOMAIN_SEPARATOR(overrides?: CallOverrides): Promise<string>;
@@ -1072,6 +1104,8 @@ export interface ProjectNftToken extends BaseContract {
 
     pause(overrides?: CallOverrides): Promise<void>;
 
+    pauseLocalsOnly(overrides?: CallOverrides): Promise<void>;
+
     paused(overrides?: CallOverrides): Promise<boolean>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
@@ -1160,6 +1194,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<void>;
 
     unpause(overrides?: CallOverrides): Promise<void>;
+
+    whitelistPaused(overrides?: CallOverrides): Promise<boolean>;
   };
 
   filters: {
@@ -1344,6 +1380,10 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    pauseLocalsOnly(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
@@ -1436,6 +1476,8 @@ export interface ProjectNftToken extends BaseContract {
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    whitelistPaused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -1545,6 +1587,10 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    pauseLocalsOnly(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
@@ -1637,5 +1683,7 @@ export interface ProjectNftToken extends BaseContract {
     unpause(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    whitelistPaused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
   };
 }

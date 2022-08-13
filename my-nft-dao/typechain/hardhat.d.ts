@@ -117,14 +117,6 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Greeter__factory>;
     getContractFactory(
-      name: "IgnoreProject",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.IgnoreProject__factory>;
-    getContractFactory(
-      name: "ProjectNftToken",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.ProjectNftToken__factory>;
-    getContractFactory(
       name: "IERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721__factory>;
@@ -299,16 +291,6 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.Greeter>;
-    getContractAt(
-      name: "IgnoreProject",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.IgnoreProject>;
-    getContractAt(
-      name: "ProjectNftToken",
-      address: string,
-      signer?: ethers.Signer
-    ): Promise<Contracts.ProjectNftToken>;
     getContractAt(
       name: "IERC721",
       address: string,

@@ -1493,8 +1493,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1660421775104,
-      "contentHash": "5b166b0a7cfc9dcab508ed5723418330",
+      "lastModificationDate": 1660426190064,
+      "contentHash": "d6d7f1e20f0e304a6df3525ce1c62b67",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",

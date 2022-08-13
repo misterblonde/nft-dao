@@ -9,7 +9,7 @@ import type { Timelock } from "../../typechain/contracts/Timelock";
 import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
 import type { MyNftToken} from "../../typechain/contracts/MyNftToken";
 import type { Box } from "../../typechain/contracts/Box";
-import { whitelistedUserMintsProjectNft } from "./Governor.project"
+import { whitelistedUserMintsProjectNft, whitelistNftCannotBeTransferredIfPaused } from "./Governor.project"
 
 import {
     developmentChains,
@@ -371,5 +371,7 @@ describe("Unit tests", function () {
 
 
     whitelistedUserMintsProjectNft();
+
+    whitelistNftCannotBeTransferredIfPaused();
   });
 });

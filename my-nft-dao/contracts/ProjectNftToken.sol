@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 // import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+// import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
@@ -37,6 +38,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     uint maxNumberOfWhitelistedAddresses = 200;
 
     bool isWhitelistActive = true; 
+    bool public whitelistPaused;
 
     constructor() ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
     public {
@@ -69,6 +71,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     }
 
     function setWhitelist(address[] calldata addresses) external adminOnly {
+        // require(whitelistPaused == true, "You cannot change the whitelist whilst it is active");
         for (uint256 i = 0; i < addresses.length; i++) {
             address _addressToWhitelist = addresses[i];
             // Validate the caller is not already part of the whitelist.
@@ -84,6 +87,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
 
     // numberOfTokens = 1
     function mintWhitelist() external payable {
+        require(whitelistPaused == false, "You cannot whitelist mint nfts at this time.");
         uint256 ts = _tokenWhitelistCounter.current();
         require(isWhitelistActive, "Allow list is not active");
         require(1 <= whitelistedAddresses[msg.sender].mintAllowance, "Caller not allowed to purchase whitelist NFT");
@@ -133,13 +137,33 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         emit Log(gasleft());
     }
 
-      function pause() public onlyOwner {
+    function pause() public onlyOwner {
+        whitelistPaused = true; 
         _pause();
     }
 
+    function pauseLocalsOnly() public onlyOwner {
+        whitelistPaused = true; 
+    }
+
     function unpause() public onlyOwner {
+        whitelistPaused = false;
         _unpause();
     }
+
+    function transferFrom(address from, address to, uint256 tokenId) public override(ERC721) whenNotPaused {
+        // require((whitelistPaused == false && (tokenId < 200)), "You cannot transfer whitelist nfts at this time.");
+        require((whitelistPaused == true && tokenId >= 200), "only non-whitelist tokens can be transferred at this time");
+        return super.transferFrom(from, to, tokenId);
+    }
+
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) public override(ERC721) whenNotPaused {
+        // require((whitelistPaused == false && (tokenId < 200)), "You cannot transfer whitelist nfts at this time.");
+        require((whitelistPaused == true && tokenId >= 200), "only non-whitelist tokens can be transferred at this time");
+        return super.safeTransferFrom(from, to, tokenId);
+    }
+
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
@@ -164,5 +188,10 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function tokenOfOwnerByIndex(address owner, uint256 index) public view override(ERC721Enumerable) returns (uint256) {
+        
+        return super.tokenOfOwnerByIndex(owner, index);
     }
 }
