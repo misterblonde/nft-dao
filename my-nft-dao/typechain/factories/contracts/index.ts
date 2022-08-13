@@ -4,9 +4,11 @@
 export * as myGovernorSol from "./MyGovernor.sol";
 export * as myGovernorHelperSol from "./MyGovernorHelper.sol";
 export * as projectGovernorSol from "./ProjectGovernor.sol";
-export * as projectNftTokenExtensiveSol from "./ProjectNftToken extensive.sol";
+export * as ingoreSol from "./ingore.sol";
 export { Box__factory } from "./Box__factory";
+export { BoxLocal__factory } from "./BoxLocal__factory";
 export { Greeter__factory } from "./Greeter__factory";
+export { IgnoreProject__factory } from "./IgnoreProject__factory";
 export { MyNftToken__factory } from "./MyNftToken__factory";
 export { ProjectNftToken__factory } from "./ProjectNftToken__factory";
 export { Timelock__factory } from "./Timelock__factory";

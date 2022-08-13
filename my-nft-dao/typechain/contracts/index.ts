@@ -6,7 +6,7 @@
 import type * as myGovernorSol from "./MyGovernor.sol";
 import type * as myGovernorHelperSol from "./MyGovernorHelper.sol";
 import type * as projectGovernorSol from "./ProjectGovernor.sol";
-import type * as projectNftTokenExtensiveSol from "./ProjectNftToken extensive.sol";
+import type * as ingoreSol from "./ingore.sol";
 
 export type { myGovernorSol };
 
@@ -14,9 +14,11 @@ export type { myGovernorHelperSol };
 
 export type { projectGovernorSol };
 
-export type { projectNftTokenExtensiveSol };
+export type { ingoreSol };
 export type { Box } from "./Box";
+export type { BoxLocal } from "./BoxLocal";
 export type { Greeter } from "./Greeter";
+export type { IgnoreProject } from "./IgnoreProject";
 export type { MyNftToken } from "./MyNftToken";
 export type { ProjectNftToken } from "./ProjectNftToken";
 export type { Timelock } from "./Timelock";

@@ -1,3 +1,4 @@
+import newBoxAbi from "../../artifacts/contracts/BoxLocal.sol/BoxLocal.json";
 import newTokenAbi from "../../artifacts/contracts/ProjectNftToken.sol/ProjectNftToken.json";
 import { VOTING_PERIOD } from "../../helper-hardhat-config";
 import {
@@ -11,7 +12,19 @@ import {
 } from "../../helper-hardhat-config";
 import { moveBlocks } from "../../tasks/move-blocks";
 import { moveTime } from "../../tasks/move-time";
-import { ProjectNftToken } from "../../typechain/contracts";
+import {
+  Box,
+  Box__factory,
+  MyGovernor,
+  MyGovernor__factory,
+  MyGovernorHelper,
+  MyGovernorHelper__factory,
+  MyNftToken,
+  MyNftToken__factory,
+  ProjectNftToken,
+  ProjectNftToken__factory,
+} from "../../typechain";
+// import { ProjectNftToken } from "../../typechain/contracts";
 import { expect, assert } from "chai";
 import { providers } from "ethers";
 import { network } from "hardhat";
@@ -236,21 +249,13 @@ export function transferBudgetToNewContract(): void {
       ethers.utils.formatEther(await this.provider.getBalance(newContract))
     );
     //!!TODO try web3 wei to ether conversion without overflow
-    console.log("New Project Token balance: ", nftchildBalance);
+    console.log("New Balance: ", nftchildBalance);
     console.log(
-      "Nft child balance: ",
-      ethers.utils.formatEther(nftchildBalance),
-      ethers.utils.formatEther(await (proposalBudget * 10 ** 9))
-      //   ethers.utils.formatEther(newContract.balance)
+      "Budget requested: ",
+      await (proposalBudget * 10 ** 9) // gwei to wei
     );
 
-    // const balance = parseInt(nftchildBalance);
-    // console.log(Number(balance));
-    // console.log(balance[1]);
-    // console.log(parseInt(nftchildBalance).toString());
-    await expect(ethers.utils.formatEther(nftchildBalance)).to.equal(
-      ethers.utils.formatEther((await proposalBudget) * 10 ** 9)
-    );
+    await expect(nftchildBalance / 10 ** 9).to.equal(await proposalBudget);
   });
 }
 
@@ -438,7 +443,7 @@ export function userMintsProjectNft(): void {
     }
     console.log("Executing...");
     console.log("Proposal State: ", await this.governor.state(proposalIdInput));
-    // // this will fail on a testnet because you need to wait for the MIN_DELAY!
+    //  this will fail on a testnet because you need to wait for the MIN_DELAY!
     const executeTx = await this.governor
       .connect(this.signers.admin)
       .execute(
@@ -455,6 +460,12 @@ export function userMintsProjectNft(): void {
 
     console.log(`Box value: ${await this.box.retrieve()}`);
 
+    // _______________ ADD SUBDAO TO BOX______________________
+
+    const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy();
+    await newTokenContract.deployed();
+
     // _______________ Balances after execution _______________
     console.log(
       "Governor balance: ",
@@ -466,23 +477,23 @@ export function userMintsProjectNft(): void {
       ethers.utils.formatEther(await this.governorHelper.getBalance())
     );
 
-    const newContract = await this.governorHelper.getTokenAddress(
+    const newBoxContract = await this.governorHelper.getTokenAddress(
       proposalIdInput
     );
-    console.log(newContract);
-    const nftchildBalance = await this.provider.getBalance(newContract);
+    console.log(newBoxContract);
+    const childBoxBalance = await this.provider.getBalance(newBoxContract);
 
-    console.log(nftchildBalance.toString());
+    console.log(childBoxBalance.toString());
     console.log(
-      "Nft child balance: ",
-      parseInt(nftchildBalance),
+      "Child Box balance: ",
+      parseInt(childBoxBalance),
       ethers.utils.formatEther(await proposalBudget)
       //   ethers.utils.formatEther(newContract.balance)
     );
 
-    const newTokenContract = new ethers.Contract(
-      newContract,
-      newTokenAbi.abi,
+    const newBox = new ethers.Contract(
+      newBoxContract,
+      newBoxAbi.abi,
       this.provider
     );
 
@@ -510,11 +521,6 @@ export function userMintsProjectNft(): void {
       await newTokenContract.balanceOf(this.signers.admin.address)
     ).toNumber();
 
-    // const balance = parseInt(nftchildBalance);
-    // console.log(Number(balance));
-    // console.log(balance[1]);
-    // console.log(parseInt(nftchildBalance).toString());
-    // await expect(oldBalance).to.equal(0);
     await expect(newBalance).to.equal(1);
   });
 }

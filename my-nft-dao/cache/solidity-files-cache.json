@@ -120,8 +120,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyNftToken.sol": {
-      "lastModificationDate": 1660409360804,
-      "contentHash": "e45248949432e2cad1deeed7a773e375",
+      "lastModificationDate": 1660418578334,
+      "contentHash": "4beda63ca832547ea5e6fad6d6368f91",
       "sourceName": "contracts/MyNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1493,8 +1493,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1660415843826,
-      "contentHash": "ff474c2d47e3037e1e5d3d9fed270917",
+      "lastModificationDate": 1660421775104,
+      "contentHash": "5b166b0a7cfc9dcab508ed5723418330",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1527,7 +1527,9 @@
         "@openzeppelin/contracts/access/Ownable.sol",
         "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol",
         "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
-        "@openzeppelin/contracts/utils/Counters.sol"
+        "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/security/Pausable.sol"
       ],
       "versionPragmas": [
         "0.8.6"
@@ -1537,7 +1539,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectGovernor.sol": {
-      "lastModificationDate": 1660350635243,
+      "lastModificationDate": 1660421435477,
       "contentHash": "a97ac96470afdcb18b3930c2e38260f8",
       "sourceName": "contracts/ProjectGovernor.sol",
       "solcConfig": {
@@ -1583,8 +1585,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernorHelper.sol": {
-      "lastModificationDate": 1660415593609,
-      "contentHash": "724608f07f427a346418b9999db8468d",
+      "lastModificationDate": 1660419332312,
+      "contentHash": "535a16b8ca20b12966f983663cf4f529",
       "sourceName": "contracts/MyGovernorHelper.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1615,7 +1617,8 @@
       "imports": [
         "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol",
         "./ProjectGovernor.sol",
-        "./ProjectNftToken.sol"
+        "./ProjectNftToken.sol",
+        "./BoxLocal.sol"
       ],
       "versionPragmas": [
         "0.8.6"
@@ -1746,10 +1749,10 @@
         "IERC721Enumerable"
       ]
     },
-    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken extensive.sol": {
-      "lastModificationDate": 1660415778623,
-      "contentHash": "880878a40e767c2ecb8de01896e3e806",
-      "sourceName": "contracts/ProjectNftToken extensive.sol",
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/BoxLocal.sol": {
+      "lastModificationDate": 1660421783301,
+      "contentHash": "cde409b28548414f6ba54782cea512e6",
+      "sourceName": "contracts/BoxLocal.sol",
       "solcConfig": {
         "version": "0.8.6",
         "settings": {
@@ -1777,19 +1780,13 @@
         }
       },
       "imports": [
-        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
-        "@openzeppelin/contracts/access/Ownable.sol",
-        "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
-        "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
-        "@openzeppelin/contracts/utils/Counters.sol",
-        "@openzeppelin/contracts/security/Pausable.sol"
+        "@openzeppelin/contracts/access/Ownable.sol"
       ],
       "versionPragmas": [
-        "0.8.6"
+        "^0.8.6"
       ],
       "artifacts": [
-        "ProjectNftToken"
+        "BoxLocal"
       ]
     }
   }

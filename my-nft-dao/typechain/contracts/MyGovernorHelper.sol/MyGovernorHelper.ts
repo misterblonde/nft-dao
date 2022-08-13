@@ -23,7 +23,6 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
-  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -37,7 +36,6 @@ export interface MyGovernorHelperInterface extends utils.Interface {
     "getTokenAddress(uint256)": FunctionFragment;
     "myGovernor()": FunctionFragment;
     "newProject(uint256,address,bool)": FunctionFragment;
-    "setProposerTokenSpecial(uint256)": FunctionFragment;
   };
 
   getFunction(
@@ -47,7 +45,6 @@ export interface MyGovernorHelperInterface extends utils.Interface {
       | "getTokenAddress"
       | "myGovernor"
       | "newProject"
-      | "setProposerTokenSpecial"
   ): FunctionFragment;
 
   encodeFunctionData(
@@ -74,10 +71,6 @@ export interface MyGovernorHelperInterface extends utils.Interface {
       PromiseOrValue<boolean>
     ]
   ): string;
-  encodeFunctionData(
-    functionFragment: "setProposerTokenSpecial",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
 
   decodeFunctionResult(functionFragment: "_children", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
@@ -87,10 +80,6 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "myGovernor", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "newProject", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "setProposerTokenSpecial",
-    data: BytesLike
-  ): Result;
 
   events: {
     "Log(uint256)": EventFragment;
@@ -153,11 +142,6 @@ export interface MyGovernorHelper extends BaseContract {
       fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
-
-    setProposerTokenSpecial(
-      proposalId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
   };
 
   _children(
@@ -181,11 +165,6 @@ export interface MyGovernorHelper extends BaseContract {
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setProposerTokenSpecial(
-    proposalId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   callStatic: {
     _children(
       arg0: PromiseOrValue<BigNumberish>,
@@ -207,11 +186,6 @@ export interface MyGovernorHelper extends BaseContract {
       fundsToContract: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
-
-    setProposerTokenSpecial(
-      proposalId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
   };
 
   filters: {
@@ -240,11 +214,6 @@ export interface MyGovernorHelper extends BaseContract {
       fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
-
-    setProposerTokenSpecial(
-      proposalId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -267,11 +236,6 @@ export interface MyGovernorHelper extends BaseContract {
       _timelock: PromiseOrValue<string>,
       fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
-    setProposerTokenSpecial(
-      proposalId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };
 }

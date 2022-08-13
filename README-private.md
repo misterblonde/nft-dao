@@ -9,7 +9,8 @@ TO DO:
   from struct
 - someone needs to be able to set the token URI on the contract before creation
   or change it afterwards? - make sure minting only starts after that
-
+- DAO needs to somehow approve that this nft collection/governor setup is now
+  the new subdao?
 
 LEARNING/CHALLENGES
 - not so much abouth programming the contract only, more about programming

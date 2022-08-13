@@ -1,4 +1,5 @@
 import newTokenAbi from "../../artifacts/contracts/ProjectNftToken.sol/ProjectNftToken.json";
+import newBoxAbi from "../../artifacts/contracts/BoxLocal.sol/BoxLocal.json";
 import { VOTING_PERIOD } from "../../helper-hardhat-config";
 import {
   developmentChains,
@@ -11,12 +12,24 @@ import {
 } from "../../helper-hardhat-config";
 import { moveBlocks } from "../../tasks/move-blocks";
 import { moveTime } from "../../tasks/move-time";
-import { ProjectNftToken } from "../../typechain/contracts";
+// import { ProjectNftToken } from "../../typechain/contracts";
 import { expect, assert } from "chai";
 import { providers } from "ethers";
 import { network } from "hardhat";
 import { artifacts, ethers, waffle } from "hardhat";
-
+import {
+    Box,
+    Box__factory,
+    MyGovernor,
+    MyGovernor__factory,
+    MyGovernorHelper,
+    MyGovernorHelper__factory,
+    MyNftToken,
+    MyNftToken__factory,
+    ProjectNftToken,
+    ProjectNftToken__factory,
+  } from "../../typechain";
+// 1 test only
 // ____________________________________________________________________
 
 export function whitelistedUserMintsProjectNft(): void {
@@ -67,7 +80,6 @@ export function whitelistedUserMintsProjectNft(): void {
       args
     );
 
-    console.log("Governor balance: ", await this.governor.getBalance());
     // submit proposal
     const txn = await this.governor
       .connect(this.signers.admin)
@@ -135,31 +147,13 @@ export function whitelistedUserMintsProjectNft(): void {
     if (developmentChains.includes(network.name)) {
       await moveBlocks(VOTING_DELAY + 1);
     }
-    console.log(
-      "State (before blocks moved):",
-      await this.governor.state(proposalIdInput)
-    );
     await moveBlocks(this.governor.votingPeriod() + 1);
-    console.log(
-      "State (after voting period ended):",
-      await this.governor.state(proposalIdInput)
-    );
+ 
     await moveBlocks(100);
-    console.log(
-      "State (after voting period+1 ended):",
-      await this.governor.state(proposalIdInput)
-    );
-
-    console.log(
-      "State (4) == succeeded: ",
-      await this.governor.state(proposalIdInput)
-    );
+    
     await moveBlocks(100);
 
-    console.log(
-      "State (4) == succeeded: ",
-      await this.governor.state(proposalIdInput)
-    );
+
     const descriptionHash = ethers.utils.id("test 123 new proposal");
 
     // queue transaction via TIMELOCK?
@@ -186,29 +180,10 @@ export function whitelistedUserMintsProjectNft(): void {
       // { value: ethers.utils.parseUnits("0.03", "ether") }
     );
     await queueTx.wait(1);
-    console.log(
-      "State (before blocks moved):",
-      await this.governor.state(proposalIdInput)
-    );
 
     if (developmentChains.includes(network.name)) {
-      console.log(
-        "State (before blocks moved):",
-        await this.governor.state(proposalIdInput)
-      );
       await moveBlocks(1);
     }
-    // _______________ Balance prior to execution _______________
-    const balanceOld = await this.provider.getBalance(this.governor.address);
-    console.log("Governor balance: ", ethers.utils.formatEther(balanceOld));
-
-    const helperBalanceOld = await this.provider.getBalance(
-      this.governorHelper.address
-    );
-    console.log(
-      "Governor Helper balance: ",
-      ethers.utils.formatEther(helperBalanceOld)
-    );
 
     // _______________ EXECUTE PROPOSAL _______________
     if (developmentChains.includes(network.name)) {
@@ -237,35 +212,43 @@ export function whitelistedUserMintsProjectNft(): void {
       `Box value: ${await this.box.isAdmin(this.signers.admin.address)}`
     );
 
-    // _______________ Balances after execution _______________
-    console.log(
-      "Governor balance: ",
-      ethers.utils.formatEther(await this.governor.getBalance())
-    );
+    // // _______________ Balances after execution _______________
+    // console.log(
+    //   "Governor balance: ",
+    //   ethers.utils.formatEther(await this.governor.getBalance())
+    // );
 
-    console.log(
-      "Governor Helper balance: ",
-      ethers.utils.formatEther(await this.governorHelper.getBalance())
-    );
+    // console.log(
+    //   "Governor Helper balance: ",
+    //   ethers.utils.formatEther(await this.governorHelper.getBalance())
+    // );
 
     const newContract = await this.governorHelper.getTokenAddress(
       proposalIdInput
     );
-    console.log(newContract);
-    const nftchildBalance = await this.provider.getBalance(newContract);
+    const childBalance = await this.provider.getBalance(newContract);
 
-    console.log(nftchildBalance.toString());
     console.log(
-      "Nft child balance: ",
-      parseInt(nftchildBalance),
+      "Child contract balance: ",
+      parseInt(childBalance),
       ethers.utils.formatEther(await proposalBudget)
       //   ethers.utils.formatEther(newContract.balance)
     );
 
+    // const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
+    // const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy();
+    // await newTokenContract.deployed();
+
+    //
+
+    const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy();
+    await newTokenContract.deployed();
+
     // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
-    const newTokenContract = new ethers.Contract(
+    const newBoxContract = new ethers.Contract(
       newContract,
-      newTokenAbi.abi,
+      newBoxAbi.abi,
       this.provider
     );
 

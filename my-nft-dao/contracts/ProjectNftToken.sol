@@ -6,15 +6,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 // import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
-// import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-// import "@openzeppelin/contracts/security/Pausable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
 
 
 
-contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
+contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
-
     // Counters.Counter private _tokenIdCounter;
     uint256 _tokenIdCounter = 200;
     Counters.Counter private _tokenWhitelistCounter; //numberOfAddressesWhitelisted = 0;
@@ -40,7 +39,7 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     bool isWhitelistActive = true; 
 
     constructor() ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
-    public payable {
+    public {
         // EIP712( name, version)
         //setBaseURI(baseURI);
         creator = owner();
@@ -133,12 +132,37 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     fallback() external payable {
         emit Log(gasleft());
     }
-    
+
+      function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override(ERC721, ERC721Enumerable)
+    {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    // The following functions are overrides required by Solidity.
     function _afterTokenTransfer(address from, address to, uint256 tokenId)
         internal
         override(ERC721, ERC721Votes)
     {
         super._afterTokenTransfer(from, to, tokenId);
     }
-    
+
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
 }
