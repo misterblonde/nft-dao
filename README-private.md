@@ -1,6 +1,7 @@
+
+
+
 MILESTONES
-- initial openzeppelin setup - any wallet address (even without token) could
-  vote once
 
 
 TO DO:
@@ -9,6 +10,14 @@ TO DO:
 - someone needs to be able to set the token URI on the contract before creation
   or change it afterwards? - make sure minting only starts after that
 
+
+LEARNING/CHALLENGES
+- not so much abouth programming the contract only, more about programming
+  concisely and having modular architecture within gas price/ether values within
+each component
+
+
+// __________________________________________________________________________
 
 literature search into DAOs regarding
 - infrastructure crowdfunding (see anandha recommendations)
