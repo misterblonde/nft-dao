@@ -12,7 +12,7 @@ interface IERC721 {
 }
 
 interface IMyGovernorHelper {
-    function newProject(uint256 proposalId, ICompoundTimelock _timelock) external payable returns(address newContract);
+    function newProject(uint256 proposalId, ICompoundTimelock _timelock, bool fundsToContract) external payable returns(address newContract);
 }
 
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
@@ -51,19 +51,6 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         owner = msg.sender;
      }
 
-    function withdrawETH(address recipient, uint256 amount) internal {
-        (bool succeed, bytes memory data) = recipient.call{value: amount}("");
-        require(succeed, "Failed to withdraw Ether");
-    }
-
-    function getProposerName(uint256 proposalId) external view returns (address){
-        return _proposers[proposalId].name;
-    }
-
-    function getProposerBudget(uint256 proposalId) external view returns (uint256){
-        return _proposers[proposalId].budget;
-    }
-
     modifier membersOnly() {
          require(IERC721(tokenAddress).balanceOf(msg.sender) >= 1, "You must be a token holder to vote.");
         _;
@@ -80,6 +67,19 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         // a function modifier and it tells Solidity to
         // execute the rest of the code.
         _;
+    }
+
+    function withdrawETH(address recipient, uint256 amount) internal {
+        (bool succeed, bytes memory data) = recipient.call{value: amount}("");
+        require(succeed, "Failed to withdraw Ether");
+    }
+
+    function getProposerName(uint256 proposalId) external view returns (address){
+        return _proposers[proposalId].name;
+    }
+
+    function getProposerBudget(uint256 proposalId) external view returns (uint256){
+        return _proposers[proposalId].budget;
     }
 
     function quadraticVoting(uint256 proposalId) public payable {
@@ -149,10 +149,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         require(_proposers[proposalId].budget < (getBalance() + msg.value), "Governor: budget requested exceeds funds available.");
 
-        // transferring money to proposer:
-        withdrawETH(_proposers[proposalId].name, _proposers[proposalId].budget*10**9);
-
-        address childNft = IMyGovernorHelper(helper).newProject(proposalId, timelockAddress);
+        address childNft = IMyGovernorHelper(helper).newProject(proposalId, timelockAddress, true);
         
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
@@ -195,10 +192,10 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     _receiver.transfer(amount);
     }
     
-    function castVote(uint256 proposalId, uint8 support) public virtual override(IGovernor, Governor) membersOnly returns (uint256) {
-        address voter = _msgSender();
-        return  super._castVote(proposalId, voter, support, "", "");
-    }
+    // function castVote(uint256 proposalId, uint8 support) public virtual override(IGovernor, Governor) membersOnly returns (uint256) {
+    //     address voter = _msgSender();
+    //     return  super._castVote(proposalId, voter, support, "", "");
+    // }
 
     function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");

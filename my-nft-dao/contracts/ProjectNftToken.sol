@@ -11,6 +11,7 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
+    Counters.Counter private _numAddressesWhitelisted; //numberOfAddressesWhitelisted = 0;
     address creator;
     address public initialProposer; 
     uint public constant MAX_SUPPLY = 600;
@@ -21,6 +22,15 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
     uint public constant MAX_PER_MINT = 5;
     // NFT Jsons linK:
     string public baseTokenURI = "https://gateway.pinata.cloud/ipfs/QmR1yHJYafBkwCXMfnytoQXryiyWWiCncTotkKxsHghTGX/";
+
+    struct local {
+        bool whitelisted;
+        uint mintAllowance;
+    }
+        mapping(address => local) private whitelistedAddresses;
+
+    uint maxNumberOfWhitelistedAddresses = MAX_SUPPLY * 1/4;
+    bool isWhitelistActive = true; 
 
     constructor() ERC721("ProjectToken", "GT") EIP712("ProjectToken", "1") public payable {
         // EIP712( name, version)
@@ -42,11 +52,54 @@ contract ProjectNftToken is ERC721, Ownable, EIP712, ERC721Votes {
         baseTokenURI = _baseTokenURI;
     }
 
+    function setWhitelist(address[] calldata addresses) external restricted {
+        for (uint256 i = 0; i < addresses.length; i++) {
+            address _addressToWhitelist = addresses[i];
+            // Validate the caller is not already part of the whitelist.
+            require(!whitelistedAddresses[_addressToWhitelist].whitelisted, "Error: Sender already been whitelisted");
+            // Validate if the maximum number of whitelisted addresses is not reached. If not, then throw an error.
+            require(_numAddressesWhitelisted.current() < maxNumberOfWhitelistedAddresses, "Error: Whitelist Limit exceeded");
+            // allow each local wallet address holder to mint 1 NFT beforehand
+            whitelistedAddresses[addresses[i]].mintAllowance = 1;
+            whitelistedAddresses[addresses[i]].whitelisted = true;
+            _numAddressesWhitelisted.increment();
+        }
+    }
+
+    // numberOfTokens = 1
+    function mintWhitelist() external payable {
+        uint256 ts = _tokenIdCounter.current();
+        require(isWhitelistActive, "Allow list is not active");
+        require(1 <= whitelistedAddresses[msg.sender].mintAllowance, "Exceeded max available to purchase");
+        require(ts + 1 <= MAX_SUPPLY, "Purchase would exceed max tokens");
+        require(PRICE * 1 <= msg.value, "Ether value sent is not correct");
+
+        whitelistedAddresses[msg.sender].mintAllowance -= 1;
+        // for (uint256 i = 0; i < 1; i++) {
+        uint256 tokenId = _tokenIdCounter.current();
+        _safeMint(msg.sender, tokenId);
+        _tokenIdCounter.increment();
+    }
+
+    // Is the user whitelisted?
+    function isWhitelisted(address _whitelistedAddress)
+        public
+        view
+        returns (bool)
+    {
+        // Verifying if the user has been whitelisted - independent of whether they have minted or not? 
+        return whitelistedAddresses[_whitelistedAddress].whitelisted;
+    }
+
     function safeMint(address to) public payable {
         require(msg.value >= (PRICE), "Not enough ether to purchase NFTs.");
         uint256 tokenId = _tokenIdCounter.current();
         _safeMint(to, tokenId);
         _tokenIdCounter.increment();
+    }
+
+    function getBalance() public view returns (uint256){
+        return address(this).balance;
     }
 
     function _afterTokenTransfer(

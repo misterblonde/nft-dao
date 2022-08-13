@@ -43,11 +43,14 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
     "delegates(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
+    "getBalance()": FunctionFragment;
     "getPastTotalSupply(uint256)": FunctionFragment;
     "getPastVotes(address,uint256)": FunctionFragment;
     "getVotes(address)": FunctionFragment;
     "initialProposer()": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "isWhitelisted(address)": FunctionFragment;
+    "mintWhitelist()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
     "owner()": FunctionFragment;
@@ -59,6 +62,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "setApprovalForAll(address,bool)": FunctionFragment;
     "setBaseURI(string)": FunctionFragment;
     "setInitialProposer(address)": FunctionFragment;
+    "setWhitelist(address[])": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "symbol()": FunctionFragment;
     "tokenURI(uint256)": FunctionFragment;
@@ -79,11 +83,14 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "delegateBySig"
       | "delegates"
       | "getApproved"
+      | "getBalance"
       | "getPastTotalSupply"
       | "getPastVotes"
       | "getVotes"
       | "initialProposer"
       | "isApprovedForAll"
+      | "isWhitelisted"
+      | "mintWhitelist"
       | "name"
       | "nonces"
       | "owner"
@@ -95,6 +102,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "setApprovalForAll"
       | "setBaseURI"
       | "setInitialProposer"
+      | "setWhitelist"
       | "supportsInterface"
       | "symbol"
       | "tokenURI"
@@ -151,6 +159,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getPastTotalSupply",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -169,6 +181,14 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isApprovedForAll",
     values: [PromiseOrValue<string>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isWhitelisted",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintWhitelist",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -218,6 +238,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setWhitelist",
+    values: [PromiseOrValue<string>[]]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
   ): string;
@@ -265,6 +289,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getPastTotalSupply",
     data: BytesLike
@@ -280,6 +305,14 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isApprovedForAll",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "isWhitelisted",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "mintWhitelist",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -306,6 +339,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "setBaseURI", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "setInitialProposer",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setWhitelist",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -495,6 +532,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getPastTotalSupply(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -518,6 +557,15 @@ export interface ProjectNftToken extends BaseContract {
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    isWhitelisted(
+      _whitelistedAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    mintWhitelist(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -570,6 +618,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setInitialProposer(
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setWhitelist(
+      addresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -644,6 +697,8 @@ export interface ProjectNftToken extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
   getPastTotalSupply(
     blockNumber: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -667,6 +722,15 @@ export interface ProjectNftToken extends BaseContract {
     operator: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  isWhitelisted(
+    _whitelistedAddress: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  mintWhitelist(
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -719,6 +783,11 @@ export interface ProjectNftToken extends BaseContract {
 
   setInitialProposer(
     account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setWhitelist(
+    addresses: PromiseOrValue<string>[],
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -793,6 +862,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPastTotalSupply(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -816,6 +887,13 @@ export interface ProjectNftToken extends BaseContract {
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    isWhitelisted(
+      _whitelistedAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    mintWhitelist(overrides?: CallOverrides): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -866,6 +944,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setInitialProposer(
       account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setWhitelist(
+      addresses: PromiseOrValue<string>[],
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -1010,6 +1093,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     getPastTotalSupply(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1032,6 +1117,15 @@ export interface ProjectNftToken extends BaseContract {
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isWhitelisted(
+      _whitelistedAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    mintWhitelist(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1085,6 +1179,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setInitialProposer(
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setWhitelist(
+      addresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -1160,6 +1259,8 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getPastTotalSupply(
       blockNumber: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1182,6 +1283,15 @@ export interface ProjectNftToken extends BaseContract {
       owner: PromiseOrValue<string>,
       operator: PromiseOrValue<string>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isWhitelisted(
+      _whitelistedAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    mintWhitelist(
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -1235,6 +1345,11 @@ export interface ProjectNftToken extends BaseContract {
 
     setInitialProposer(
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setWhitelist(
+      addresses: PromiseOrValue<string>[],
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

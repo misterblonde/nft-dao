@@ -33,15 +33,17 @@ import type {
 export interface MyGovernorHelperInterface extends utils.Interface {
   functions: {
     "_children(uint256)": FunctionFragment;
+    "getBalance()": FunctionFragment;
     "getTokenAddress(uint256)": FunctionFragment;
     "myGovernor()": FunctionFragment;
-    "newProject(uint256,address)": FunctionFragment;
+    "newProject(uint256,address,bool)": FunctionFragment;
     "setProposerTokenSpecial(uint256)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "_children"
+      | "getBalance"
       | "getTokenAddress"
       | "myGovernor"
       | "newProject"
@@ -53,6 +55,10 @@ export interface MyGovernorHelperInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "getBalance",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "getTokenAddress",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -62,7 +68,11 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "newProject",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "setProposerTokenSpecial",
@@ -70,6 +80,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   ): string;
 
   decodeFunctionResult(functionFragment: "_children", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getTokenAddress",
     data: BytesLike
@@ -127,6 +138,8 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     getTokenAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -137,6 +150,7 @@ export interface MyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -151,6 +165,8 @@ export interface MyGovernorHelper extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
   getTokenAddress(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -161,6 +177,7 @@ export interface MyGovernorHelper extends BaseContract {
   newProject(
     proposalId: PromiseOrValue<BigNumberish>,
     _timelock: PromiseOrValue<string>,
+    fundsToContract: PromiseOrValue<boolean>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -175,6 +192,8 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     getTokenAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -185,6 +204,7 @@ export interface MyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
 
@@ -205,6 +225,8 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
     getTokenAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -215,6 +237,7 @@ export interface MyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -230,6 +253,8 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     getTokenAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -240,6 +265,7 @@ export interface MyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

@@ -129,6 +129,14 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC20__factory>;
     getContractFactory(
+      name: "IERC721",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IERC721__factory>;
+    getContractFactory(
+      name: "IMyGovernor",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IMyGovernor__factory>;
+    getContractFactory(
       name: "ProjectGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProjectGovernor__factory>;
@@ -286,6 +294,16 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IERC20>;
+    getContractAt(
+      name: "IERC721",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IERC721>;
+    getContractAt(
+      name: "IMyGovernor",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IMyGovernor>;
     getContractAt(
       name: "ProjectGovernor",
       address: string,

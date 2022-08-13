@@ -2,4 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { IERC20 } from "./IERC20";
+export type { IERC721 } from "./IERC721";
+export type { IMyGovernor } from "./IMyGovernor";
 export type { ProjectGovernor } from "./ProjectGovernor";

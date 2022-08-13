@@ -22,7 +22,7 @@ contract MyGovernorHelper {
         myGovernor = myGovernorX;
     }
 
-    function newProject(uint256 proposalId, ICompoundTimelock _timelock) external payable returns(address newContract){
+    function newProject(uint256 proposalId, ICompoundTimelock _timelock, bool fundsToContract) external payable returns(address newContract){
             require(msg.sender == myGovernor, "Gov Helper: Only Governor can set up sub DAOs.");
            
             // require( msg.value == 5000000000000000) ideally set minimum value required?
@@ -33,9 +33,14 @@ contract MyGovernorHelper {
             // ProjectGovernor projectGov = new ProjectGovernor(_children[proposalId], _timelock, proposalId, IMyGovernor(myGovernor).getProposerName(proposalId), IMyGovernor(myGovernor).getProposerBudget(proposalId));
 
             // transfer budget to child contract
-            // address payable receiver = payable(address(_children[proposalId])); // cast goes her
-            // IMyGovernor(myGovernor).transferFunds(receiver, IMyGovernor(myGovernor).getProposerBudget(proposalId));
-
+            address payable receiver = payable(address(_children[proposalId])); // cast goes her
+            if (fundsToContract){
+                IMyGovernor(myGovernor).transferFunds(receiver, IMyGovernor(myGovernor).getProposerBudget(proposalId)*10**9);
+            } else {
+                // transferring money to proposer:
+                address payable receiver = payable(IMyGovernor(myGovernor).getProposerName(proposalId)); 
+                IMyGovernor(myGovernor).transferFunds(receiver, IMyGovernor(myGovernor).getProposerBudget(proposalId*10**9));
+            }
          
         // keep record of all offspring and who created it
         // ProposerCore storage proposer = _proposers[proposalId];
@@ -44,6 +49,10 @@ contract MyGovernorHelper {
         return address(_children[proposalId]);
     }
 
+    function getBalance() public view returns (uint256){
+        return address(this).balance;
+    }
+    
     function getTokenAddress(uint256 proposalId) public view returns(address) {
         return address(_children[proposalId]);
     }

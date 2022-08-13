@@ -26,6 +26,7 @@ challenges DAO development
 upon positive result of a proposal.
 
 
+
 General DAO -> Project-based DAO Governance
 
 - having a governor which generates child DAOs is too complex, the code size
@@ -57,29 +58,23 @@ more is requested as an initial setup, so-called fixtures are needed to start
 from the same status quo for a subset of the tests. The fixtures however do not
 work together with the before() beforeAll() ??
 
+- hardhat localhost challenges             
+	- adding the signer wallets and giving them enough ether to pay for all the     
+  minting                                                                       
+	- minting fee + gas fee prediction
 
-
+CONCEPTUAL CHALLENGE
 - Possible solution: 
 	- only dao owner/committee can deploy new child dao contract in which it can
 	  decide the rules of the new budget and the nfts, even swap out the nft
 contract with another one if needed -> dynamic nfts etc. 
 
-
-hardhat localhost challenges
-- adding the signer wallets and giving them enough ether to pay for all the
-  minting
-- minting fee + gas fee prediction
-
-
-
 // bug fixed via TDD: 
-
 - all IN voting did not add to the total vote count, whilst the vote simple
   voting did add to the total count
 - fixed that anyone needs to be a token holder to be allowed to vote,
   openzeppelin is that anyone can vote. 
 - added quadratic voting limit to voteAllIn functionality
-
 
 - TEST:  Vote Should Fail Because Already Voted
 	- catches error if VoteSimple is used twice by the same address. 
@@ -89,17 +84,21 @@ hardhat localhost challenges
 - TEST: VOTE ALL IN (not working yet)
 //! vote is cast without pre-delegation BUG
 
-// _____________________ To Do ________________________
-
 - test the voting options are working fine; 
 	- all in vote quadratic ?
 	- weight 1 vote (working fine)
 - make funds transferred to winner/automatic
+
+
+//// ______ BELOW NOT YET ADDED ________________________                        
+//// ______ BELOW NOT YET ADDED ________________________                        
+//// ______ BELOW NOT YET ADDED ________________________ 
+// _____________________ To Do ________________________  
 - glitter dynamic NFT mode - interactions with dao measure social score
 - delegation testing - how long does it last for?
 - sybil attack prevention (LATER)
 
-// WEBSITE
+// _____________________ WEBSITE _____________________
 
 LEARNING
 - even read only functions need await due to their delay and even though they do
@@ -107,12 +106,12 @@ LEARNING
 - transaction tracking from etherscan API
 - 
 
+// ____________________ NOTES _________________________ 
 // PART I _____________________________________________
 // yarn hardhat test 
 
 - runs tests inside test/unit/*.ts file
 - currently 2 tests both passing
-
 
 // local testing PART II ______________________________
 

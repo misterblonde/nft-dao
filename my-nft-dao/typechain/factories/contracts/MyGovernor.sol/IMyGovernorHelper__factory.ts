@@ -23,6 +23,11 @@ const _abi = [
         name: "_timelock",
         type: "address",
       },
+      {
+        internalType: "bool",
+        name: "fundsToContract",
+        type: "bool",
+      },
     ],
     name: "newProject",
     outputs: [

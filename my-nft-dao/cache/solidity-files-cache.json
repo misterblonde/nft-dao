@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1660259891086,
-      "contentHash": "8a5b7b08c270e9be8ecb178bbf2fc5da",
+      "lastModificationDate": 1660325685285,
+      "contentHash": "6a5a011ee6664d555315905cd9608eb4",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1493,8 +1493,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1660260139646,
-      "contentHash": "a5a7e088e234fe35bb6ac5cb94bddbcd",
+      "lastModificationDate": 1660350597318,
+      "contentHash": "cea3257bda286df63c9369d56664a908",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1537,8 +1537,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectGovernor.sol": {
-      "lastModificationDate": 1660229558739,
-      "contentHash": "8495929b5cb59d118ab3882ecdbdd63f",
+      "lastModificationDate": 1660350635243,
+      "contentHash": "a97ac96470afdcb18b3930c2e38260f8",
       "sourceName": "contracts/ProjectGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1577,13 +1577,14 @@
         "0.8.6"
       ],
       "artifacts": [
-        "IERC20",
+        "IERC721",
+        "IMyGovernor",
         "ProjectGovernor"
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernorHelper.sol": {
-      "lastModificationDate": 1660260263808,
-      "contentHash": "c3dd7830681779d71a45a225b8763b1d",
+      "lastModificationDate": 1660320460810,
+      "contentHash": "435ea5c060c131afd7ffd65810085585",
       "sourceName": "contracts/MyGovernorHelper.sol",
       "solcConfig": {
         "version": "0.8.6",

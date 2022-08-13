@@ -27,14 +27,18 @@ import type {
 
 export interface IMyGovernorHelperInterface extends utils.Interface {
   functions: {
-    "newProject(uint256,address)": FunctionFragment;
+    "newProject(uint256,address,bool)": FunctionFragment;
   };
 
   getFunction(nameOrSignatureOrTopic: "newProject"): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "newProject",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
 
   decodeFunctionResult(functionFragment: "newProject", data: BytesLike): Result;
@@ -72,6 +76,7 @@ export interface IMyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
@@ -79,6 +84,7 @@ export interface IMyGovernorHelper extends BaseContract {
   newProject(
     proposalId: PromiseOrValue<BigNumberish>,
     _timelock: PromiseOrValue<string>,
+    fundsToContract: PromiseOrValue<boolean>,
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -86,6 +92,7 @@ export interface IMyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<string>;
   };
@@ -96,6 +103,7 @@ export interface IMyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
   };
@@ -104,6 +112,7 @@ export interface IMyGovernorHelper extends BaseContract {
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
+      fundsToContract: PromiseOrValue<boolean>,
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

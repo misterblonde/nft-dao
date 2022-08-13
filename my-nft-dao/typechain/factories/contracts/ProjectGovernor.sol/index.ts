@@ -2,4 +2,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export { IERC20__factory } from "./IERC20__factory";
+export { IERC721__factory } from "./IERC721__factory";
+export { IMyGovernor__factory } from "./IMyGovernor__factory";
 export { ProjectGovernor__factory } from "./ProjectGovernor__factory";

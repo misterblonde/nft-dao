@@ -9,6 +9,7 @@ import type { Timelock } from "../../typechain/contracts/Timelock";
 import type { MyGovernor } from "../../typechain/contracts/MyGovernor";
 import type { MyNftToken} from "../../typechain/contracts/MyNftToken";
 import type { Box } from "../../typechain/contracts/Box";
+
 import {
     developmentChains,
     VOTING_DELAY,
@@ -25,6 +26,7 @@ import {
 
 import { Signers } from "../types";
 import { getInitialNftBalance, mintNft, submitProposalFailsBecauseNoNFTs, submitProposalPassesBecauseDelegatedNfts, voteFailsBecauseNonTokenHolder, voteOnSubmittedProposal } from "./Governor.behavior";
+import { transferBudgetToNewContract, userMintsProjectNft } from "./Governor.execute";
 import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks, proposalPassesQuorumBudgetTransferredToProposer } from "./Governor.voting";
 import { NetworkUserConfig } from "hardhat/types";
 import { MyGovernorHelper } from "../../typechain";
@@ -72,14 +74,18 @@ describe("Unit tests", function () {
               ]);
             const governorArtifact: Artifact = await artifacts.readArtifact("MyGovernor");
             const timelockArtifact: Artifact = await artifacts.readArtifact("Timelock");
-      
+   
+            const governorHelperArtifact: Artifact = await artifacts.readArtifact("MyGovernorHelper");
+
             const tokenArtifact: Artifact = await artifacts.readArtifact("MyNftToken");
             this.token = <MyNftToken>await waffle.deployContract(this.signers.admin, tokenArtifact);
          
             const governorExpectedAddress = await getExpectedContractAddress(this.signers.admin);
             this.timelock = <Timelock>await waffle.deployContract(this.signers.admin, timelockArtifact,[governorExpectedAddress, 2]);
-       
-            this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address]);
+     
+            this.governorHelper = <MyGovernorHelper>await waffle.deployContract(this.signers.admin, governorHelperArtifact,[governorExpectedAddress]);
+            
+            this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address, this.governorHelper.address]);
       
             const boxArtifact: Artifact = await artifacts.readArtifact("Box");
             this.box = <Box>await waffle.deployContract(this.signers.admin, boxArtifact);
@@ -173,12 +179,13 @@ describe("Unit tests", function () {
 
       const tokenArtifact: Artifact = await artifacts.readArtifact("MyNftToken");
       this.token = <MyNftToken>await waffle.deployContract(this.signers.admin, tokenArtifact);
+
+      const governorHelperArtifact: Artifact = await artifacts.readArtifact("MyGovernorHelper");
    
       const governorExpectedAddress = await getExpectedContractAddress(this.signers.admin);
       this.timelock = <Timelock>await waffle.deployContract(this.signers.admin, timelockArtifact,[governorExpectedAddress, 2]);
  
 
-      const governorHelperArtifact: Artifact = await artifacts.readArtifact("MyGovernorHelper");
       this.governorHelper = <MyGovernorHelper>await waffle.deployContract(this.signers.admin, governorHelperArtifact, [governorExpectedAddress]);
 
       this.governor = <MyGovernor>await waffle.deployContract(this.signers.admin, governorArtifact,[this.token.address, this.timelock.address, this.governorHelper.address]);
@@ -346,6 +353,9 @@ describe("Unit tests", function () {
     // analyse results
     proposalPassesQuorumBudgetTransferredToProposer();
 
+    transferBudgetToNewContract();
     // queue/execute
+
+    userMintsProjectNft();
   });
 });
