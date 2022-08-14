@@ -33,6 +33,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         uint256 budget;
     }
     mapping(uint256 => ProposerCore) private _proposers;
+    mapping(address => uint256) private _loyalty;
 
     constructor(IVotes _token, ICompoundTimelock _timelock, uint256 proposalId, address proposer, uint256 budget)
         Governor("MyGovernor")
@@ -152,6 +153,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         address payable receiver = payable(_proposers[proposalId].name);
         //!TODO transfer funds from token contract to proposer
         // IMyGovernor(tokenAddress).transferFunds(receiver,_proposers[proposalId].budget*10**9);
+   
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -188,6 +190,13 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         return super.supportsInterface(interfaceId);
     }
 
+    function getLoyalty(address account) public returns(bool){
+        uint threshold = 5; 
+        if (_loyalty[account] > threshold){
+            return true;
+        } 
+        return false; 
+    }
 
     function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
         uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
@@ -201,11 +210,13 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         }        
         require(msg.value >= fee, "You need more ether to vote with all NFTs: cost = (nVotes)^2 * 0.01 ether");
 
+        _loyalty[msg.sender] += 1;
         address voter = _msgSender();
         return  _castVoteAllIn(proposalId, voter, support, "", "");
     }
 
     function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
+        _loyalty[msg.sender] += 1;
         address voter = _msgSender();
         return  _castVoteSimple(proposalId, voter, support, "", "");
     }

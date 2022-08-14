@@ -10,8 +10,12 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 // import "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
+// import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
-
+interface IProjectGovernor {
+    function getLoyalty(address account) external view returns (bool);
+}
 
 contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712, ERC721Votes {
     using Counters for Counters.Counter;
@@ -27,8 +31,16 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     
     // uint public constant gasLimit = 0.000021 ether;
     uint public constant MAX_PER_MINT = 5;
+
+
     // NFT Jsons linK:
-    string public baseTokenURI = "https://gateway.pinata.cloud/ipfs/QmR1yHJYafBkwCXMfnytoQXryiyWWiCncTotkKxsHghTGX/";
+    //create two URIs. 
+    //the contract will switch between these two URIs
+    string public aUri = "URIaaaaaaaaaa";
+    string public bUri = "URIbbbbbbbbbb";
+    string public baseExtension = ".json";
+
+    address public myGov;
 
     struct local {
         bool whitelisted;
@@ -40,10 +52,11 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     bool isWhitelistActive = true; 
     bool public whitelistPaused;
 
-    constructor() ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
+    constructor(address myGovernor) ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
     public {
         // EIP712( name, version)
         //setBaseURI(baseURI);
+        myGov = myGovernor;
         creator = owner();
     }
 
@@ -57,17 +70,44 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         _;
     }
 
+    //the token URI function will contain the logic to determine what URI to show
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
+    {
+       
+        require(
+        _exists(tokenId),
+        "ERC721Metadata: URI query for nonexistent token"
+        );
+        
+        address currentOwner = ownerOf(tokenId);
+        //if the block timestamp is divisible by 2 show the aURI
+        if (IProjectGovernor(myGov).getLoyalty(currentOwner)) {
+            return bytes(aUri).length > 0
+            ? string(abi.encodePacked(aUri, Strings.toString(tokenId), baseExtension))
+            : "";
+        }
+
+        //if the block timestamp is NOT divisible by 2 show the bURI
+        return bytes(bUri).length > 0
+            ? string(abi.encodePacked(bUri, Strings.toString(tokenId), baseExtension))
+            : "";
+    }
+
     function _baseURI() internal view virtual override
         returns (string memory) {
-    return baseTokenURI;
+    return bUri;
     }
 
     function setAdminMember(address account) public restricted adminOnly {
         adminMembers[account] = true;
     }
 
-    function setBaseURI(string memory _baseTokenURI) public restricted {
-        baseTokenURI = _baseTokenURI;
+    function setAURI(string memory _baseTokenURI) public restricted {
+        aUri = _baseTokenURI;
+    }
+
+    function setBURI(string memory _baseTokenURI) public restricted {
+        bUri = _baseTokenURI;
     }
 
     function setWhitelist(address[] calldata addresses) external adminOnly {

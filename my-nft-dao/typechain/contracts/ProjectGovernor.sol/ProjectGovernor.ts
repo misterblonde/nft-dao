@@ -45,6 +45,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "getBalance()": FunctionFragment;
+    "getLoyalty(address)": FunctionFragment;
     "getProposerBudget(uint256)": FunctionFragment;
     "getProposerName(uint256)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
@@ -98,6 +99,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "execute"
       | "getBalance"
+      | "getLoyalty"
       | "getProposerBudget"
       | "getProposerName"
       | "getVotes"
@@ -215,6 +217,10 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getLoyalty",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "getProposerBudget",
@@ -429,6 +435,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getLoyalty", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getProposerBudget",
     data: BytesLike
@@ -799,6 +806,11 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getLoyalty(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1053,6 +1065,11 @@ export interface ProjectGovernor extends BaseContract {
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getLoyalty(
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   getProposerBudget(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -1304,6 +1321,11 @@ export interface ProjectGovernor extends BaseContract {
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getLoyalty(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1665,6 +1687,11 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getLoyalty(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1915,6 +1942,11 @@ export interface ProjectGovernor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getLoyalty(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
