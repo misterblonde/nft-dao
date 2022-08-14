@@ -29,6 +29,7 @@ import { expect, assert } from "chai";
 import { providers } from "ethers";
 import { network } from "hardhat";
 import { artifacts, ethers, waffle } from "hardhat";
+import { getExpectedContractAddress } from "../../tasks/utils";
 
 export function transferBudgetToNewContract(): void {
   it("Proposal approved and budget sent to new token child contract", async function () {
@@ -462,8 +463,10 @@ export function userMintsProjectNft(): void {
 
     // _______________ ADD SUBDAO TO BOX______________________
 
+    const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
+
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy();
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy(expectedProjGovAddress);
     await newTokenContract.deployed();
 
     // _______________ Balances after execution _______________

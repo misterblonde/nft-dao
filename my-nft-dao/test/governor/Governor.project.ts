@@ -17,6 +17,7 @@ import { expect, assert } from "chai";
 import { providers } from "ethers";
 import { network } from "hardhat";
 import { artifacts, ethers, waffle } from "hardhat";
+import { getExpectedContractAddress } from "../../tasks/utils";
 import {
     Box,
     Box__factory,
@@ -241,9 +242,10 @@ export function whitelistedUserMintsProjectNft(): void {
     // await newTokenContract.deployed();
 
     //
+    const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
 
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy();
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);
     await newTokenContract.deployed();
 
     // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
@@ -479,8 +481,10 @@ export function whitelistNftCannotBeTransferredIfPaused(): void {
       );
   
   
+      const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
+
       const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-      const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy();
+      const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);
       await newTokenContract.deployed();
   
       // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
