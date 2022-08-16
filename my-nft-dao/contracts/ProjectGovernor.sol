@@ -9,6 +9,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.s
 
 // import "@openzeppelin/contracts/governance/utils/Votes.sol";
 
+// compute average 
 
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
@@ -20,8 +21,17 @@ interface IMyGovernor{
     function transferFunds(address payable _receiver, uint256 amount) external  payable;
 }
 
+interface IBoxLocal {
+    function closeBox() external;
+}
+
+interface IProjectNftToken {
+    function closeCollection() external;
+}
+
 contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
     address public tokenAddress;
+    address public myGlobalGov;
     address public owner;
 
     uint256 public initialBudget; 
@@ -34,9 +44,10 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     mapping(uint256 => ProposerCore) private _proposers;
     mapping(address => uint256) private _loyalty;
     uint256[3] public hotProposals;
+    uint256 public latestProposal;
     uint8 public hotPtr = 0; 
 
-    constructor(IVotes _token, ICompoundTimelock _timelock, address _governor, uint256 proposalId)
+    constructor(IVotes _token, ICompoundTimelock _timelock, IMyGovernor _governor, uint256 proposalId)
         Governor("MyGovernor")
         GovernorSettings(
             1, /* 1 block voting delay*/
@@ -50,6 +61,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         //require(msg.sender ==, "only admin members can deploy the sub-DAO governance contract") // make requirement that deploy is subdao admin by box
         tokenAddress = address(_token);
         owner =  msg.sender;
+        myGlobalGov = address(_governor);
         // keep if created automatically as nft is created:
         initialBudget = IMyGovernor(_governor).getProposerBudget(proposalId);
         initialProposer = IMyGovernor(_governor).getProposerName(proposalId);
@@ -75,7 +87,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     modifier membersOnly() {
         (bool success, bytes memory balanceUser) = tokenAddress.call(abi.encode("balanceOf(address)", msg.sender));
         uint256 decoded = abi.decode(balanceUser, (uint256));
-        require(decoded >= proposalThreshold(), "You don't own enough Genesis NFTs to propose.");
+        require(decoded >= 1, "You need at least one project NFT to take part in DAO Governance");
         _;
     }
 
@@ -285,6 +297,23 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
             emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
         }
         return weight;
+    }
+
+    function closeSubDAO() internal onlyOwner returns (uint256) {
+
+        // no active proposals left 
+        require((state(latestProposal) == (ProposalState.Canceled) || state(latestProposal) == ProposalState.Defeated || state(latestProposal) == ProposalState.Expired || state(latestProposal) == ProposalState.Executed), "Proj Gov: cannot close Sub DAO active proposals remain.");
+
+        // transfer funds back to main DAO from NFT contract, from BoxLocal
+        IProjectNftToken(tokenAddress).closeCollection();
+
+
+        // transfer funds back to main DAO from NFT contract, from BoxLocal
+        IBoxLocal(tokenAddress).closeBox();
+
+        // send all funds from this account
+        payable(myGlobalGov).transfer(address(this).balance);
+    
     }
 
 

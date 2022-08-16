@@ -72,6 +72,10 @@ export type { MyGovernorHelper } from "./contracts/MyGovernorHelper.sol/MyGovern
 export { MyGovernorHelper__factory } from "./factories/contracts/MyGovernorHelper.sol/MyGovernorHelper__factory";
 export type { MyNftToken } from "./contracts/MyNftToken";
 export { MyNftToken__factory } from "./factories/contracts/MyNftToken__factory";
+export type { IBoxLocal } from "./contracts/ProjectGovernor.sol/IBoxLocal";
+export { IBoxLocal__factory } from "./factories/contracts/ProjectGovernor.sol/IBoxLocal__factory";
+export type { IProjectNftToken } from "./contracts/ProjectGovernor.sol/IProjectNftToken";
+export { IProjectNftToken__factory } from "./factories/contracts/ProjectGovernor.sol/IProjectNftToken__factory";
 export type { ProjectGovernor } from "./contracts/ProjectGovernor.sol/ProjectGovernor";
 export { ProjectGovernor__factory } from "./factories/contracts/ProjectGovernor.sol/ProjectGovernor__factory";
 export type { IProjectGovernor } from "./contracts/ProjectNftToken.sol/IProjectGovernor";

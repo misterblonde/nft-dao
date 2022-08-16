@@ -5,8 +5,9 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract BoxLocal is Ownable {
-    address public governor;
+    address public myGlobalGov;
     address public governorHelper;
+    address public myLocalGov;
 
     uint256 private value;
 
@@ -18,16 +19,21 @@ contract BoxLocal is Ownable {
     event ValueChanged(uint256 newValue);
 
     constructor(address myGovernor, address myGovernorHelper) public payable {
-        governor = myGovernor;
+        myGlobalGov = myGovernor;
         governorHelper = myGovernorHelper;
     }
 
-    modifier daoOnly() {
-         require((msg.sender == governor) || (msg.sender == owner()), "Only DAO can update.");
+    modifier onlyGovernor() {
+         require((msg.sender == myGlobalGov) || (msg.sender == myLocalGov) || (msg.sender == owner()), "Only DAO can update.");
         _;
     }
+    
+    function setLocalGov(address localGov) public onlyGovernor {
+        myLocalGov = localGov;
+    }
+
     // Stores a new value in the contract
-    function store(uint256 newValue) public daoOnly onlyOwner {
+    function store(uint256 newValue) public onlyGovernor onlyOwner {
         value = newValue;
         emit ValueChanged(newValue);
     }
@@ -41,7 +47,7 @@ contract BoxLocal is Ownable {
         return adminMembers[account];
     }
 //daoOnly onlyOwner
-    function setAdmin(address account) public daoOnly {
+    function setAdmin(address account) public onlyGovernor {
         adminMembers[account] = true;
     }
 
@@ -51,6 +57,12 @@ contract BoxLocal is Ownable {
         adminMembers[account] = false;
     }
 
+    function closeBox() external {
+        require(msg.sender == myLocalGov, "Only the local governor can perform this action.");
+        // return remaining funds
+        payable(myGlobalGov).transfer(address(this).balance);
+        // release pausable nfts
+    }
 
     // Fallback function must be external.
     fallback() external payable {

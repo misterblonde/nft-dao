@@ -23,6 +23,7 @@ import type {
   BytesLike,
   CallOverrides,
   ContractTransaction,
+  Overrides,
   PayableOverrides,
   PopulatedTransaction,
   Signer,
@@ -34,6 +35,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
     "_children(uint256)": FunctionFragment;
     "getBalance()": FunctionFragment;
     "getTokenAddress(uint256)": FunctionFragment;
+    "linkLocalGov(address,uint256)": FunctionFragment;
     "myGovernor()": FunctionFragment;
     "newProject(uint256,address,bool)": FunctionFragment;
   };
@@ -43,6 +45,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
       | "_children"
       | "getBalance"
       | "getTokenAddress"
+      | "linkLocalGov"
       | "myGovernor"
       | "newProject"
   ): FunctionFragment;
@@ -58,6 +61,10 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getTokenAddress",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "linkLocalGov",
+    values: [PromiseOrValue<string>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "myGovernor",
@@ -76,6 +83,10 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getTokenAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "linkLocalGov",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "myGovernor", data: BytesLike): Result;
@@ -134,6 +145,12 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    linkLocalGov(
+      newLocalGov: PromiseOrValue<string>,
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     myGovernor(overrides?: CallOverrides): Promise<[string]>;
 
     newProject(
@@ -156,6 +173,12 @@ export interface MyGovernorHelper extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
+  linkLocalGov(
+    newLocalGov: PromiseOrValue<string>,
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   myGovernor(overrides?: CallOverrides): Promise<string>;
 
   newProject(
@@ -177,6 +200,12 @@ export interface MyGovernorHelper extends BaseContract {
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
+
+    linkLocalGov(
+      newLocalGov: PromiseOrValue<string>,
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     myGovernor(overrides?: CallOverrides): Promise<string>;
 
@@ -206,6 +235,12 @@ export interface MyGovernorHelper extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    linkLocalGov(
+      newLocalGov: PromiseOrValue<string>,
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     myGovernor(overrides?: CallOverrides): Promise<BigNumber>;
 
     newProject(
@@ -227,6 +262,12 @@ export interface MyGovernorHelper extends BaseContract {
     getTokenAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    linkLocalGov(
+      newLocalGov: PromiseOrValue<string>,
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     myGovernor(overrides?: CallOverrides): Promise<PopulatedTransaction>;

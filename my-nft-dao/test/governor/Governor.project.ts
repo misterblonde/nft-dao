@@ -30,7 +30,7 @@ import {
     ProjectNftToken,
     ProjectNftToken__factory,
   } from "../../typechain";
-import { toASCII } from "punycode";
+
 // 1 test only
 // ____________________________________________________________________
 
@@ -245,7 +245,7 @@ export function whitelistedUserMintsProjectNft(): void {
     const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress, this.governor.address);
     await newTokenContract.deployed();
 
     // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
@@ -484,7 +484,7 @@ export function whitelistNftCannotBeTransferredIfPaused(): void {
       const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
       const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-      const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);
+      const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress, this.governor.address);
       await newTokenContract.deployed();
   
       // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________

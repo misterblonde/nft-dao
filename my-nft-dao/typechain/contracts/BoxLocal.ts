@@ -32,14 +32,17 @@ import type {
 export interface BoxLocalInterface extends utils.Interface {
   functions: {
     "adminMembers(address)": FunctionFragment;
-    "governor()": FunctionFragment;
+    "closeBox()": FunctionFragment;
     "governorHelper()": FunctionFragment;
     "isAdmin(address)": FunctionFragment;
+    "myGlobalGov()": FunctionFragment;
+    "myLocalGov()": FunctionFragment;
     "owner()": FunctionFragment;
     "removeAdmin(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "retrieve()": FunctionFragment;
     "setAdmin(address)": FunctionFragment;
+    "setLocalGov(address)": FunctionFragment;
     "store(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
   };
@@ -47,14 +50,17 @@ export interface BoxLocalInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "adminMembers"
-      | "governor"
+      | "closeBox"
       | "governorHelper"
       | "isAdmin"
+      | "myGlobalGov"
+      | "myLocalGov"
       | "owner"
       | "removeAdmin"
       | "renounceOwnership"
       | "retrieve"
       | "setAdmin"
+      | "setLocalGov"
       | "store"
       | "transferOwnership"
   ): FunctionFragment;
@@ -63,7 +69,7 @@ export interface BoxLocalInterface extends utils.Interface {
     functionFragment: "adminMembers",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "governor", values?: undefined): string;
+  encodeFunctionData(functionFragment: "closeBox", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "governorHelper",
     values?: undefined
@@ -71,6 +77,14 @@ export interface BoxLocalInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isAdmin",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myGlobalGov",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myLocalGov",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -87,6 +101,10 @@ export interface BoxLocalInterface extends utils.Interface {
     values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
+    functionFragment: "setLocalGov",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "store",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -99,12 +117,17 @@ export interface BoxLocalInterface extends utils.Interface {
     functionFragment: "adminMembers",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "governor", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "closeBox", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "governorHelper",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "isAdmin", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "myGlobalGov",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "myLocalGov", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "removeAdmin",
@@ -116,6 +139,10 @@ export interface BoxLocalInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "retrieve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "setAdmin", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setLocalGov",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "store", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "transferOwnership",
@@ -194,7 +221,9 @@ export interface BoxLocal extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    governor(overrides?: CallOverrides): Promise<[string]>;
+    closeBox(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     governorHelper(overrides?: CallOverrides): Promise<[string]>;
 
@@ -202,6 +231,10 @@ export interface BoxLocal extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<[string]>;
+
+    myLocalGov(overrides?: CallOverrides): Promise<[string]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
 
@@ -221,6 +254,11 @@ export interface BoxLocal extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    setLocalGov(
+      localGov: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     store(
       newValue: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -237,7 +275,9 @@ export interface BoxLocal extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
-  governor(overrides?: CallOverrides): Promise<string>;
+  closeBox(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   governorHelper(overrides?: CallOverrides): Promise<string>;
 
@@ -245,6 +285,10 @@ export interface BoxLocal extends BaseContract {
     account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
+
+  myGlobalGov(overrides?: CallOverrides): Promise<string>;
+
+  myLocalGov(overrides?: CallOverrides): Promise<string>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
@@ -264,6 +308,11 @@ export interface BoxLocal extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  setLocalGov(
+    localGov: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   store(
     newValue: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -280,7 +329,7 @@ export interface BoxLocal extends BaseContract {
       overrides?: CallOverrides
     ): Promise<boolean>;
 
-    governor(overrides?: CallOverrides): Promise<string>;
+    closeBox(overrides?: CallOverrides): Promise<void>;
 
     governorHelper(overrides?: CallOverrides): Promise<string>;
 
@@ -288,6 +337,10 @@ export interface BoxLocal extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<string>;
+
+    myLocalGov(overrides?: CallOverrides): Promise<string>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
@@ -302,6 +355,11 @@ export interface BoxLocal extends BaseContract {
 
     setAdmin(
       account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setLocalGov(
+      localGov: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -339,7 +397,9 @@ export interface BoxLocal extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    governor(overrides?: CallOverrides): Promise<BigNumber>;
+    closeBox(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     governorHelper(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -347,6 +407,10 @@ export interface BoxLocal extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<BigNumber>;
+
+    myLocalGov(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -363,6 +427,11 @@ export interface BoxLocal extends BaseContract {
 
     setAdmin(
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setLocalGov(
+      localGov: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -383,7 +452,9 @@ export interface BoxLocal extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    governor(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    closeBox(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     governorHelper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -391,6 +462,10 @@ export interface BoxLocal extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    myLocalGov(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -407,6 +482,11 @@ export interface BoxLocal extends BaseContract {
 
     setAdmin(
       account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setLocalGov(
+      localGov: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

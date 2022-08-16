@@ -466,7 +466,7 @@ export function userMintsProjectNft(): void {
     const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy(expectedProjGovAddress);
+    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy(expectedProjGovAddress, this.governor.address);
     await newTokenContract.deployed();
 
     // _______________ Balances after execution _______________

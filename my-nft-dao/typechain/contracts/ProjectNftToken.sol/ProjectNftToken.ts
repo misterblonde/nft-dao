@@ -43,6 +43,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "bUri()": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "baseExtension()": FunctionFragment;
+    "closeCollection()": FunctionFragment;
     "creator()": FunctionFragment;
     "delegate(address)": FunctionFragment;
     "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": FunctionFragment;
@@ -56,6 +57,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "isApprovedForAll(address,address)": FunctionFragment;
     "isWhitelisted(address)": FunctionFragment;
     "mintWhitelist()": FunctionFragment;
+    "myGlobalGov()": FunctionFragment;
     "myGov()": FunctionFragment;
     "name()": FunctionFragment;
     "nonces(address)": FunctionFragment;
@@ -101,6 +103,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "bUri"
       | "balanceOf"
       | "baseExtension"
+      | "closeCollection"
       | "creator"
       | "delegate"
       | "delegateBySig"
@@ -114,6 +117,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "isApprovedForAll"
       | "isWhitelisted"
       | "mintWhitelist"
+      | "myGlobalGov"
       | "myGov"
       | "name"
       | "nonces"
@@ -178,6 +182,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     functionFragment: "baseExtension",
     values?: undefined
   ): string;
+  encodeFunctionData(
+    functionFragment: "closeCollection",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "creator", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "delegate",
@@ -232,6 +240,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "mintWhitelist",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myGlobalGov",
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "myGov", values?: undefined): string;
@@ -370,6 +382,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     functionFragment: "baseExtension",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "closeCollection",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "creator", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "delegate", data: BytesLike): Result;
   decodeFunctionResult(
@@ -405,6 +421,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "mintWhitelist",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "myGlobalGov",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "myGov", data: BytesLike): Result;
@@ -665,6 +685,10 @@ export interface ProjectNftToken extends BaseContract {
 
     baseExtension(overrides?: CallOverrides): Promise<[string]>;
 
+    closeCollection(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     creator(overrides?: CallOverrides): Promise<[string]>;
 
     delegate(
@@ -726,6 +750,8 @@ export interface ProjectNftToken extends BaseContract {
     mintWhitelist(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<[string]>;
 
     myGov(overrides?: CallOverrides): Promise<[string]>;
 
@@ -893,6 +919,10 @@ export interface ProjectNftToken extends BaseContract {
 
   baseExtension(overrides?: CallOverrides): Promise<string>;
 
+  closeCollection(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   creator(overrides?: CallOverrides): Promise<string>;
 
   delegate(
@@ -954,6 +984,8 @@ export interface ProjectNftToken extends BaseContract {
   mintWhitelist(
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
+
+  myGlobalGov(overrides?: CallOverrides): Promise<string>;
 
   myGov(overrides?: CallOverrides): Promise<string>;
 
@@ -1121,6 +1153,8 @@ export interface ProjectNftToken extends BaseContract {
 
     baseExtension(overrides?: CallOverrides): Promise<string>;
 
+    closeCollection(overrides?: CallOverrides): Promise<void>;
+
     creator(overrides?: CallOverrides): Promise<string>;
 
     delegate(
@@ -1180,6 +1214,8 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<boolean>;
 
     mintWhitelist(overrides?: CallOverrides): Promise<void>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<string>;
 
     myGov(overrides?: CallOverrides): Promise<string>;
 
@@ -1413,6 +1449,10 @@ export interface ProjectNftToken extends BaseContract {
 
     baseExtension(overrides?: CallOverrides): Promise<BigNumber>;
 
+    closeCollection(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     creator(overrides?: CallOverrides): Promise<BigNumber>;
 
     delegate(
@@ -1474,6 +1514,8 @@ export interface ProjectNftToken extends BaseContract {
     mintWhitelist(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<BigNumber>;
 
     myGov(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1642,6 +1684,10 @@ export interface ProjectNftToken extends BaseContract {
 
     baseExtension(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    closeCollection(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     creator(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     delegate(
@@ -1703,6 +1749,8 @@ export interface ProjectNftToken extends BaseContract {
     mintWhitelist(
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     myGov(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

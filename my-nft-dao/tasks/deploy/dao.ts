@@ -29,30 +29,36 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
   const signerAddress = await tokenFactory.signer.getAddress();
   const signer = await ethers.getSigner(signerAddress);
 
+
   const governorExpectedAddress = await getExpectedContractAddress(signer);
 
   const token: MyNftToken = <MyNftToken>await tokenFactory.deploy();
   await token.deployed();
+  
+
+  const governorHelperExpectedAddress = await getExpectedContractAddress(signer);
 
   const timelockFactory: Timelock__factory = await ethers.getContractFactory("Timelock");
   const timelock: Timelock = <Timelock>await timelockFactory.deploy(governorExpectedAddress, timelockDelay);
   await timelock.deployed();
 
-  const governorHelperFactory: MyGovernorHelper__factory = await ethers.getContractFactory("MyGovernorHelper");
-  const governorHelper: MyGovernorHelper = <MyGovernorHelper>await governorHelperFactory.deploy(governorExpectedAddress);
-  await governorHelper.deployed();
-  console.log(governorHelper)
 
   const governorFactory: MyGovernor__factory = await ethers.getContractFactory("MyGovernor");
-  const governor: MyGovernor = <MyGovernor> await governorFactory.deploy(token.address, timelock.address, governorHelper.address);
+  const governor: MyGovernor = <MyGovernor> await governorFactory.deploy(token.address, timelock.address, governorHelperExpectedAddress);
   await governor.deployed();
+
+  const governorHelperFactory: MyGovernorHelper__factory = await ethers.getContractFactory("MyGovernorHelper");
+  const governorHelper: MyGovernorHelper = <MyGovernorHelper>await governorHelperFactory.deploy(governor.address);
+  await governorHelper.deployed();
+//   console.log(governorHelper)
 
   // ___________ deploy the Box and transfer ownership to timlock: ___________
   console.log("----------------------------------------------------");
   console.log("Deploying Box and transfering ownership to timelock...");
   // Deploy according to dao.ts style deployment:
   const boxFactory: Box__factory = await ethers.getContractFactory("Box");
-  const box: Box = <Box>await boxFactory.deploy(governor.address,governorHelper.address);
+  const box: Box = <Box>await boxFactory.deploy(governor.address, governorHelper.address);
+  // originally had no input args to constructor because owned by timelock
   await box.deployed();
 
   await box.transferOwnership(timelock.address);
@@ -65,6 +71,7 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
     token: token.address,
     box: box.address,
     helper: governorHelper.address,
+    governorHelperExpectedAddress
   });
 
   // Transfer ownership to the timelock to allow it to perform actions on the NFT contract as part of proposal execution
@@ -93,12 +100,19 @@ task("deploy:Dao").setAction(async function (_, { ethers, run }) {
   });
 
   await run("verify:verify", {
+    address: governorHelper.address,
+    constructorArguments: [governor.address],
+    //token.address, timelock.address, governorHelper.address
+  });
+
+  await run("verify:verify", {
     address: governor.address,
-    constructorArguments: [token.address, timelock.address],
+    constructorArguments: [token.address, timelock.address, governorHelper.address],
+    //token.address, timelock.address, governorHelper.address
   });
 
   await run("verify:verify", {
     address: box.address,
-    constructorArguments: [],
+    constructorArguments: [governor.address, governorHelper.address],
   });
 });

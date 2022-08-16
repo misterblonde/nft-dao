@@ -33,14 +33,18 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     // uint public constant gasLimit = 0.000021 ether;
     uint public constant MAX_PER_MINT = 5;
 
-    // NFT Jsons linK:
-    //create two URIs. 
+    // NFT Jsons linK: create two URIs. 
     //the contract will switch between these two URIs
-    string public aUri = "URIaaaaaaaaaa";
-    string public bUri = "URIbbbbbbbbbb";
+
+    // dynamic
+    string public aUri = "https://nftstorage.link/ipfs/bafybeihgrmaxuvbau7lp6lk2ninihqasxg7rjxix36l35giw4dakvkvkci/";
+
+    //static
+    string public bUri = "https://nftstorage.link/ipfs/bafybeiexpgwkw4wcpc6spqhtdgnuxpxpyiqgxe4tmdtvg3kwwe5gkpyreq/";
     string public baseExtension = ".json";
 
     address public myGov;
+    address public myGlobalGov;
 
     struct local {
         bool whitelisted;
@@ -52,11 +56,13 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     bool isWhitelistActive = true; 
     bool public whitelistPaused;
 
-    constructor(address myGovernor) ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
+    constructor(address myLocalGovernor, address myGlobalGovernor) ERC721("ProjectToken", "PTK") EIP712("ProjectToken", "1") 
     public {
         // EIP712( name, version)
         //setBaseURI(baseURI);
-        myGov = myGovernor;
+        myGov = myLocalGovernor; // local Gov
+        myGlobalGov = myGlobalGovernor;
+        whitelistPaused = true;
         creator = owner();
     }
 
@@ -70,6 +76,18 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         _;
     }
 
+    modifier onlyGovernor(){
+        require(msg.sender == myGov, "Only the local governor can perform this action.");
+        _;
+    }
+
+    function closeCollection() external {
+        require(msg.sender == myGov, "Only the local governor can perform this action.");
+        // send funds accumulated
+        payable(myGlobalGov).transfer(address(this).balance);
+        // release pausable nfts
+        unpause();
+    }
 
     //the token URI function will contain the logic to determine what URI to show
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
@@ -128,7 +146,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
 
     // numberOfTokens = 1
     function mintWhitelist() external payable {
-        require(whitelistPaused == false, "You cannot whitelist mint nfts at this time.");
+        // require(whitelistPaused == false, "You cannot whitelist mint nfts at this time.");
         uint256 ts = _tokenWhitelistCounter.current();
         require(isWhitelistActive, "Allow list is not active");
         require(1 <= whitelistedAddresses[msg.sender].mintAllowance, "Caller not allowed to purchase whitelist NFT");

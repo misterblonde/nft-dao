@@ -57,6 +57,8 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "initialBudget()": FunctionFragment;
     "initialProposer()": FunctionFragment;
     "isLoyal(address)": FunctionFragment;
+    "latestProposal()": FunctionFragment;
+    "myGlobalGov()": FunctionFragment;
     "name()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
@@ -114,6 +116,8 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "initialBudget"
       | "initialProposer"
       | "isLoyal"
+      | "latestProposal"
+      | "myGlobalGov"
       | "name"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
@@ -277,6 +281,14 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isLoyal",
     values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "latestProposal",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "myGlobalGov",
+    values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -486,6 +498,14 @@ export interface ProjectGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "isLoyal", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "latestProposal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "myGlobalGov",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
@@ -889,6 +909,10 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    latestProposal(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<[string]>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     onERC1155BatchReceived(
@@ -1161,6 +1185,10 @@ export interface ProjectGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  latestProposal(overrides?: CallOverrides): Promise<BigNumber>;
+
+  myGlobalGov(overrides?: CallOverrides): Promise<string>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   onERC1155BatchReceived(
@@ -1430,6 +1458,10 @@ export interface ProjectGovernor extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    latestProposal(overrides?: CallOverrides): Promise<BigNumber>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<string>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1809,6 +1841,10 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    latestProposal(overrides?: CallOverrides): Promise<BigNumber>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     onERC1155BatchReceived(
@@ -2077,6 +2113,10 @@ export interface ProjectGovernor extends BaseContract {
       account: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
+
+    latestProposal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    myGlobalGov(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

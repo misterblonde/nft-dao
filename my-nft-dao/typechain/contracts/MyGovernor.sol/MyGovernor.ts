@@ -72,6 +72,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "setVotingDelay(uint256)": FunctionFragment;
     "setVotingPeriod(uint256)": FunctionFragment;
     "state(uint256)": FunctionFragment;
+    "submitProposal(address[],uint256[],bytes[],string,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "timelock()": FunctionFragment;
     "timelockAddress()": FunctionFragment;
@@ -126,6 +127,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "setVotingDelay"
       | "setVotingPeriod"
       | "state"
+      | "submitProposal"
       | "supportsInterface"
       | "timelock"
       | "timelockAddress"
@@ -358,6 +360,16 @@ export interface MyGovernorInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "submitProposal",
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BytesLike>[],
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
   ): string;
@@ -510,6 +522,10 @@ export interface MyGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "state", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "submitProposal",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
@@ -959,6 +975,15 @@ export interface MyGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -1219,6 +1244,15 @@ export interface MyGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
+  submitProposal(
+    targets: PromiseOrValue<string>[],
+    values: PromiseOrValue<BigNumberish>[],
+    calldatas: PromiseOrValue<BytesLike>[],
+    description: PromiseOrValue<string>,
+    budgetGwei: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
@@ -1476,6 +1510,15 @@ export interface MyGovernor extends BaseContract {
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
+
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
@@ -1837,6 +1880,15 @@ export interface MyGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
@@ -2092,6 +2144,15 @@ export interface MyGovernor extends BaseContract {
     state(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     supportsInterface(

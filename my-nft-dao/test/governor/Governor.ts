@@ -31,6 +31,7 @@ import { transferBudgetToNewContract, userMintsProjectNft } from "./Governor.exe
 import { canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted, voteFailsBecauseAlreadyVoted, votingWithAllNftsWorks, proposalPassesQuorumBudgetTransferredToProposer } from "./Governor.voting";
 import { NetworkUserConfig } from "hardhat/types";
 import { GovernorCountingSimple__factory, MyGovernorHelper } from "../../typechain";
+import { testVotingOnSubDAO } from "./Governor.launchSubDAO";
 const hre = require("hardhat");
 
 describe("Unit tests", function () {
@@ -82,6 +83,7 @@ describe("Unit tests", function () {
             this.token = <MyNftToken>await waffle.deployContract(this.signers.admin, tokenArtifact);
          
             const governorExpectedAddress = await getExpectedContractAddress(this.signers.admin);
+       
             this.timelock = <Timelock>await waffle.deployContract(this.signers.admin, timelockArtifact,[governorExpectedAddress, 2]);
      
             this.governorHelper = <MyGovernorHelper>await waffle.deployContract(this.signers.admin, governorHelperArtifact,[governorExpectedAddress]);
@@ -373,5 +375,9 @@ describe("Unit tests", function () {
     whitelistedUserMintsProjectNft();
 
     whitelistNftCannotBeTransferredIfPaused();
+
+    testVotingOnSubDAO();
+
+    
   });
 });

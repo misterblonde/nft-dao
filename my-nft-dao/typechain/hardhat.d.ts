@@ -141,6 +141,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.MyNftToken__factory>;
     getContractFactory(
+      name: "IBoxLocal",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBoxLocal__factory>;
+    getContractFactory(
       name: "IERC721",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IERC721__factory>;
@@ -148,6 +152,10 @@ declare module "hardhat/types/runtime" {
       name: "IMyGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IMyGovernor__factory>;
+    getContractFactory(
+      name: "IProjectNftToken",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IProjectNftToken__factory>;
     getContractFactory(
       name: "ProjectGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -326,6 +334,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.MyNftToken>;
     getContractAt(
+      name: "IBoxLocal",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBoxLocal>;
+    getContractAt(
       name: "IERC721",
       address: string,
       signer?: ethers.Signer
@@ -335,6 +348,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.IMyGovernor>;
+    getContractAt(
+      name: "IProjectNftToken",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IProjectNftToken>;
     getContractAt(
       name: "ProjectGovernor",
       address: string,

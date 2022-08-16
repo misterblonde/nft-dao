@@ -129,9 +129,18 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
             proposer.budget = budget;
     }
 
-    // function setProjectAdmins() superMembersOnly {
-        
-    // }
+    function submitProposal(address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        string memory description, 
+        uint256 budgetGwei) public superMembersOnly {
+
+            propose(targets, values, calldatas, description);
+
+            uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+
+            setProposalBudget(proposalId, budgetGwei);
+        }
 
     function propose(
         address[] memory targets,

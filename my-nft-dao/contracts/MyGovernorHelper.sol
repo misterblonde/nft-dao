@@ -63,6 +63,13 @@ contract MyGovernorHelper {
         return address(_children[proposalId]);
     }
 
+    function linkLocalGov(address newLocalGov, uint256 proposalId) external {
+        //require(msg.sender == )
+         _children[proposalId].setLocalGov(newLocalGov);
+
+         // set local NFT collection
+        // _children[proposalId].setLocalGov(newLocalGov);
+    }
 // only works if directly deploys nft:
     // function setProposerTokenSpecial(uint256 proposalId) public {
     //     require(msg.sender == IMyGovernor(myGovernor).getProposerName(proposalId), "Only initial proposer can request special token sub DAO rights.");
