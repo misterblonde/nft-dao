@@ -7,9 +7,8 @@ import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol";
 
-// interface IERC20 {
-//     function transfer(address _to, uint256 _amount) external returns (bool);
-// }
+// import "@openzeppelin/contracts/governance/utils/Votes.sol";
+
 
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
@@ -34,8 +33,10 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     }
     mapping(uint256 => ProposerCore) private _proposers;
     mapping(address => uint256) private _loyalty;
+    uint256[3] public hotProposals;
+    uint8 public hotPtr = 0; 
 
-    constructor(IVotes _token, ICompoundTimelock _timelock, uint256 proposalId, address proposer, uint256 budget)
+    constructor(IVotes _token, ICompoundTimelock _timelock, address _governor, uint256 proposalId)
         Governor("MyGovernor")
         GovernorSettings(
             1, /* 1 block voting delay*/
@@ -45,11 +46,13 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         GovernorVotes(_token)
         GovernorTimelockCompound(_timelock)
         { 
+        // check box contract members: - safety needed
+        //require(msg.sender ==, "only admin members can deploy the sub-DAO governance contract") // make requirement that deploy is subdao admin by box
         tokenAddress = address(_token);
-        owner = msg.sender;
+        owner =  msg.sender;
         // keep if created automatically as nft is created:
-        initialBudget = budget;
-        initialProposer = proposer; 
+        initialBudget = IMyGovernor(_governor).getProposerBudget(proposalId);
+        initialProposer = IMyGovernor(_governor).getProposerName(proposalId);
         }
 
     modifier onlyOwner() {
@@ -148,12 +151,21 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         bytes[] memory calldatas,
         bytes32 descriptionHash) public payable superMembersOnly virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
+
+        // add to hotProposals
+        if (hotPtr < 2){
+            hotProposals[hotPtr] = proposalId;
+            hotPtr++;
+        } else {
+            hotProposals[hotPtr] = proposalId;
+            hotPtr = 0; 
+        }
+
         require(_proposers[proposalId].budget < (getBalance() + msg.value), "Governor: budget requested exceeds funds available.");
 
         address payable receiver = payable(_proposers[proposalId].name);
         //!TODO transfer funds from token contract to proposer
-        // IMyGovernor(tokenAddress).transferFunds(receiver,_proposers[proposalId].budget*10**9);
-   
+        receiver.send(_proposers[proposalId].budget*10**9); // budget in wei
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -190,9 +202,16 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         return super.supportsInterface(interfaceId);
     }
 
-    function getLoyalty(address account) public returns(bool){
-        uint threshold = 5; 
-        if (_loyalty[account] > threshold){
+    function isLoyal(address account) public returns(bool){
+        uint threshold = 3; 
+        uint voted = 0; 
+         for (uint i=0; i<3; i++) {
+            bool hasVoted =  hasVoted(hotProposals[i], account);
+            uint hasVotedInt = hasVoted ? uint(1) : uint(0);
+            voted += hasVotedInt;
+         }
+
+        if (_loyalty[account] >= threshold){
             return true;
         } 
         return false; 
@@ -222,10 +241,11 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     }
 
 // not sure how to authenticate locals
-    // function castVoteLocal(uint256 proposalId, uint8 support, ) public virtual  payable membersOnly returns (uint256) {
-    //     address voter = _msgSender();
-    //     return  _castVoteSimple(proposalId, voter, support, "", "");
-    // }
+    function castLocalVote(uint256 proposalId, uint8 support) public virtual membersOnly returns (uint256) {
+        // uint256 maxNumVoters = _getTotalSupply();
+        address voter = _msgSender();
+        return  _castVoteSimple(proposalId, voter, support, "", "");
+    }
 
 // override this function so either every vote counts as 1 or according to weight, if not 1 use quadratic voting fee
    function _castVoteSimple(

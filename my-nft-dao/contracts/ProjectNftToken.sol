@@ -12,9 +12,9 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 // import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
-
+import "@openzeppelin/contracts/governance/utils/Votes.sol";
 interface IProjectGovernor {
-    function getLoyalty(address account) external view returns (bool);
+    function isLoyal(address account) external view returns (bool);
 }
 
 contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712, ERC721Votes {
@@ -27,11 +27,11 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
     address public initialProposer; 
     uint public constant MAX_SUPPLY = 600;
     uint256 public constant PRICE = 20000000000000000; //0.02 ETH
+    uint256 public constant ROYALTY = 5; // 5% royalty minimum must be, 5% of 0.02 ETH = 0.001 ETH;
     event Log(uint256 gas);
     
     // uint public constant gasLimit = 0.000021 ether;
     uint public constant MAX_PER_MINT = 5;
-
 
     // NFT Jsons linK:
     //create two URIs. 
@@ -70,6 +70,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         _;
     }
 
+
     //the token URI function will contain the logic to determine what URI to show
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
     {
@@ -81,7 +82,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         
         address currentOwner = ownerOf(tokenId);
         //if the block timestamp is divisible by 2 show the aURI
-        if (IProjectGovernor(myGov).getLoyalty(currentOwner)) {
+        if (IProjectGovernor(myGov).isLoyal(currentOwner)) {
             return bytes(aUri).length > 0
             ? string(abi.encodePacked(aUri, Strings.toString(tokenId), baseExtension))
             : "";
@@ -177,24 +178,39 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         emit Log(gasleft());
     }
 
-    function pause() public onlyOwner {
+    function pause() public adminOnly {
         whitelistPaused = true; 
         _pause();
     }
 
-    function pauseLocalsOnly() public onlyOwner {
+    function pauseLocalsOnly() public adminOnly {
         whitelistPaused = true; 
     }
+    
+    function unpauseLocalsOnly() public adminOnly {
+        whitelistPaused = false; 
+    }
 
-    function unpause() public onlyOwner {
+    function unpause() public adminOnly {
         whitelistPaused = false;
         _unpause();
     }
 
     function transferFrom(address from, address to, uint256 tokenId) public override(ERC721) whenNotPaused {
-        // require((whitelistPaused == false && (tokenId < 200)), "You cannot transfer whitelist nfts at this time.");
         require((whitelistPaused == true && tokenId >= 200), "only non-whitelist tokens can be transferred at this time");
+        payWithRoyalty(to);
         return super.transferFrom(from, to, tokenId);
+    }
+
+    function payWithRoyalty(address to) public payable {
+        uint256 royaltyFee = ROYALTY * msg.value/100;
+        if (royaltyFee < 1000000000000000){
+            royaltyFee = 1000000000000000; 
+        }
+        require(msg.value >= royaltyFee, "you need to provide more ether to include royalties." );
+        payable(address(this)).transfer(royaltyFee);
+        uint remainder = msg.value - royaltyFee; 
+        payable(to).transfer(remainder);
     }
 
 
@@ -210,6 +226,7 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         whenNotPaused
         override(ERC721, ERC721Enumerable)
     {
+        // _getVotingUnits} (for example, make it return {ERC721-balanceOf}), and can use {_transferVotingUnits}
         super._beforeTokenTransfer(from, to, tokenId);
     }
 

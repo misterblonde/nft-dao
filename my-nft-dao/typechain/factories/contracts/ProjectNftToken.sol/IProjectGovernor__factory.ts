@@ -19,7 +19,7 @@ const _abi = [
         type: "address",
       },
     ],
-    name: "getLoyalty",
+    name: "isLoyal",
     outputs: [
       {
         internalType: "bool",

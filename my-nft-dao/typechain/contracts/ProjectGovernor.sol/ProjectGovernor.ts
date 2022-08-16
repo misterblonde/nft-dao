@@ -36,6 +36,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "COUNTING_MODE()": FunctionFragment;
     "EXTENDED_BALLOT_TYPEHASH()": FunctionFragment;
     "__acceptAdmin()": FunctionFragment;
+    "castLocalVote(uint256,uint8)": FunctionFragment;
     "castVote(uint256,uint8)": FunctionFragment;
     "castVoteAllIn(uint256,uint8)": FunctionFragment;
     "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": FunctionFragment;
@@ -45,15 +46,17 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "getBalance()": FunctionFragment;
-    "getLoyalty(address)": FunctionFragment;
     "getProposerBudget(uint256)": FunctionFragment;
     "getProposerName(uint256)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
     "getVotesWithParams(address,uint256,bytes)": FunctionFragment;
     "hasVoted(uint256,address)": FunctionFragment;
     "hashProposal(address[],uint256[],bytes[],bytes32)": FunctionFragment;
+    "hotProposals(uint256)": FunctionFragment;
+    "hotPtr()": FunctionFragment;
     "initialBudget()": FunctionFragment;
     "initialProposer()": FunctionFragment;
+    "isLoyal(address)": FunctionFragment;
     "name()": FunctionFragment;
     "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": FunctionFragment;
     "onERC1155Received(address,address,uint256,uint256,bytes)": FunctionFragment;
@@ -90,6 +93,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "COUNTING_MODE"
       | "EXTENDED_BALLOT_TYPEHASH"
       | "__acceptAdmin"
+      | "castLocalVote"
       | "castVote"
       | "castVoteAllIn"
       | "castVoteBySig"
@@ -99,15 +103,17 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "execute"
       | "getBalance"
-      | "getLoyalty"
       | "getProposerBudget"
       | "getProposerName"
       | "getVotes"
       | "getVotesWithParams"
       | "hasVoted"
       | "hashProposal"
+      | "hotProposals"
+      | "hotPtr"
       | "initialBudget"
       | "initialProposer"
+      | "isLoyal"
       | "name"
       | "onERC1155BatchReceived"
       | "onERC1155Received"
@@ -153,6 +159,10 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "__acceptAdmin",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "castLocalVote",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "castVote",
@@ -219,10 +229,6 @@ export interface ProjectGovernorInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getLoyalty",
-    values: [PromiseOrValue<string>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "getProposerBudget",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -256,12 +262,21 @@ export interface ProjectGovernorInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "hotProposals",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(functionFragment: "hotPtr", values?: undefined): string;
+  encodeFunctionData(
     functionFragment: "initialBudget",
     values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "initialProposer",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isLoyal",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
@@ -408,6 +423,10 @@ export interface ProjectGovernorInterface extends utils.Interface {
     functionFragment: "__acceptAdmin",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "castLocalVote",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "castVoteAllIn",
@@ -435,7 +454,6 @@ export interface ProjectGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getLoyalty", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getProposerBudget",
     data: BytesLike
@@ -455,6 +473,11 @@ export interface ProjectGovernorInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "hotProposals",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "hotPtr", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "initialBudget",
     data: BytesLike
   ): Result;
@@ -462,6 +485,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     functionFragment: "initialProposer",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "isLoyal", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "onERC1155BatchReceived",
@@ -743,6 +767,12 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    castLocalVote(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -806,11 +836,6 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getLoyalty(
-      account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -848,9 +873,21 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
+    hotProposals(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
+    hotPtr(overrides?: CallOverrides): Promise<[number]>;
+
     initialBudget(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     initialProposer(overrides?: CallOverrides): Promise<[string]>;
+
+    isLoyal(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1002,6 +1039,12 @@ export interface ProjectGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  castLocalVote(
+    proposalId: PromiseOrValue<BigNumberish>,
+    support: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   castVote(
     proposalId: PromiseOrValue<BigNumberish>,
     support: PromiseOrValue<BigNumberish>,
@@ -1065,11 +1108,6 @@ export interface ProjectGovernor extends BaseContract {
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getLoyalty(
-    account: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   getProposerBudget(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -1107,9 +1145,21 @@ export interface ProjectGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  hotProposals(
+    arg0: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
+  hotPtr(overrides?: CallOverrides): Promise<number>;
+
   initialBudget(overrides?: CallOverrides): Promise<BigNumber>;
 
   initialProposer(overrides?: CallOverrides): Promise<string>;
+
+  isLoyal(
+    account: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   name(overrides?: CallOverrides): Promise<string>;
 
@@ -1259,6 +1309,12 @@ export interface ProjectGovernor extends BaseContract {
 
     __acceptAdmin(overrides?: CallOverrides): Promise<void>;
 
+    castLocalVote(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1322,11 +1378,6 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getLoyalty(
-      account: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1364,9 +1415,21 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    hotProposals(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    hotPtr(overrides?: CallOverrides): Promise<number>;
+
     initialBudget(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialProposer(overrides?: CallOverrides): Promise<string>;
+
+    isLoyal(
+      account: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -1624,6 +1687,12 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    castLocalVote(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1687,11 +1756,6 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getLoyalty(
-      account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1729,9 +1793,21 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    hotProposals(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    hotPtr(overrides?: CallOverrides): Promise<BigNumber>;
+
     initialBudget(overrides?: CallOverrides): Promise<BigNumber>;
 
     initialProposer(overrides?: CallOverrides): Promise<BigNumber>;
+
+    isLoyal(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
 
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1880,6 +1956,12 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    castLocalVote(
+      proposalId: PromiseOrValue<BigNumberish>,
+      support: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1943,11 +2025,6 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getLoyalty(
-      account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1985,9 +2062,21 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    hotProposals(
+      arg0: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    hotPtr(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
     initialBudget(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     initialProposer(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    isLoyal(
+      account: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

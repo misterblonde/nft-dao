@@ -23,7 +23,7 @@ contract BoxLocal is Ownable {
     }
 
     modifier daoOnly() {
-         require((msg.sender == governor) || (msg.sender == governorHelper), "Only DAO can update.");
+         require((msg.sender == governor) || (msg.sender == owner()), "Only DAO can update.");
         _;
     }
     // Stores a new value in the contract
@@ -41,7 +41,7 @@ contract BoxLocal is Ownable {
         return adminMembers[account];
     }
 //daoOnly onlyOwner
-    function setAdmin(address account) public {
+    function setAdmin(address account) public daoOnly {
         adminMembers[account] = true;
     }
 

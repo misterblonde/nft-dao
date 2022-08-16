@@ -463,7 +463,7 @@ export function userMintsProjectNft(): void {
 
     // _______________ ADD SUBDAO TO BOX______________________
 
-    const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
+    const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
     const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.deploy(expectedProjGovAddress);

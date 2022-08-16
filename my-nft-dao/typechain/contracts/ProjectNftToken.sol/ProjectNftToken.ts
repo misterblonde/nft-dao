@@ -36,6 +36,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "MAX_PER_MINT()": FunctionFragment;
     "MAX_SUPPLY()": FunctionFragment;
     "PRICE()": FunctionFragment;
+    "ROYALTY()": FunctionFragment;
     "aUri()": FunctionFragment;
     "adminMembers(address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
@@ -63,6 +64,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "pause()": FunctionFragment;
     "pauseLocalsOnly()": FunctionFragment;
     "paused()": FunctionFragment;
+    "payWithRoyalty(address)": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "safeMint(address)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
@@ -82,6 +84,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "unpause()": FunctionFragment;
+    "unpauseLocalsOnly()": FunctionFragment;
     "whitelistPaused()": FunctionFragment;
   };
 
@@ -91,6 +94,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "MAX_PER_MINT"
       | "MAX_SUPPLY"
       | "PRICE"
+      | "ROYALTY"
       | "aUri"
       | "adminMembers"
       | "approve"
@@ -118,6 +122,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "pause"
       | "pauseLocalsOnly"
       | "paused"
+      | "payWithRoyalty"
       | "renounceOwnership"
       | "safeMint"
       | "safeTransferFrom(address,address,uint256)"
@@ -137,6 +142,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
       | "transferFrom"
       | "transferOwnership"
       | "unpause"
+      | "unpauseLocalsOnly"
       | "whitelistPaused"
   ): FunctionFragment;
 
@@ -153,6 +159,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(functionFragment: "PRICE", values?: undefined): string;
+  encodeFunctionData(functionFragment: "ROYALTY", values?: undefined): string;
   encodeFunctionData(functionFragment: "aUri", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "adminMembers",
@@ -245,6 +252,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "payWithRoyalty",
+    values: [PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
   ): string;
@@ -328,6 +339,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(
+    functionFragment: "unpauseLocalsOnly",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "whitelistPaused",
     values?: undefined
   ): string;
@@ -342,6 +357,7 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "MAX_SUPPLY", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "PRICE", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "ROYALTY", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "aUri", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "adminMembers",
@@ -403,6 +419,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "payWithRoyalty",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "renounceOwnership",
     data: BytesLike
   ): Result;
@@ -460,6 +480,10 @@ export interface ProjectNftTokenInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "unpauseLocalsOnly",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "whitelistPaused",
     data: BytesLike
@@ -617,6 +641,8 @@ export interface ProjectNftToken extends BaseContract {
 
     PRICE(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    ROYALTY(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     aUri(overrides?: CallOverrides): Promise<[string]>;
 
     adminMembers(
@@ -727,6 +753,11 @@ export interface ProjectNftToken extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<[boolean]>;
 
+    payWithRoyalty(
+      to: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -823,6 +854,10 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    unpauseLocalsOnly(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     whitelistPaused(overrides?: CallOverrides): Promise<[boolean]>;
   };
 
@@ -833,6 +868,8 @@ export interface ProjectNftToken extends BaseContract {
   MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
 
   PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+  ROYALTY(overrides?: CallOverrides): Promise<BigNumber>;
 
   aUri(overrides?: CallOverrides): Promise<string>;
 
@@ -944,6 +981,11 @@ export interface ProjectNftToken extends BaseContract {
 
   paused(overrides?: CallOverrides): Promise<boolean>;
 
+  payWithRoyalty(
+    to: PromiseOrValue<string>,
+    overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   renounceOwnership(
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -1040,6 +1082,10 @@ export interface ProjectNftToken extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  unpauseLocalsOnly(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   whitelistPaused(overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
@@ -1050,6 +1096,8 @@ export interface ProjectNftToken extends BaseContract {
     MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
 
     PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ROYALTY(overrides?: CallOverrides): Promise<BigNumber>;
 
     aUri(overrides?: CallOverrides): Promise<string>;
 
@@ -1155,6 +1203,11 @@ export interface ProjectNftToken extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<boolean>;
 
+    payWithRoyalty(
+      to: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
 
     safeMint(
@@ -1247,6 +1300,8 @@ export interface ProjectNftToken extends BaseContract {
 
     unpause(overrides?: CallOverrides): Promise<void>;
 
+    unpauseLocalsOnly(overrides?: CallOverrides): Promise<void>;
+
     whitelistPaused(overrides?: CallOverrides): Promise<boolean>;
   };
 
@@ -1333,6 +1388,8 @@ export interface ProjectNftToken extends BaseContract {
     MAX_SUPPLY(overrides?: CallOverrides): Promise<BigNumber>;
 
     PRICE(overrides?: CallOverrides): Promise<BigNumber>;
+
+    ROYALTY(overrides?: CallOverrides): Promise<BigNumber>;
 
     aUri(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1444,6 +1501,11 @@ export interface ProjectNftToken extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<BigNumber>;
 
+    payWithRoyalty(
+      to: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -1540,6 +1602,10 @@ export interface ProjectNftToken extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    unpauseLocalsOnly(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     whitelistPaused(overrides?: CallOverrides): Promise<BigNumber>;
   };
 
@@ -1551,6 +1617,8 @@ export interface ProjectNftToken extends BaseContract {
     MAX_SUPPLY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     PRICE(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    ROYALTY(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     aUri(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
@@ -1662,6 +1730,11 @@ export interface ProjectNftToken extends BaseContract {
 
     paused(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    payWithRoyalty(
+      to: PromiseOrValue<string>,
+      overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     renounceOwnership(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -1755,6 +1828,10 @@ export interface ProjectNftToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     unpause(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    unpauseLocalsOnly(
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 

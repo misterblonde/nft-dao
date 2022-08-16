@@ -32,7 +32,8 @@ contract MyGovernorHelper {
             _children[proposalId] = new BoxLocal(myGovernor, address(this));
             //new ProjectNftToken();
 
- 
+            // make proposer part of the admin? -- multisig needed?
+            // _children[proposalId].setAdmin(IMyGovernor(myGovernor).getProposerName(proposalId));
 
             // ProjNft: proposer becomes admin person on new nft contract
             // _children[proposalId].setAdminMember(IMyGovernor(myGovernor).getProposerName(proposalId)); 

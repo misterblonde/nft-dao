@@ -1493,8 +1493,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1660439378182,
-      "contentHash": "795b0604bbd8a77bc3f43b5fc6b4b701",
+      "lastModificationDate": 1660611901617,
+      "contentHash": "efce9c210a8d7bd07bcbf4612e7b0f02",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1530,7 +1530,8 @@
         "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
         "@openzeppelin/contracts/utils/Counters.sol",
         "@openzeppelin/contracts/security/Pausable.sol",
-        "@openzeppelin/contracts/utils/Strings.sol"
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/governance/utils/Votes.sol"
       ],
       "versionPragmas": [
         "0.8.6"
@@ -1541,8 +1542,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectGovernor.sol": {
-      "lastModificationDate": 1660438890101,
-      "contentHash": "ef32b21589b786cd2c8a191cc8d757c0",
+      "lastModificationDate": 1660614033624,
+      "contentHash": "9a81fe21860595f0b6e69905009a6a95",
       "sourceName": "contracts/ProjectGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1587,8 +1588,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernorHelper.sol": {
-      "lastModificationDate": 1660419332312,
-      "contentHash": "535a16b8ca20b12966f983663cf4f529",
+      "lastModificationDate": 1660606805095,
+      "contentHash": "f0951cfccc4ab8b91ec3b6e601ece03b",
       "sourceName": "contracts/MyGovernorHelper.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1752,8 +1753,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/BoxLocal.sol": {
-      "lastModificationDate": 1660421783301,
-      "contentHash": "cde409b28548414f6ba54782cea512e6",
+      "lastModificationDate": 1660609745912,
+      "contentHash": "cc6616b0837ffe910a1746bf473b0379",
       "sourceName": "contracts/BoxLocal.sol",
       "solcConfig": {
         "version": "0.8.6",

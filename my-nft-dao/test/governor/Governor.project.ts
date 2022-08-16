@@ -242,7 +242,7 @@ export function whitelistedUserMintsProjectNft(): void {
     // await newTokenContract.deployed();
 
     //
-    const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
+    const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
     const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);
@@ -481,7 +481,7 @@ export function whitelistNftCannotBeTransferredIfPaused(): void {
       );
   
   
-      const expectedProjGovAddress = await getExpectedContractAddress(this.signer);
+      const expectedProjGovAddress = await getExpectedContractAddress(this.signers.admin);
 
       const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
       const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(this.signers.admin).deploy(expectedProjGovAddress);

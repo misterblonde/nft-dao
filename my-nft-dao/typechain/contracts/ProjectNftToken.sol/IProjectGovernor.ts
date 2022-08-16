@@ -24,17 +24,17 @@ import type {
 
 export interface IProjectGovernorInterface extends utils.Interface {
   functions: {
-    "getLoyalty(address)": FunctionFragment;
+    "isLoyal(address)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "getLoyalty"): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "isLoyal"): FunctionFragment;
 
   encodeFunctionData(
-    functionFragment: "getLoyalty",
+    functionFragment: "isLoyal",
     values: [PromiseOrValue<string>]
   ): string;
 
-  decodeFunctionResult(functionFragment: "getLoyalty", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "isLoyal", data: BytesLike): Result;
 
   events: {};
 }
@@ -66,19 +66,19 @@ export interface IProjectGovernor extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    getLoyalty(
+    isLoyal(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  getLoyalty(
+  isLoyal(
     account: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   callStatic: {
-    getLoyalty(
+    isLoyal(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
@@ -87,14 +87,14 @@ export interface IProjectGovernor extends BaseContract {
   filters: {};
 
   estimateGas: {
-    getLoyalty(
+    isLoyal(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    getLoyalty(
+    isLoyal(
       account: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
