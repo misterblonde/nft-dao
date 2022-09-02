@@ -1,0 +1,9 @@
+
+
+gnidan.gihub.io/abi-to-sol
+IERC721(tokenAddress)
+
+go to the verified contract code page on etherscan, 
+then pull out the abi, cp abi,
+then go to gnidan.github.io/ and then it returns the full interface to paste
+in above your contract
