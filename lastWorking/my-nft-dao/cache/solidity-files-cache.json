@@ -394,7 +394,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/Box.sol": {
-      "lastModificationDate": 1662046223944,
+      "lastModificationDate": 1662223259153,
       "contentHash": "081c5fe5164115f8234e1a2df62bdf8c",
       "sourceName": "contracts/Box.sol",
       "solcConfig": {
@@ -420,7 +420,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -460,7 +461,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -500,7 +502,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -512,7 +515,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/MyNftToken.sol": {
-      "lastModificationDate": 1662046223939,
+      "lastModificationDate": 1662223259153,
       "contentHash": "4beda63ca832547ea5e6fad6d6368f91",
       "sourceName": "contracts/MyNftToken.sol",
       "solcConfig": {
@@ -538,7 +541,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -582,7 +586,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -628,7 +633,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -668,7 +674,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -709,7 +716,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -747,7 +755,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -787,7 +796,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -825,7 +835,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -865,7 +876,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -903,7 +915,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -941,7 +954,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -981,7 +995,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1019,7 +1034,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1059,7 +1075,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1103,7 +1120,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1144,7 +1162,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1182,7 +1201,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1220,7 +1240,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1258,7 +1279,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1299,7 +1321,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1349,7 +1372,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1389,7 +1413,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1429,7 +1454,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1467,7 +1493,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1481,8 +1508,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/ProjectGovernor.sol": {
-      "lastModificationDate": 1662146496349,
-      "contentHash": "a43f8b808a95a06c68b7ada7955437af",
+      "lastModificationDate": 1663100237966,
+      "contentHash": "46c5bf1eb9342dc28b4e37f323826974",
       "sourceName": "contracts/ProjectGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1507,7 +1534,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1521,10 +1549,10 @@
         "0.8.6"
       ],
       "artifacts": [
-        "IBoxLocal",
         "IERC721",
         "IMyGovernor",
         "IProjectNftToken",
+        "ITimelock",
         "ProjectGovernor"
       ]
     },
@@ -1555,7 +1583,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1595,7 +1624,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1635,7 +1665,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1678,7 +1709,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1718,7 +1750,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -1730,7 +1763,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/MyGovernorHelper.sol": {
-      "lastModificationDate": 1662140866602,
+      "lastModificationDate": 1662223259153,
       "contentHash": "fab6ef8d5d3cb704a1fb2cebd58a2ac6",
       "sourceName": "contracts/MyGovernorHelper.sol",
       "solcConfig": {
@@ -1756,7 +1789,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1774,8 +1808,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1662046223941,
-      "contentHash": "e214e6e753336ce4748e0ffe180d4930",
+      "lastModificationDate": 1663080340450,
+      "contentHash": "3debadfa0c974045f2434ad03168a4f2",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1800,7 +1834,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1823,8 +1858,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/BoxLocal.sol": {
-      "lastModificationDate": 1662138862449,
-      "contentHash": "0d99611a4ad64ad362d50ab7ac30e517",
+      "lastModificationDate": 1662333260075,
+      "contentHash": "a69d986f9b49d840d6679a7b3ce3f071",
       "sourceName": "contracts/BoxLocal.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1849,7 +1884,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1889,7 +1925,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1930,7 +1967,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1970,7 +2008,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -1984,8 +2023,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1662141581801,
-      "contentHash": "76f07d6bb70ef561cc4d2006c32c0ba4",
+      "lastModificationDate": 1662333656548,
+      "contentHash": "1acc929220f8dc2b2899d0860e7fcf73",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -2010,7 +2049,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -2030,7 +2070,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/Greeter.sol": {
-      "lastModificationDate": 1662046223942,
+      "lastModificationDate": 1662223259153,
       "contentHash": "3ed54232559dee44f0ca11123a6020ef",
       "sourceName": "contracts/Greeter.sol",
       "solcConfig": {
@@ -2056,7 +2096,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -2096,7 +2137,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -2108,8 +2150,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/Timelock.sol": {
-      "lastModificationDate": 1662046223942,
-      "contentHash": "4203264f761fc5b8eea902c2fb0fae74",
+      "lastModificationDate": 1662335378456,
+      "contentHash": "2be5efa7ccb997a5d7d1343b5aa2c60e",
       "sourceName": "contracts/Timelock.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -2134,7 +2176,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [
@@ -2145,6 +2188,7 @@
         "0.8.6"
       ],
       "artifacts": [
+        "IBoxLocal",
         "Timelock"
       ]
     },
@@ -2175,7 +2219,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [],
@@ -2187,7 +2232,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/lastWorking/my-nft-dao/contracts/ProjectTimelock.sol": {
-      "lastModificationDate": 1662136270068,
+      "lastModificationDate": 1662223259153,
       "contentHash": "966f07410039a9dacb96713152cff0a2",
       "sourceName": "contracts/ProjectTimelock.sol",
       "solcConfig": {
@@ -2213,7 +2258,8 @@
                 "ast"
               ]
             }
-          }
+          },
+          "libraries": {}
         }
       },
       "imports": [

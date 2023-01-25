@@ -32,7 +32,6 @@ import type {
 export interface BoxLocalInterface extends utils.Interface {
   functions: {
     "adminMembers(address)": FunctionFragment;
-    "closeBox()": FunctionFragment;
     "governorHelper()": FunctionFragment;
     "isAdmin(address)": FunctionFragment;
     "myGlobalGov()": FunctionFragment;
@@ -45,12 +44,12 @@ export interface BoxLocalInterface extends utils.Interface {
     "setLocalGov(address)": FunctionFragment;
     "store(uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
+    "withdraw(address)": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
       | "adminMembers"
-      | "closeBox"
       | "governorHelper"
       | "isAdmin"
       | "myGlobalGov"
@@ -63,13 +62,13 @@ export interface BoxLocalInterface extends utils.Interface {
       | "setLocalGov"
       | "store"
       | "transferOwnership"
+      | "withdraw"
   ): FunctionFragment;
 
   encodeFunctionData(
     functionFragment: "adminMembers",
     values: [PromiseOrValue<string>]
   ): string;
-  encodeFunctionData(functionFragment: "closeBox", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "governorHelper",
     values?: undefined
@@ -112,12 +111,15 @@ export interface BoxLocalInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     values: [PromiseOrValue<string>]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [PromiseOrValue<string>]
+  ): string;
 
   decodeFunctionResult(
     functionFragment: "adminMembers",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "closeBox", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "governorHelper",
     data: BytesLike
@@ -148,6 +150,7 @@ export interface BoxLocalInterface extends utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "Log(uint256)": EventFragment;
@@ -221,10 +224,6 @@ export interface BoxLocal extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
-    closeBox(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     governorHelper(overrides?: CallOverrides): Promise<[string]>;
 
     isAdmin(
@@ -268,16 +267,17 @@ export interface BoxLocal extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
+
+    withdraw(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
   };
 
   adminMembers(
     arg0: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
-
-  closeBox(
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   governorHelper(overrides?: CallOverrides): Promise<string>;
 
@@ -323,13 +323,16 @@ export interface BoxLocal extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  withdraw(
+    _receiver: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     adminMembers(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
-
-    closeBox(overrides?: CallOverrides): Promise<void>;
 
     governorHelper(overrides?: CallOverrides): Promise<string>;
 
@@ -372,6 +375,11 @@ export interface BoxLocal extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    withdraw(
+      _receiver: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
   };
 
   filters: {
@@ -395,10 +403,6 @@ export interface BoxLocal extends BaseContract {
     adminMembers(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    closeBox(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     governorHelper(overrides?: CallOverrides): Promise<BigNumber>;
@@ -444,16 +448,17 @@ export interface BoxLocal extends BaseContract {
       newOwner: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
+
+    withdraw(
+      _receiver: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     adminMembers(
       arg0: PromiseOrValue<string>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    closeBox(
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     governorHelper(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -497,6 +502,11 @@ export interface BoxLocal extends BaseContract {
 
     transferOwnership(
       newOwner: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdraw(
+      _receiver: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
   };

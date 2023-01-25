@@ -18,6 +18,25 @@ const _abi = [
         name: "proposalId",
         type: "uint256",
       },
+    ],
+    name: "getChildAddress",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "proposalId",
+        type: "uint256",
+      },
       {
         internalType: "contract ICompoundTimelock",
         name: "_timelock",

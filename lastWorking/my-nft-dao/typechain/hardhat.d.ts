@@ -157,6 +157,10 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.IProjectNftToken__factory>;
     getContractFactory(
+      name: "ITimelock",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.ITimelock__factory>;
+    getContractFactory(
       name: "ProjectGovernor",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProjectGovernor__factory>;
@@ -172,6 +176,10 @@ declare module "hardhat/types/runtime" {
       name: "ProjectTimelock",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.ProjectTimelock__factory>;
+    getContractFactory(
+      name: "IBoxLocal",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.IBoxLocal__factory>;
     getContractFactory(
       name: "Timelock",
       signerOrOptions?: ethers.Signer | FactoryOptions
@@ -358,6 +366,11 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.IProjectNftToken>;
     getContractAt(
+      name: "ITimelock",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.ITimelock>;
+    getContractAt(
       name: "ProjectGovernor",
       address: string,
       signer?: ethers.Signer
@@ -377,6 +390,11 @@ declare module "hardhat/types/runtime" {
       address: string,
       signer?: ethers.Signer
     ): Promise<Contracts.ProjectTimelock>;
+    getContractAt(
+      name: "IBoxLocal",
+      address: string,
+      signer?: ethers.Signer
+    ): Promise<Contracts.IBoxLocal>;
     getContractAt(
       name: "Timelock",
       address: string,

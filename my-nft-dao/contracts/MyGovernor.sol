@@ -16,12 +16,22 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.s
 //     }
 // }
 
+// interface Governor {
+//     function execute(
+//         address[] memory targets,
+//         uint256[] memory values,
+//         bytes[] memory calldatas,
+//         bytes32 descriptionHash
+//     ) public payable virtual override returns (uint256);
+// }
+
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
 }
 
 interface IMyGovernorHelper {
     function newProject(uint256 proposalId, ICompoundTimelock _timelock, bool fundsToContract) external payable returns(address newContract);
+    function getChildAddress(uint256 proposalId) external view returns(address);
 }
 
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
@@ -151,6 +161,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
         ProposerCore storage proposer = _proposers[proposalId];
         proposer.name = msg.sender;
+        proposer.budget = 0; // default value if not set by the proposer
         return super.propose(targets, values, calldatas, description);
     }
 
@@ -162,12 +173,17 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         return address(this).balance;
     }
 
+    function getChildBoxAddress(uint256 proposalId) public view returns (address){
+        return IMyGovernorHelper(helper).getChildAddress(proposalId);
+        // return address(IMyGovernorHelper(helper)._children[proposalId]);
+    }
+
     // amount withdrawn as budget is converted from Gwei to Wei.
     function execute(
         address[] memory targets,
         uint256[] memory values,
         bytes[] memory calldatas,
-        bytes32 descriptionHash) public payable superMembersOnly virtual override(Governor, IGovernor) returns(uint256) {
+        bytes32 descriptionHash) public payable virtual override(Governor, IGovernor) returns(uint256) {
         uint256 proposalId = hashProposal(targets, values, calldatas, descriptionHash);
         require(_proposers[proposalId].budget < (getBalance() + msg.value), "Governor: budget requested exceeds funds available.");
 
@@ -176,9 +192,30 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
 
         address childNft = IMyGovernorHelper(helper).newProject(proposalId, timelockAddress, true);
         
-        super._execute(proposalId, targets, values, calldatas, descriptionHash);
+        super.execute(targets, values, calldatas, descriptionHash);
+
+        // ProposalState status = state(proposalId);
+        // if (status == ProposalState.Queued){
+        //     super._proposals[proposalId].executed = true;
+        //     emit ProposalExecuted(proposalId);
+        // }
+        // // ProposalState status = state(proposalId);
+        // require(
+        //     status == ProposalState.Succeeded || status == ProposalState.Queued,
+        //     "Governor: proposal not successful"
+        // );
+        // Governor._proposals[proposalId].executed = true;
+
+        // emit ProposalExecuted(proposalId);
+
+        // _beforeExecute(proposalId, targets, values, calldatas, descriptionHash);
+        // _execute(proposalId, targets, values, calldatas, descriptionHash);
+        
+        // _afterExecute(proposalId, targets, values, calldatas, descriptionHash);
+
         return proposalId; 
     }
+
 
     function _execute(
         uint256 proposalId,
@@ -186,9 +223,34 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         uint256[] memory values,
         bytes[] memory calldatas,
         bytes32 descriptionHash
-    ) internal override(Governor, GovernorTimelockCompound) {
+    ) internal virtual override(Governor, GovernorTimelockCompound) {
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
+        // uint256 eta = proposalEta(proposalId);
+        // require(eta > 0, "GovernorTimelockCompound: proposal not yet queued");
+        // Address.sendValue(payable(timelockAddress), msg.value);
+        // for (uint256 i = 0; i < targets.length; ++i) {
+        //     timelockAddress.executeTransaction(targets[i], values[i], "", calldatas[i], eta);
+        // }
     }
+    // function _execute(
+    //     uint256 proposalId,
+    //     address[] memory targets,
+    //     uint256[] memory values,
+    //     bytes[] memory calldatas,
+    //     bytes32 descriptionHash
+    // ) internal override(Governor, GovernorTimelockCompound) {
+    //     super._execute(proposalId, targets, values, calldatas, descriptionHash);
+    // }
+
+function cancel(                                                            
+        address[] memory targets,                                               
+        uint256[] memory values,                                                
+        bytes[] memory calldatas,                                               
+        bytes32 descriptionHash                                                 
+    ) public returns (uint256) {                                                
+        return super._cancel(targets, values, calldatas, descriptionHash);      
+    }                                                                           
+                                                                            
 
     function _cancel(
         address[] memory targets,

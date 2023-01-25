@@ -28,6 +28,7 @@ contract BoxLocal is Ownable {
         _;
     }
     
+
     function setLocalGov(address localGov) public onlyGovernor {
         myLocalGov = localGov;
     }
@@ -57,12 +58,16 @@ contract BoxLocal is Ownable {
         adminMembers[account] = false;
     }
 
-    function closeBox() public onlyOwner {
-        // return remaining funds
-        payable(myGlobalGov).transfer(address(this).balance);
-        // release pausable nfts
-    }
+    // function closeBox() public onlyOwner {
+    //     // return remaining funds
+    //     payable(myGlobalGov).transfer(address(this).balance);
+    //     // release pausable nfts
+    // }
 
+    function withdraw(address _receiver) public onlyOwner {
+        address payable receiver = payable(_receiver);
+        receiver.transfer(address(this).balance);
+    }
     // Fallback function must be external.
     fallback() external payable {
         emit Log(gasleft());

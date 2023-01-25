@@ -1,5 +1,5 @@
 describe("my first test", function () {
   before(async function () {
-    const description = "du bist ein riesenarschloch";
+    const description = "life is uncertain. Eat dessert first.";
   });
 });

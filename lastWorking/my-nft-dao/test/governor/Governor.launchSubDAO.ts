@@ -485,8 +485,11 @@ export function testVotingOnSubDAO(): void {
       const proposalState = await localGov.state(projectProposalId); 
       console.log("Proposal State: ", await localGov.state(projectProposalId));
       await expect(proposalState).to.be.equal(7);
-    });
-} 
+
+        });
+    }
+//     });
+// } 
     //   console.log(
     //     `Box value: ${await this.box.isAdmin(this.signers.admin.address)}`
     //   );

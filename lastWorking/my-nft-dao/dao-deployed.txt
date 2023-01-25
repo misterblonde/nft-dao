@@ -1,3 +1,111 @@
+// 13.09.2022 -- fixed transfer
+SUBdao deployed to:  {
+  governor: '0xc53265bCD2AFabcA4C2C7058469e000e19aB5A5c',
+  timelock: '0x94b8b2780e861E5DAA5D73c8D1b049c6D8e3dc61',
+  token: '0xE38670D225E9042d1603cDbcdEE0572a339E31f2'
+}
+
+
+// 13.09.2022
+SUBdao deployed to:  {
+  governor: '0x1363D4243E88636bBcd502b158AFDa0b599308a1',
+  timelock: '0x397d657dEf2669eD0506F19CaCd8C8852Fb1aDFf',
+  token: '0x98932FB238aBF3BfF4AA6fA6a9009EF1c11f7b84'
+}
+
+
+// 05.09.2022 III
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0xd4433396177A38BbF1e9f1487BE964B09465E444',
+  timelock: '0x1849a3F0ea9411cfF32e060ad3004853EC67f833',
+  token: '0x14050A3F1485b58dacA986d5c5F5a54c9768A34b'
+}
+
+05.09.2022
+Dao deployed to:  {
+  governorExpectedAddress: '0x023D2F147B1AB52a90e20fa4C347053a12C53f71',
+  governor: '0x023D2F147B1AB52a90e20fa4C347053a12C53f71',
+  timelock: '0x1D682B497EC6Dc579Ad8B19a0ECabEe64c06f482',
+  token: '0xC69e8d5ee935afa143273C0832718dF7A7B3A566',
+  box: '0xF1157c2A92Da740Bd2D1b0CC3cA11051b6ED5eAa',
+  helper: '0x3773726A331c2130daF1b85d32A7c465EEAf300d',
+  governorHelperExpectedAddress: '0x3773726A331c2130daF1b85d32A7c465EEAf300d'
+}
+
+
+// 05.09.2022
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0xa1FC4799f52E2b5b3ee7d33A852f41AD102C67c0',
+  timelock: '0xdd5787E9F9A207017eF388Fd7B01561aa399FbCC',
+  token: '0x7c82AC2e4b81595B9236e337134D7F4ebD2D29F0'
+}
+
+
+// 03.
+// includes cancel, includes submitProposal()
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0xeCeebaE079D9A3645996f4AB97efc0C2fF52E45F',
+  timelock: '0xFAC974bcd077C2f0ddf97300455FCDA30e9bb372',
+  token: '0xf3421dC049eEd5304B21DE80931d862300c22F9f'
+}
+---
+
+
+// 03.09 project again: 
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0xd2B6267A2a72F89Ae5ac342e8FdDA22e3A088DE6',
+  timelock: '0x0887e48E664fAEcDc9E605aD3A391F403f41ED2E',
+  token: '0xE7122B7Ba90af8cc68a8Bd172322C507777463Cd'
+}
+
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0x7464aFb09097B78b96Fb70B81d0f1b03f225A95E',
+  timelock: '0xa014D7904de9c9c9337D01c4EE5d068FBc0b5715',
+  token: '0x1D7EB57dF697a22A60185c72536f0A6de7688d11'
+}
+
+// 03.09.2022
+
+Deploying sub DAO
+SUBdao deployed to:  {
+  governor: '0xC88211b6B414db7cc0f81Cb495d63D649E35dC52',
+  timelock: '0x499f9EE66FF666CfAc0E8a5241FA3c37897E6AB6',
+  token: '0xBd6EfEf4B87359aA0a8889719eF7dE8c06645209'
+}
+----------------------------------------------------
+Deploying Box and transfering ownership to timelock...
+ownership of box transferred
+
+
+// 02.09.2022 III
+SUBdao deployed to:  {
+  governor: '0xD782D3b9f8f79Fc2bF7b787e7D3b4c656Ca4AB2c',
+  timelock: '0xc29bF6C9d57AcD6582d7c74E82c69dB474F9a74e',
+  token: '0x15bd2A98b23d45E2c94234db958489df30340dDB'
+}
+Dao deployed to:  {
+  governorExpectedAddress: '0x4ddeDC96DC7C3444A6D4AA4c13bC6E1Ad5203932',
+  governor: '0x4ddeDC96DC7C3444A6D4AA4c13bC6E1Ad5203932',
+  timelock: '0x063a22F28631139429c95764Fc893479432a9381',
+  token: '0x3886da81e513508B5321e25fdaA7F9756fe991D6',
+  box: '0x7243f1Fb1c06E452D6a0bB2Ef3e22e1d71686455',
+  helper: '0xA241AE854B649aDeb27fA8D032FE7B3c4Dd8DF1b',
+  governorHelperExpectedAddress: '0xA241AE854B649aDeb27fA8D032FE7B3c4Dd8DF1b'
+}
+
+yarn hardhat verify 0xD782D3b9f8f79Fc2bF7b787e7D3b4c656Ca4AB2c 0x3886da81e513508B5321e25fdaA7F9756fe991D6 0x063a22F28631139429c95764Fc893479432a9381 96346686350071577925378164822342255975975089637671800064016481723603450803366 --network rinkeby
+
+// 02.09.2022 II
+Project Governor 0x98439d4ad24C41809fD88E885c73C8f72CD4cF46
+ProjectNftToken 0x067206438A7981E2276c0eBF03EE8553926557AA
+
+
+
 // 02.09.2022
 :ProjectNftToken at 0x52ecBf0784Cae606a4cd4AcbAA234A0E60B016Ae
 ProjectGovernor at 0xeDb67ed3B7d46Cb9137176e45DA143B737c3D143

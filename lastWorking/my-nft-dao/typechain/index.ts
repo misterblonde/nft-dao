@@ -76,6 +76,8 @@ export type { IBoxLocal } from "./contracts/ProjectGovernor.sol/IBoxLocal";
 export { IBoxLocal__factory } from "./factories/contracts/ProjectGovernor.sol/IBoxLocal__factory";
 export type { IProjectNftToken } from "./contracts/ProjectGovernor.sol/IProjectNftToken";
 export { IProjectNftToken__factory } from "./factories/contracts/ProjectGovernor.sol/IProjectNftToken__factory";
+export type { ITimelock } from "./contracts/ProjectGovernor.sol/ITimelock";
+export { ITimelock__factory } from "./factories/contracts/ProjectGovernor.sol/ITimelock__factory";
 export type { ProjectGovernor } from "./contracts/ProjectGovernor.sol/ProjectGovernor";
 export { ProjectGovernor__factory } from "./factories/contracts/ProjectGovernor.sol/ProjectGovernor__factory";
 export type { IProjectGovernor } from "./contracts/ProjectNftToken.sol/IProjectGovernor";
@@ -84,5 +86,5 @@ export type { ProjectNftToken } from "./contracts/ProjectNftToken.sol/ProjectNft
 export { ProjectNftToken__factory } from "./factories/contracts/ProjectNftToken.sol/ProjectNftToken__factory";
 export type { ProjectTimelock } from "./contracts/ProjectTimelock";
 export { ProjectTimelock__factory } from "./factories/contracts/ProjectTimelock__factory";
-export type { Timelock } from "./contracts/Timelock";
-export { Timelock__factory } from "./factories/contracts/Timelock__factory";
+export type { Timelock } from "./contracts/Timelock.sol/Timelock";
+export { Timelock__factory } from "./factories/contracts/Timelock.sol/Timelock__factory";

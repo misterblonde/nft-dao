@@ -1,10 +1,10 @@
 
 
 
-MILESTONES
+# MILESTONES
 
 
-TO DO:
+## TO DO:
 - what happens to cancelled/failed projects -> delete from struct and proposers
   from struct
 - someone needs to be able to set the token URI on the contract before creation
@@ -12,7 +12,7 @@ TO DO:
 - DAO needs to somehow approve that this nft collection/governor setup is now
   the new subdao?
 
-LEARNING/CHALLENGES
+## LEARNING/CHALLENGES
 - not so much abouth programming the contract only, more about programming
   concisely and having modular architecture within gas price/ether values within
 each component
@@ -20,13 +20,13 @@ each component
 
 // __________________________________________________________________________
 
-literature search into DAOs regarding
+# literature search into DAOs regarding
 - infrastructure crowdfunding (see anandha recommendations)
 - into how funds are handled upon approval -> not like kickstarter: anyone just
   runs away with it.  
 
 
-challenges DAO development
+# challenges DAO development
 - challenges: overflow and underflow with ether/gwei/wei values in solidity
 - not being able to use floats
 - security of functionality, make some functions protected by making them owner
@@ -56,7 +56,7 @@ intermediaries.
 links.  
 
 
-SOLIDITY/HARDHAT TS LEARNING: 
+# SOLIDITY/HARDHAT TS LEARNING: 
 - maximum code size limit: 24 kB or 3,000 lines of code per contract
 - fallback functions needed for some contracts
 - gas price and msg.value (minting fee etc.) all needs to be set correctly on

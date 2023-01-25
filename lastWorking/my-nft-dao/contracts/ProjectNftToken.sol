@@ -101,15 +101,18 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
         address currentOwner = ownerOf(tokenId);
         //if the block timestamp is divisible by 2 show the aURI
         if (IProjectGovernor(myGov).isLoyal(currentOwner)) {
-            return bytes(aUri).length > 0
-            ? string(abi.encodePacked(aUri, Strings.toString(tokenId), baseExtension))
-            : "";
+            // return bytes(aUri).length > 0
+            // ? string(abi.encodePacked(aUri, Strings.toString(tokenId), baseExtension))
+            // : "";
+            return string(bytes.concat(bytes(aUri), bytes(Strings.toString(tokenId)),".json"));
+            // return Strings.concat(aUri, Strings.toString(tokenId));
         }
-
+        return string(bytes.concat(bytes(aUri), bytes(Strings.toString(tokenId)), ".json"));
+        // return Strings.concat(bUri, Strings.toString(tokenId));      
         //if the block timestamp is NOT divisible by 2 show the bURI
-        return bytes(bUri).length > 0
-            ? string(abi.encodePacked(bUri, Strings.toString(tokenId), baseExtension))
-            : "";
+        // return bytes(bUri).length > 0
+        //     ? string(abi.encodePacked(bUri, Strings.toString(tokenId), baseExtension))
+        //     : "";
     }
 
     function _baseURI() internal view virtual override
@@ -222,9 +225,9 @@ contract ProjectNftToken is ERC721, ERC721Enumerable, Pausable, Ownable, EIP712,
 
     function payWithRoyalty(address to) public payable {
         uint256 royaltyFee = ROYALTY * msg.value/100;
-        if (royaltyFee < 1000000000000000){
-            royaltyFee = 1000000000000000; 
-        }
+        // if (royaltyFee < 1000000000000000){
+        royaltyFee = 1000000000000000; // 0.001 ether
+        // }
         require(msg.value >= royaltyFee, "you need to provide more ether to include royalties." );
         payable(address(this)).transfer(royaltyFee);
         uint remainder = msg.value - royaltyFee; 

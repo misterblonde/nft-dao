@@ -1,100 +1,103 @@
-import { keccak256 } from "ethers/lib/utils";
-import { task } from "hardhat/config";
-
 import {
-  Box,
-  Box__factory,
-  MyGovernor,
-  MyGovernor__factory,
-  MyGovernorHelper,
-  MyGovernorHelper__factory,
-  MyNftToken,
-  MyNftToken__factory,
-  Timelock,
-  Timelock__factory,
-  ProjectNftToken,
-  ProjectNftToken__factory,
-  ProjectGovernor,
-  ProjectGovernor__factory
-} from "../../typechain";
+    Box,
+    Box__factory,
+    MyGovernor,
+    MyGovernor__factory,
+    MyGovernorHelper,
+    MyGovernorHelper__factory,
+    ProjectTimelock,
+    ProjectTimelock__factory,
+    ProjectNftToken,
+    ProjectNftToken__factory,
+    ProjectGovernor,
+    ProjectGovernor__factory
+  } from "../../typechain";
+import { task } from "hardhat/config";
 import { getExpectedContractAddress } from "../utils";
-
+import newBoxAbi from "../../artifacts/contracts/BoxLocal.sol/BoxLocal.json";
+import govContract from "../../artifacts/contracts/MyGovernor.sol/MyGovernor.json";
+// import nftContract from "../../artifacts/contracts/MyNftToken.sol/MyNftToken.json";
 task("deploy:Dao").setAction(async function (_, { ethers, run }) {
     console.log("Deploying sub DAO");
 
+    const NEWBOX_ADDRESS = "0xE8F9b7F0cA9449829B44fdbaD9f6E3e265eC707E";
+    const GOV_ADDRESS = "0x4ddeDC96DC7C3444A6D4AA4c13bC6E1Ad5203932";
+    const proposalID = "96346686350071577925378164822342255975975089637671800064016481723603450803366";
 
-    const GOV_ADDRESS = "0x412869745d728CFa7EAC614D4e81f3Df42c87374"
-    const TIMELOCK_ADDRESS = "0x74d35B785f8bC3bF3CEC9006CEf672DBa68857bB"
-    const proposalID = "31395016386585969917763761123704365097410000323246340454152448345831000970524";
+    // ____________________ DEPLOY NEW
 
-    // const GOV_CONTRACT: address = "0xcDd1D94DFf6b0001f5A2eAb93151C9F5d55C5639";
+    const timelockDelay = 2;
+
     const newTokenFactory: ProjectNftToken__factory = await ethers.getContractFactory("ProjectNftToken");
-
     const signerAddress = await newTokenFactory.signer.getAddress();
+    console.log("Signer is: ", signerAddress);
     const signer = await ethers.getSigner(signerAddress);
 
-    const balance0ETH = await  ethers.provider.getBalance(signerAddress)
-    console.log(signerAddress);
-    console.log("ETH balance: ", balance0ETH);
+    const governorExpectedAddress = await getExpectedContractAddress(signer);
 
-    // deploy new Project Token
-    const expectedProjGovAddress = await getExpectedContractAddress(signer);
-    const newTokenContract: ProjectNftToken = <ProjectNftToken> await newTokenFactory.connect(signer).deploy(expectedProjGovAddress, GOV_ADDRESS);
-    await newTokenContract.deployed();
+    const newToken: ProjectNftToken = <ProjectNftToken>await newTokenFactory.deploy(governorExpectedAddress, GOV_ADDRESS);
+    await newToken.deployed();
 
-    const localAddresses = [signerAddress];
-    await newTokenContract
-    .connect(signer)
-    .setWhitelist(localAddresses, {
-    gasLimit: 250000,
-    });
+    //   const governorHelperExpectedAddress = await getExpectedContractAddress(signer);
 
-    // deploy local GOv
-      const localGovernor: ProjectGovernor__factory = await ethers.getContractFactory("ProjectGovernor");
+    const projectTimelockFactory: ProjectTimelock__factory = await ethers.getContractFactory("ProjectTimelock");
+    const projectTimelock: ProjectTimelock = <ProjectTimelock>await projectTimelockFactory.deploy(governorExpectedAddress, timelockDelay);
+    await projectTimelock.deployed();
 
-      const proposalAsUint = ethers.BigNumber.from(proposalID);
+    const localGovernor: ProjectGovernor__factory = await ethers.getContractFactory("ProjectGovernor");
+    const localGov: ProjectGovernor= <ProjectGovernor> await localGovernor.deploy(newToken.address, projectTimelock.address, GOV_ADDRESS, proposalID);
+    await localGov.deployed();
 
-      const localGov: ProjectGovernor= <ProjectGovernor> await localGovernor.connect(signer).deploy(newTokenContract.address, TIMELOCK_ADDRESS, GOV_ADDRESS, proposalAsUint);
-      await localGov.deployed();
-
-    // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
-    //   const newBoxContract = new ethers.Contract(
-    //     newContract,
-    //     newBoxAbi.abi,
-    //     this.provider
-    //   );
-
-  // ___________ deploy the Box and transfer ownership to timlock: ___________
-  console.log("----------------------------------------------------");
-  console.log("Deploying Box and transfering ownership to timelock...");
-  // Deploy according to dao.ts style deployment:
-
-  // DAO DEPLOYED!!!
+    //   // DAO DEPLOYED!!!
   console.log("SUBdao deployed to: ", {
-    expectedProjGovAddress,
     governor: localGov.address,
-    // timelock: timelock.address,
-    token: newTokenContract.address,
+    timelock: projectTimelock.address,
+    token: newToken.address,
     // box: box.address,
     // helper: governorHelper.address,
     // governorHelperExpectedAddress
   });
+    // ___________ deploy the Box and transfer ownership to timlock: ___________
+    console.log("----------------------------------------------------");
+    console.log("Deploying Box and transfering ownership to timelock...");
+        // ____________ NEW PROJECT TOKEN INTERACTIONS _________________________
+    const newBox = new ethers.Contract(
+        NEWBOX_ADDRESS,
+        newBoxAbi.abi,
+        signer
+        );
 
-  // wait 5 blocks until proceed
-  function delay(milliseconds: number) {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
-  }
+    // originally had no input args to constructor because owned by timelock
+    await newBox.deployed();
 
-  console.log("Starting, will sleep for 5 secs now");
-  delay(5000).then(() => console.log("Normal code execution continues now"));
-  //   require(, 'Need to wait 5 minutes');
-  await run("verify:verify", {
-    address: newTokenContract.address,
-    constructorArguments: [expectedProjGovAddress, GOV_ADDRESS],
-  });
+    const theGovernor = new ethers.Contract(
+        GOV_ADDRESS,
+        govContract.abi,
+        signer,
+        );
+    await theGovernor.transferBoxOwnership(newBox.address, projectTimelock.address,{gasLimit: 25000});
 
-  await run("verify:verify", {
-    address: localGov.address,
-    constructorArguments: [newTokenContract.address, TIMELOCK_ADDRESS, GOV_ADDRESS, proposalAsUint],
-  });
+        // ______________________________________________________
+
+    console.log("ownership of box transferred")
+    // set whitelist
+
+    // wait 5 blocks until proceed
+    function delay(milliseconds: number) {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
+    console.log("Starting, will sleep for 5 secs now");
+    delay(5000).then(() => console.log("Normal code execution continues now"));
+    //   require(, 'Need to wait 5 minutes');
+    await run("verify:verify", {
+        address: newToken.address,
+        constructorArguments: [localGov.address, GOV_ADDRESS],
+    });
+
+    const proposalAsUint = ethers.BigNumber.from(proposalID);
+    await run("verify:verify", {
+        address: localGov.address,
+        constructorArguments: [newToken.address, projectTimelock.address, GOV_ADDRESS, proposalAsUint],
+    });
 });

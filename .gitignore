@@ -1,0 +1,6 @@
+.env
+.DS_Store
+my-nft--dao/node_modules/
+my-nft-dao/.DS_Store
+my-nft-dao/veryLatestCodeJsons/
+lastWorking/

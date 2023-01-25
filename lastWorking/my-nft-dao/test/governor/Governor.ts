@@ -33,6 +33,7 @@ import { NetworkUserConfig } from "hardhat/types";
 import { GovernorCountingSimple__factory, MyGovernorHelper } from "../../typechain";
 import { quadraticVotingWithCustomAmount } from "./Governor.quadraticVoting";
 import { testVotingOnSubDAO } from "./Governor.launchSubDAO";
+import { testFundsTransfer } from "./Governor.childDaoGetsBoxFunds";
 const hre = require("hardhat");
 
 describe("Unit tests", function () {
@@ -344,44 +345,48 @@ describe("Unit tests", function () {
 
 
     
-    // getInitialNftBalance();
+    getInitialNftBalance();
 
-    // // mint
-    // mintNft();
+    // mint
+    mintNft();
 
-    // // propose
-    // submitProposalFailsBecauseNoNFTs();
+    // propose
+    submitProposalFailsBecauseNoNFTs();
 
-    // submitProposalPassesBecauseDelegatedNfts();
+    submitProposalPassesBecauseDelegatedNfts();
 
-    // // vote
-    // voteOnSubmittedProposal(); // single vote weight=1
+    // vote
+    voteOnSubmittedProposal(); // single vote weight=1
      
-    // voteFailsBecauseNonTokenHolder();
+    voteFailsBecauseNonTokenHolder();
 
-    // voteFailsBecauseAlreadyVoted();
+    voteFailsBecauseAlreadyVoted();
 
-    // canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted();
+    canOnlyVoteIfHeDelegatedTokenBeforeVoteStarted();
 
-    // votingWithAllNftsWorks();
-    // // analyse results
-    // proposalPassesQuorumBudgetTransferredToProposer();
+    votingWithAllNftsWorks();
+    // analyse results
+    proposalPassesQuorumBudgetTransferredToProposer();
 
-    // transferBudgetToNewContract();
-    // // queue/execute
+    transferBudgetToNewContract();
+    // queue/execute
 
-    // userMintsProjectNft();
+    userMintsProjectNft();
 
 
-    // whitelistedUserMintsProjectNft();
+    whitelistedUserMintsProjectNft();
 
-    // whitelistNftCannotBeTransferredIfPaused();
+    whitelistNftCannotBeTransferredIfPaused();
 
+
+    // cv testing
     testVotingOnSubDAO();
 
     quadraticVotingWithCustomAmount();
     
 
-    dynamicNFT()
+    dynamicNFT();
+
+    // testFundsTransfer();
   });
 });

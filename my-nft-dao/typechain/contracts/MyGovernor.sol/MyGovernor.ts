@@ -36,6 +36,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "COUNTING_MODE()": FunctionFragment;
     "EXTENDED_BALLOT_TYPEHASH()": FunctionFragment;
     "__acceptAdmin()": FunctionFragment;
+    "cancel(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "castVote(uint256,uint8)": FunctionFragment;
     "castVoteAllIn(uint256,uint8)": FunctionFragment;
     "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": FunctionFragment;
@@ -45,6 +46,7 @@ export interface MyGovernorInterface extends utils.Interface {
     "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "getBalance()": FunctionFragment;
+    "getChildBoxAddress(uint256)": FunctionFragment;
     "getProposerBudget(uint256)": FunctionFragment;
     "getProposerName(uint256)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
@@ -91,6 +93,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "COUNTING_MODE"
       | "EXTENDED_BALLOT_TYPEHASH"
       | "__acceptAdmin"
+      | "cancel"
       | "castVote"
       | "castVoteAllIn"
       | "castVoteBySig"
@@ -100,6 +103,7 @@ export interface MyGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "execute"
       | "getBalance"
+      | "getChildBoxAddress"
       | "getProposerBudget"
       | "getProposerName"
       | "getVotes"
@@ -155,6 +159,15 @@ export interface MyGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "__acceptAdmin",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "cancel",
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BytesLike>[],
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "castVote",
@@ -219,6 +232,10 @@ export interface MyGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getChildBoxAddress",
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "getProposerBudget",
@@ -417,6 +434,7 @@ export interface MyGovernorInterface extends utils.Interface {
     functionFragment: "__acceptAdmin",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "cancel", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "castVote", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "castVoteAllIn",
@@ -444,6 +462,10 @@ export interface MyGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getChildBoxAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getProposerBudget",
     data: BytesLike
@@ -756,6 +778,14 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -818,6 +848,11 @@ export interface MyGovernor extends BaseContract {
     ): Promise<ContractTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
+
+    getChildBoxAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1025,6 +1060,14 @@ export interface MyGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  cancel(
+    targets: PromiseOrValue<string>[],
+    values: PromiseOrValue<BigNumberish>[],
+    calldatas: PromiseOrValue<BytesLike>[],
+    descriptionHash: PromiseOrValue<BytesLike>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   castVote(
     proposalId: PromiseOrValue<BigNumberish>,
     support: PromiseOrValue<BigNumberish>,
@@ -1087,6 +1130,11 @@ export interface MyGovernor extends BaseContract {
   ): Promise<ContractTransaction>;
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+  getChildBoxAddress(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   getProposerBudget(
     proposalId: PromiseOrValue<BigNumberish>,
@@ -1292,6 +1340,14 @@ export interface MyGovernor extends BaseContract {
 
     __acceptAdmin(overrides?: CallOverrides): Promise<void>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1354,6 +1410,11 @@ export interface MyGovernor extends BaseContract {
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getChildBoxAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1667,6 +1728,14 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1729,6 +1798,11 @@ export interface MyGovernor extends BaseContract {
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getChildBoxAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1933,6 +2007,14 @@ export interface MyGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     castVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1995,6 +2077,11 @@ export interface MyGovernor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    getChildBoxAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,

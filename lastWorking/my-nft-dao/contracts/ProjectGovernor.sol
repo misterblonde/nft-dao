@@ -15,15 +15,20 @@ interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
 }
 
+interface ITimelock {
+    function transferFundsToGov(address boxAddress) external;
+}
+
+
 interface IMyGovernor{
     function getProposerName(uint256 proposalId) external view returns (address);
     function getProposerBudget(uint256 proposalId) external view returns (uint256);
     function transferFunds(address payable _receiver, uint256 amount) external  payable;
 }
 
-interface IBoxLocal {
-    function closeBox() external;
-}
+// interface IBoxLocal {
+//     function closeBox() external;
+// }
 
 interface IProjectNftToken {
     function closeCollection() external;
@@ -33,6 +38,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     address public tokenAddress;
     address public myGlobalGov;
     address public owner;
+    address public timelockAddress;
 
     uint256 public initialBudget; 
     address public initialProposer; 
@@ -62,6 +68,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         tokenAddress = address(_token);
         owner =  msg.sender;
         myGlobalGov = address(_governor);
+        timelockAddress = address(_timelock);
         // keep if created automatically as nft is created:
         initialBudget = IMyGovernor(_governor).getProposerBudget(proposalId);
         initialProposer = IMyGovernor(_governor).getProposerName(proposalId);
@@ -130,9 +137,22 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         return super.state(proposalId);
     }
 
-    function setProposalBudget(uint256 proposalId, uint256 budget) public {
-            require(msg.sender == _proposers[proposalId].name, "Governor: only the proposer can set the budget of the proposal.");
-            require(state(proposalId) == ProposalState.Pending, "Governor: cannot change budget. Proposal vote already started.");
+    function submitProposal(address[] memory targets,
+        uint256[] memory values,
+        bytes[] memory calldatas,
+        string memory description, 
+        uint256 budgetGwei) public superMembersOnly {
+
+            propose(targets, values, calldatas, description);
+
+            uint256 proposalId = hashProposal(targets, values, calldatas, keccak256(bytes(description)));
+
+            setProposalBudget(proposalId, budgetGwei);
+    }
+
+    function setProposalBudget(uint256 proposalId, uint256 budget) internal {
+            // require(msg.sender == _proposers[proposalId].name, "Governor: only the proposer can set the budget of the proposal.");
+            // require(state(proposalId) == ProposalState.Pending, "Governor: cannot change budget. Proposal vote already started.");
             ProposerCore storage proposer = _proposers[proposalId];
             proposer.budget = budget;
     }
@@ -173,11 +193,12 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
             hotPtr = 0; 
         }
 
-        require(_proposers[proposalId].budget < (getBalance() + msg.value), "Governor: budget requested exceeds funds available.");
+        require(_proposers[proposalId].budget*10**9 < (getBalance() + msg.value), "Governor: requested budget exceeds funds available.");
 
         address payable receiver = payable(_proposers[proposalId].name);
         //!TODO transfer funds from token contract to proposer
-        receiver.send(_proposers[proposalId].budget*10**9); // budget in wei
+        receiver.transfer(_proposers[proposalId].budget*10**9);
+        // budget in wei
         super.execute(targets, values, calldatas, descriptionHash);
         return proposalId; 
     }
@@ -192,6 +213,15 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         super._execute(proposalId, targets, values, calldatas, descriptionHash);
     }
 
+    function cancel(                                                            
+        address[] memory targets,                                               
+        uint256[] memory values,                                                
+        bytes[] memory calldatas,                                               
+        bytes32 descriptionHash                                                 
+    ) public returns (uint256) {                                                
+        return super._cancel(targets, values, calldatas, descriptionHash);      
+    }                                                                           
+      
     function _cancel(
         address[] memory targets,
         uint256[] memory values,
@@ -214,16 +244,17 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         return super.supportsInterface(interfaceId);
     }
 
-    function isLoyal(address account) public returns(bool){
+    function isLoyal(address account) public view returns(bool){
         uint threshold = 3; 
         uint voted = 0; 
          for (uint i=0; i<3; i++) {
             bool hasVoted =  hasVoted(hotProposals[i], account);
             uint hasVotedInt = hasVoted ? uint(1) : uint(0);
             voted += hasVotedInt;
+    
          }
-
-        if (_loyalty[account] >= threshold){
+//_loyalty[account] 
+        if (voted >= threshold){
             return true;
         } 
         return false; 
@@ -234,7 +265,9 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         require(nTokens <= nVotes, "You cannot use more tokens than you own");
         uint256 quadcost = (nTokens * nTokens);
         uint256 fee;
-        uint256 multiplier = 10000000000000000; // 0.01 ether == 16 euro
+        uint256 multiplier = 100000000000000;
+        // new attempt: 100000000000000 // 0.0001 ether
+        // too expensive: 10000000000000000; // 0.01 ether == 16 euro
         if (nVotes == 1){
             fee = 0;
         } else {
@@ -243,8 +276,45 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
         require(msg.value >= fee, "You need more ether to vote with all NFTs: cost = (nVotes)^2 * 0.01 ether");
 
         address voter = _msgSender();
-        return  _castVoteQuadratic(proposalId, voter, support, nVotes, "", "");
+        return  _castVoteQuadratic(nTokens, proposalId, voter, support, "", "");
     }
+ 
+    function _castVoteQuadratic(
+            uint256 nTokens, 
+            uint256 proposalId,
+            address account,
+            uint8 support,
+            string memory reason,
+            bytes memory params
+        ) internal virtual returns (uint256) {
+        require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
+        _countVote(proposalId, account, support, nTokens, params);
+
+        if (params.length == 0) {
+            emit VoteCast(account, proposalId, support, nTokens, reason);
+        } else {
+            emit VoteCastWithParams(account, proposalId, support, nTokens, reason, params);
+        }
+        return nTokens;
+    }
+
+    // function castVoteQuadratic(uint256 proposalId, uint8 support, uint256 nTokens) public virtual  payable returns (uint256) {
+    //     uint256 nVotes = _getVotes(msg.sender, proposalSnapshot(proposalId),"");
+    //     require(nTokens <= nVotes, "You cannot use more tokens than you own");
+    //     uint256 quadcost = (nTokens * nTokens);
+    //     uint256 fee;
+    //     uint256 multiplier = 10000;
+    //     // uint256 multiplier = 10000000000000000; // 0.01 ether == 16 euro
+    //     if (nVotes == 1){
+    //         fee = 0;
+    //     } else {
+    //         fee = (quadcost*multiplier);
+    //     }        
+    //     require(msg.value >= fee, "You need more ether to vote with all NFTs: cost = (nVotes)^2 * 0.01 ether");
+
+    //     address voter = _msgSender();
+    //     return  _castVoteQuadratic(nTokens, proposalId, voter, support, "", "");
+    // }
 
 
     // function castVoteAllIn(uint256 proposalId, uint8 support) public virtual  payable membersOnly returns (uint256) {
@@ -265,7 +335,7 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     // }
 
     function castVoteSimple(uint256 proposalId, uint8 support) public virtual  payable returns (uint256) {
-        _loyalty[msg.sender] += 1;
+        // _loyalty[msg.sender] += 1;
         address voter = _msgSender();
         return  _castVoteSimple(proposalId, voter, support, "", "");
     }
@@ -317,27 +387,30 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
     //     return weight;
     // }
 
-    function _castVoteQuadratic(
-            uint256 proposalId,
-            address account,
-            uint8 support,
-            uint256 nVotes,
-            string memory reason,
-            bytes memory params
-        ) internal virtual returns (uint256) {
-        require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
-        uint256 weight = nVotes; 
-        _countVote(proposalId, account, support, weight, params);
+    // function _castVoteQuadratic(
+    //         uint256 nTokens,
+    //         uint256 proposalId,
+    //         address account,
+    //         uint8 support,
+    //         string memory reason,
+    //         bytes memory params
+    //     ) internal virtual returns (uint256) {
+    //     require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
+    //     uint256 weight = nTokens; 
+    //     _countVote(proposalId, account, support, weight, params);
 
-        if (params.length == 0) {
-            emit VoteCast(account, proposalId, support, weight, reason);
-        } else {
-            emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
-        }
-        return weight;
+    //     if (params.length == 0) {
+    //         emit VoteCast(account, proposalId, support, weight, reason);
+    //     } else {
+    //         emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
+    //     }
+    //     return weight;
+    // }
+    function getFundsFromBox(address boxAddress) public {
+         ITimelock(timelockAddress).transferFundsToGov(boxAddress);
     }
 
-    function closeSubDAO() internal onlyOwner returns (uint256) {
+    function closeSubDAO(address boxAddress) internal onlyOwner returns (uint256) {
 
         // no active proposals left 
         require((state(latestProposal) == (ProposalState.Canceled) || state(latestProposal) == ProposalState.Defeated || state(latestProposal) == ProposalState.Expired || state(latestProposal) == ProposalState.Executed), "Proj Gov: cannot close Sub DAO active proposals remain.");
@@ -347,7 +420,8 @@ contract ProjectGovernor is Governor, GovernorSettings, GovernorCountingSimple, 
 
 
         // transfer funds back to main DAO from NFT contract, from BoxLocal
-        IBoxLocal(tokenAddress).closeBox();
+        // IBoxLocal(tokenAddress).closeBox();
+        getFundsFromBox(boxAddress);
 
         // send all funds from this account
         payable(myGlobalGov).transfer(address(this).balance);

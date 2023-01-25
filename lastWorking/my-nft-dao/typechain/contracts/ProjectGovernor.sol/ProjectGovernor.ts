@@ -36,6 +36,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "COUNTING_MODE()": FunctionFragment;
     "EXTENDED_BALLOT_TYPEHASH()": FunctionFragment;
     "__acceptAdmin()": FunctionFragment;
+    "cancel(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "castLocalVote(uint256,uint8)": FunctionFragment;
     "castVote(uint256,uint8)": FunctionFragment;
     "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": FunctionFragment;
@@ -46,6 +47,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": FunctionFragment;
     "execute(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "getBalance()": FunctionFragment;
+    "getFundsFromBox(address)": FunctionFragment;
     "getProposerBudget(uint256)": FunctionFragment;
     "getProposerName(uint256)": FunctionFragment;
     "getVotes(address,uint256)": FunctionFragment;
@@ -74,13 +76,14 @@ export interface ProjectGovernorInterface extends utils.Interface {
     "queue(address[],uint256[],bytes[],bytes32)": FunctionFragment;
     "quorum(uint256)": FunctionFragment;
     "relay(address,uint256,bytes)": FunctionFragment;
-    "setProposalBudget(uint256,uint256)": FunctionFragment;
     "setProposalThreshold(uint256)": FunctionFragment;
     "setVotingDelay(uint256)": FunctionFragment;
     "setVotingPeriod(uint256)": FunctionFragment;
     "state(uint256)": FunctionFragment;
+    "submitProposal(address[],uint256[],bytes[],string,uint256)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
     "timelock()": FunctionFragment;
+    "timelockAddress()": FunctionFragment;
     "token()": FunctionFragment;
     "tokenAddress()": FunctionFragment;
     "updateTimelock(address)": FunctionFragment;
@@ -95,6 +98,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "COUNTING_MODE"
       | "EXTENDED_BALLOT_TYPEHASH"
       | "__acceptAdmin"
+      | "cancel"
       | "castLocalVote"
       | "castVote"
       | "castVoteBySig"
@@ -105,6 +109,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "castVoteWithReasonAndParamsBySig"
       | "execute"
       | "getBalance"
+      | "getFundsFromBox"
       | "getProposerBudget"
       | "getProposerName"
       | "getVotes"
@@ -133,13 +138,14 @@ export interface ProjectGovernorInterface extends utils.Interface {
       | "queue"
       | "quorum"
       | "relay"
-      | "setProposalBudget"
       | "setProposalThreshold"
       | "setVotingDelay"
       | "setVotingPeriod"
       | "state"
+      | "submitProposal"
       | "supportsInterface"
       | "timelock"
+      | "timelockAddress"
       | "token"
       | "tokenAddress"
       | "updateTimelock"
@@ -163,6 +169,15 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "__acceptAdmin",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "cancel",
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BytesLike>[],
+      PromiseOrValue<BytesLike>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "castLocalVote",
@@ -235,6 +250,10 @@ export interface ProjectGovernorInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getBalance",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getFundsFromBox",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "getProposerBudget",
@@ -380,10 +399,6 @@ export interface ProjectGovernorInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "setProposalBudget",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setProposalThreshold",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -400,10 +415,24 @@ export interface ProjectGovernorInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
+    functionFragment: "submitProposal",
+    values: [
+      PromiseOrValue<string>[],
+      PromiseOrValue<BigNumberish>[],
+      PromiseOrValue<BytesLike>[],
+      PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>
+    ]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [PromiseOrValue<BytesLike>]
   ): string;
   encodeFunctionData(functionFragment: "timelock", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "timelockAddress",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "token", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "tokenAddress",
@@ -439,6 +468,7 @@ export interface ProjectGovernorInterface extends utils.Interface {
     functionFragment: "__acceptAdmin",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "cancel", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "castLocalVote",
     data: BytesLike
@@ -470,6 +500,10 @@ export interface ProjectGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "execute", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getFundsFromBox",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getProposerBudget",
     data: BytesLike
@@ -553,10 +587,6 @@ export interface ProjectGovernorInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "quorum", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "relay", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "setProposalBudget",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "setProposalThreshold",
     data: BytesLike
   ): Result;
@@ -570,10 +600,18 @@ export interface ProjectGovernorInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "state", data: BytesLike): Result;
   decodeFunctionResult(
+    functionFragment: "submitProposal",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "timelock", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "timelockAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "tokenAddress",
@@ -791,6 +829,14 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     castLocalVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -861,6 +907,11 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
+    getFundsFromBox(
+      boxAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -911,8 +962,8 @@ export interface ProjectGovernor extends BaseContract {
 
     isLoyal(
       account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
 
     latestProposal(overrides?: CallOverrides): Promise<[BigNumber]>;
 
@@ -1009,12 +1060,6 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setProposalBudget(
-      proposalId: PromiseOrValue<BigNumberish>,
-      budget: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1035,12 +1080,23 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[number]>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
     timelock(overrides?: CallOverrides): Promise<[string]>;
+
+    timelockAddress(overrides?: CallOverrides): Promise<[string]>;
 
     token(overrides?: CallOverrides): Promise<[string]>;
 
@@ -1065,6 +1121,14 @@ export interface ProjectGovernor extends BaseContract {
   EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
 
   __acceptAdmin(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  cancel(
+    targets: PromiseOrValue<string>[],
+    values: PromiseOrValue<BigNumberish>[],
+    calldatas: PromiseOrValue<BytesLike>[],
+    descriptionHash: PromiseOrValue<BytesLike>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -1138,6 +1202,11 @@ export interface ProjectGovernor extends BaseContract {
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+  getFundsFromBox(
+    boxAddress: PromiseOrValue<string>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   getProposerBudget(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -1188,8 +1257,8 @@ export interface ProjectGovernor extends BaseContract {
 
   isLoyal(
     account: PromiseOrValue<string>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: CallOverrides
+  ): Promise<boolean>;
 
   latestProposal(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1286,12 +1355,6 @@ export interface ProjectGovernor extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setProposalBudget(
-    proposalId: PromiseOrValue<BigNumberish>,
-    budget: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setProposalThreshold(
     newProposalThreshold: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1312,12 +1375,23 @@ export interface ProjectGovernor extends BaseContract {
     overrides?: CallOverrides
   ): Promise<number>;
 
+  submitProposal(
+    targets: PromiseOrValue<string>[],
+    values: PromiseOrValue<BigNumberish>[],
+    calldatas: PromiseOrValue<BytesLike>[],
+    description: PromiseOrValue<string>,
+    budgetGwei: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   supportsInterface(
     interfaceId: PromiseOrValue<BytesLike>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
   timelock(overrides?: CallOverrides): Promise<string>;
+
+  timelockAddress(overrides?: CallOverrides): Promise<string>;
 
   token(overrides?: CallOverrides): Promise<string>;
 
@@ -1342,6 +1416,14 @@ export interface ProjectGovernor extends BaseContract {
     EXTENDED_BALLOT_TYPEHASH(overrides?: CallOverrides): Promise<string>;
 
     __acceptAdmin(overrides?: CallOverrides): Promise<void>;
+
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     castLocalVote(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1412,6 +1494,11 @@ export interface ProjectGovernor extends BaseContract {
     ): Promise<BigNumber>;
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
+
+    getFundsFromBox(
+      boxAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
@@ -1561,12 +1648,6 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setProposalBudget(
-      proposalId: PromiseOrValue<BigNumberish>,
-      budget: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1587,12 +1668,23 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<number>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
     timelock(overrides?: CallOverrides): Promise<string>;
+
+    timelockAddress(overrides?: CallOverrides): Promise<string>;
 
     token(overrides?: CallOverrides): Promise<string>;
 
@@ -1726,6 +1818,14 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     castLocalVote(
       proposalId: PromiseOrValue<BigNumberish>,
       support: PromiseOrValue<BigNumberish>,
@@ -1796,6 +1896,11 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
+    getFundsFromBox(
+      boxAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -1846,7 +1951,7 @@ export interface ProjectGovernor extends BaseContract {
 
     isLoyal(
       account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     latestProposal(overrides?: CallOverrides): Promise<BigNumber>;
@@ -1938,12 +2043,6 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setProposalBudget(
-      proposalId: PromiseOrValue<BigNumberish>,
-      budget: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -1964,12 +2063,23 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     timelock(overrides?: CallOverrides): Promise<BigNumber>;
+
+    timelockAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     token(overrides?: CallOverrides): Promise<BigNumber>;
 
@@ -1997,6 +2107,14 @@ export interface ProjectGovernor extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     __acceptAdmin(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    cancel(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      descriptionHash: PromiseOrValue<BytesLike>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -2070,6 +2188,11 @@ export interface ProjectGovernor extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
+    getFundsFromBox(
+      boxAddress: PromiseOrValue<string>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     getProposerBudget(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -2120,7 +2243,7 @@ export interface ProjectGovernor extends BaseContract {
 
     isLoyal(
       account: PromiseOrValue<string>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     latestProposal(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -2212,12 +2335,6 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setProposalBudget(
-      proposalId: PromiseOrValue<BigNumberish>,
-      budget: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     setProposalThreshold(
       newProposalThreshold: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
@@ -2238,12 +2355,23 @@ export interface ProjectGovernor extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    submitProposal(
+      targets: PromiseOrValue<string>[],
+      values: PromiseOrValue<BigNumberish>[],
+      calldatas: PromiseOrValue<BytesLike>[],
+      description: PromiseOrValue<string>,
+      budgetGwei: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     supportsInterface(
       interfaceId: PromiseOrValue<BytesLike>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     timelock(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+
+    timelockAddress(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 

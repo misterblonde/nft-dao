@@ -225,7 +225,7 @@ export function whitelistedUserMintsProjectNft(): void {
     //   ethers.utils.formatEther(await this.governorHelper.getBalance())
     // );
 
-    const newContract = await this.governorHelper.getTokenAddress(
+    const newContract = await this.governorHelper.getChildAddress(
       proposalIdInput
     );
     const childBalance = await this.provider.getBalance(newContract);
@@ -468,7 +468,7 @@ export function whitelistNftCannotBeTransferredIfPaused(): void {
         `Box value: ${await this.box.isAdmin(this.signers.admin.address)}`
       );
   
-      const newContract = await this.governorHelper.getTokenAddress(
+      const newContract = await this.governorHelper.getChildAddress(
         proposalIdInput
       );
       const childBalance = await this.provider.getBalance(newContract);

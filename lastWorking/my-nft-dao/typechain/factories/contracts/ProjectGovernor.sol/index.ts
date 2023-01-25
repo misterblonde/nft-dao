@@ -5,4 +5,5 @@ export { IBoxLocal__factory } from "./IBoxLocal__factory";
 export { IERC721__factory } from "./IERC721__factory";
 export { IMyGovernor__factory } from "./IMyGovernor__factory";
 export { IProjectNftToken__factory } from "./IProjectNftToken__factory";
+export { ITimelock__factory } from "./ITimelock__factory";
 export { ProjectGovernor__factory } from "./ProjectGovernor__factory";

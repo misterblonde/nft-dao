@@ -27,11 +27,18 @@ import type {
 
 export interface IMyGovernorHelperInterface extends utils.Interface {
   functions: {
+    "getChildAddress(uint256)": FunctionFragment;
     "newProject(uint256,address,bool)": FunctionFragment;
   };
 
-  getFunction(nameOrSignatureOrTopic: "newProject"): FunctionFragment;
+  getFunction(
+    nameOrSignatureOrTopic: "getChildAddress" | "newProject"
+  ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "getChildAddress",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
   encodeFunctionData(
     functionFragment: "newProject",
     values: [
@@ -41,6 +48,10 @@ export interface IMyGovernorHelperInterface extends utils.Interface {
     ]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "getChildAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "newProject", data: BytesLike): Result;
 
   events: {};
@@ -73,6 +84,11 @@ export interface IMyGovernorHelper extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    getChildAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string]>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
@@ -80,6 +96,11 @@ export interface IMyGovernorHelper extends BaseContract {
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
   };
+
+  getChildAddress(
+    proposalId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string>;
 
   newProject(
     proposalId: PromiseOrValue<BigNumberish>,
@@ -89,6 +110,11 @@ export interface IMyGovernorHelper extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    getChildAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
@@ -100,6 +126,11 @@ export interface IMyGovernorHelper extends BaseContract {
   filters: {};
 
   estimateGas: {
+    getChildAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,
@@ -109,6 +140,11 @@ export interface IMyGovernorHelper extends BaseContract {
   };
 
   populateTransaction: {
+    getChildAddress(
+      proposalId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     newProject(
       proposalId: PromiseOrValue<BigNumberish>,
       _timelock: PromiseOrValue<string>,

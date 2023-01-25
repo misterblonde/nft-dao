@@ -72,6 +72,10 @@ export type { MyGovernorHelper } from "./contracts/MyGovernorHelper.sol/MyGovern
 export { MyGovernorHelper__factory } from "./factories/contracts/MyGovernorHelper.sol/MyGovernorHelper__factory";
 export type { MyNftToken } from "./contracts/MyNftToken";
 export { MyNftToken__factory } from "./factories/contracts/MyNftToken__factory";
+export type { ConvictionVoting } from "./contracts/ProjectCV.sol/ConvictionVoting";
+export { ConvictionVoting__factory } from "./factories/contracts/ProjectCV.sol/ConvictionVoting__factory";
+export type { IStakeNftToken } from "./contracts/ProjectCV.sol/IStakeNftToken";
+export { IStakeNftToken__factory } from "./factories/contracts/ProjectCV.sol/IStakeNftToken__factory";
 export type { IBoxLocal } from "./contracts/ProjectGovernor.sol/IBoxLocal";
 export { IBoxLocal__factory } from "./factories/contracts/ProjectGovernor.sol/IBoxLocal__factory";
 export type { IProjectNftToken } from "./contracts/ProjectGovernor.sol/IProjectNftToken";
@@ -82,5 +86,7 @@ export type { IProjectGovernor } from "./contracts/ProjectNftToken.sol/IProjectG
 export { IProjectGovernor__factory } from "./factories/contracts/ProjectNftToken.sol/IProjectGovernor__factory";
 export type { ProjectNftToken } from "./contracts/ProjectNftToken.sol/ProjectNftToken";
 export { ProjectNftToken__factory } from "./factories/contracts/ProjectNftToken.sol/ProjectNftToken__factory";
+export type { StakeNftToken } from "./contracts/StakeNftToken.sol/StakeNftToken";
+export { StakeNftToken__factory } from "./factories/contracts/StakeNftToken.sol/StakeNftToken__factory";
 export type { Timelock } from "./contracts/Timelock";
 export { Timelock__factory } from "./factories/contracts/Timelock__factory";

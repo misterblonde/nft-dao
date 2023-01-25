@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Box.sol": {
-      "lastModificationDate": 1660403706295,
+      "lastModificationDate": 1661475442045,
       "contentHash": "081c5fe5164115f8234e1a2df62bdf8c",
       "sourceName": "contracts/Box.sol",
       "solcConfig": {
@@ -42,7 +42,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/access/Ownable.sol": {
-      "lastModificationDate": 1659575243480,
+      "lastModificationDate": 1661539675781,
       "contentHash": "e436cea06129be2c73cda4b1acc848b5",
       "sourceName": "@openzeppelin/contracts/access/Ownable.sol",
       "solcConfig": {
@@ -82,7 +82,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Context.sol": {
-      "lastModificationDate": 1659575243638,
+      "lastModificationDate": 1661539675819,
       "contentHash": "5f2c5c4b6af2dd4551027144797bc8be",
       "sourceName": "@openzeppelin/contracts/utils/Context.sol",
       "solcConfig": {
@@ -120,7 +120,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyNftToken.sol": {
-      "lastModificationDate": 1660438593396,
+      "lastModificationDate": 1661475442047,
       "contentHash": "4beda63ca832547ea5e6fad6d6368f91",
       "sourceName": "contracts/MyNftToken.sol",
       "solcConfig": {
@@ -164,7 +164,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol": {
-      "lastModificationDate": 1659575243624,
+      "lastModificationDate": 1661539676090,
       "contentHash": "79ff1a7eb801a525aa315fb7a679eede",
       "sourceName": "@openzeppelin/contracts/token/ERC721/ERC721.sol",
       "solcConfig": {
@@ -210,7 +210,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol": {
-      "lastModificationDate": 1659575243646,
+      "lastModificationDate": 1661539675828,
       "contentHash": "161aae4dc1450371d0f324488f66a9cf",
       "sourceName": "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol",
       "solcConfig": {
@@ -250,7 +250,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol": {
-      "lastModificationDate": 1659575243628,
+      "lastModificationDate": 1661539676075,
       "contentHash": "393b6576742f451e365d603310c83adf",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
       "solcConfig": {
@@ -291,7 +291,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Counters.sol": {
-      "lastModificationDate": 1659575243639,
+      "lastModificationDate": 1661539675821,
       "contentHash": "74654e3ae5d7f39555055dfe244dab7a",
       "sourceName": "@openzeppelin/contracts/utils/Counters.sol",
       "solcConfig": {
@@ -329,7 +329,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/IERC721.sol": {
-      "lastModificationDate": 1659575243624,
+      "lastModificationDate": 1661539676095,
       "contentHash": "ec99d946db3685a3630554aa6055bd7f",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721.sol",
       "solcConfig": {
@@ -369,7 +369,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
-      "lastModificationDate": 1659575243625,
+      "lastModificationDate": 1661539676096,
       "contentHash": "c22d4395e33763de693fd440c6fd10e1",
       "sourceName": "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol",
       "solcConfig": {
@@ -407,7 +407,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol": {
-      "lastModificationDate": 1659575243627,
+      "lastModificationDate": 1661539676088,
       "contentHash": "efbc0d15b80a74e34dbe8da0f3e879bb",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Metadata.sol",
       "solcConfig": {
@@ -447,7 +447,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Address.sol": {
-      "lastModificationDate": 1659575243635,
+      "lastModificationDate": 1661539675783,
       "contentHash": "c476b3895a94798b88a4bb97399e6dfe",
       "sourceName": "@openzeppelin/contracts/utils/Address.sol",
       "solcConfig": {
@@ -485,7 +485,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Strings.sol": {
-      "lastModificationDate": 1659575243641,
+      "lastModificationDate": 1661539675947,
       "contentHash": "cf46906c4035f51639a22265066a9e78",
       "sourceName": "@openzeppelin/contracts/utils/Strings.sol",
       "solcConfig": {
@@ -523,7 +523,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/introspection/ERC165.sol": {
-      "lastModificationDate": 1659575243648,
+      "lastModificationDate": 1661539675912,
       "contentHash": "0e7db055ce108f9da7bb6686a00287c0",
       "sourceName": "@openzeppelin/contracts/utils/introspection/ERC165.sol",
       "solcConfig": {
@@ -563,7 +563,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol": {
-      "lastModificationDate": 1659575243650,
+      "lastModificationDate": 1661539675929,
       "contentHash": "03e6768535ac4da0e9756f1d8a4a018a",
       "sourceName": "@openzeppelin/contracts/utils/introspection/IERC165.sol",
       "solcConfig": {
@@ -601,8 +601,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol": {
-      "lastModificationDate": 1659575243643,
-      "contentHash": "1dfb7cf7c7e2edae73403d50a59cc967",
+      "lastModificationDate": 1661539675845,
+      "contentHash": "e240957102529c3ccf73bcf4527bcddc",
       "sourceName": "@openzeppelin/contracts/utils/cryptography/ECDSA.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -641,7 +641,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/utils/Votes.sol": {
-      "lastModificationDate": 1659575243589,
+      "lastModificationDate": 1661539676343,
       "contentHash": "33fb580069b232a436ee825012df574d",
       "sourceName": "@openzeppelin/contracts/governance/utils/Votes.sol",
       "solcConfig": {
@@ -685,7 +685,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Checkpoints.sol": {
-      "lastModificationDate": 1659575243637,
+      "lastModificationDate": 1661539675803,
       "contentHash": "6986896416b1f89cb9ddd3bafe0bf8d1",
       "sourceName": "@openzeppelin/contracts/utils/Checkpoints.sol",
       "solcConfig": {
@@ -726,7 +726,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/utils/IVotes.sol": {
-      "lastModificationDate": 1659575243589,
+      "lastModificationDate": 1661539676342,
       "contentHash": "a036d40989f21d08bb990e68d0088fa1",
       "sourceName": "@openzeppelin/contracts/governance/utils/IVotes.sol",
       "solcConfig": {
@@ -764,7 +764,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/math/Math.sol": {
-      "lastModificationDate": 1659575243652,
+      "lastModificationDate": 1661539675936,
       "contentHash": "fb23b534599db16bb969dc6afcdc4261",
       "sourceName": "@openzeppelin/contracts/utils/math/Math.sol",
       "solcConfig": {
@@ -802,7 +802,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/math/SafeCast.sol": {
-      "lastModificationDate": 1659575243652,
+      "lastModificationDate": 1661539675938,
       "contentHash": "64e3f111253497ba40c2ad9bdf48a191",
       "sourceName": "@openzeppelin/contracts/utils/math/SafeCast.sol",
       "solcConfig": {
@@ -840,7 +840,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/extensions/GovernorVotes.sol": {
-      "lastModificationDate": 1659575243588,
+      "lastModificationDate": 1661539676329,
       "contentHash": "d5ec18eb16b8452e749ee7d3aaa304b1",
       "sourceName": "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol",
       "solcConfig": {
@@ -881,8 +881,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/Governor.sol": {
-      "lastModificationDate": 1659575243582,
-      "contentHash": "2d0eefb22e4ea5913516d5f61d01f1c5",
+      "lastModificationDate": 1661539676316,
+      "contentHash": "f06ae14f353f51b10f16ba6aeb6769a9",
       "sourceName": "@openzeppelin/contracts/governance/Governor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -931,7 +931,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol": {
-      "lastModificationDate": 1659575243608,
+      "lastModificationDate": 1661539676128,
       "contentHash": "9f8822b72fe2702979e40160cb6d9636",
       "sourceName": "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol",
       "solcConfig": {
@@ -971,7 +971,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/structs/DoubleEndedQueue.sol": {
-      "lastModificationDate": 1659575243654,
+      "lastModificationDate": 1661539675795,
       "contentHash": "1252685551a5afdb6005499e0f549eff",
       "sourceName": "@openzeppelin/contracts/utils/structs/DoubleEndedQueue.sol",
       "solcConfig": {
@@ -1011,7 +1011,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/Timers.sol": {
-      "lastModificationDate": 1659575243641,
+      "lastModificationDate": 1661539675949,
       "contentHash": "ae135102abee8b2fc88eed09a40cdb4c",
       "sourceName": "@openzeppelin/contracts/utils/Timers.sol",
       "solcConfig": {
@@ -1049,8 +1049,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/IGovernor.sol": {
-      "lastModificationDate": 1659575243582,
-      "contentHash": "c16dcc051616ec47196c71b9589b9ca4",
+      "lastModificationDate": 1661539676339,
+      "contentHash": "4645d840865f20c830effaef18248876",
       "sourceName": "@openzeppelin/contracts/governance/IGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1089,7 +1089,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol": {
-      "lastModificationDate": 1659575243587,
+      "lastModificationDate": 1661539676326,
       "contentHash": "756c2fabb71e0805f8bf4464638b3034",
       "sourceName": "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.sol",
       "solcConfig": {
@@ -1132,7 +1132,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/extensions/IGovernorTimelock.sol": {
-      "lastModificationDate": 1659575243588,
+      "lastModificationDate": 1661539676337,
       "contentHash": "eebb17e144c4fd58549d815db19552da",
       "sourceName": "@openzeppelin/contracts/governance/extensions/IGovernorTimelock.sol",
       "solcConfig": {
@@ -1172,7 +1172,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/vendor/compound/ICompoundTimelock.sol": {
-      "lastModificationDate": 1659575243662,
+      "lastModificationDate": 1661539676366,
       "contentHash": "0aa957092da3c691ed6bf15e56aedc3b",
       "sourceName": "@openzeppelin/contracts/vendor/compound/ICompoundTimelock.sol",
       "solcConfig": {
@@ -1210,8 +1210,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernor.sol": {
-      "lastModificationDate": 1660672102343,
-      "contentHash": "f6ac6d8785de746b47d6e1a4a3d51767",
+      "lastModificationDate": 1661525770294,
+      "contentHash": "2a6f777f996810e8f3894fee18ff04b2",
       "sourceName": "contracts/MyGovernor.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1256,7 +1256,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/extensions/GovernorSettings.sol": {
-      "lastModificationDate": 1659575243586,
+      "lastModificationDate": 1661539676325,
       "contentHash": "2c6e87fa9b63c7ef8579eb4ae937d4c2",
       "sourceName": "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol",
       "solcConfig": {
@@ -1296,7 +1296,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol": {
-      "lastModificationDate": 1659575243585,
+      "lastModificationDate": 1661539676321,
       "contentHash": "02b1526768c0ab245c630eb5a6b160fc",
       "sourceName": "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol",
       "solcConfig": {
@@ -1336,7 +1336,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol": {
-      "lastModificationDate": 1659575243653,
+      "lastModificationDate": 1661539675939,
       "contentHash": "2337f0279507b5edf14a07067adf0d05",
       "sourceName": "@openzeppelin/contracts/utils/math/SafeMath.sol",
       "solcConfig": {
@@ -1374,8 +1374,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Timelock.sol": {
-      "lastModificationDate": 1660056517905,
-      "contentHash": "4203264f761fc5b8eea902c2fb0fae74",
+      "lastModificationDate": 1661523163022,
+      "contentHash": "1b28ab64eb3be10e9fa13dc38eeafd30",
       "sourceName": "contracts/Timelock.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1415,8 +1415,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/hardhat/console.sol": {
-      "lastModificationDate": 1659575262470,
-      "contentHash": "cc4777addd464ea56fa35b1c45df0591",
+      "lastModificationDate": 1661539680968,
+      "contentHash": "4ff3cd2f6272c9a6516e9ee4f2b967d3",
       "sourceName": "hardhat/console.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1453,7 +1453,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Greeter.sol": {
-      "lastModificationDate": 1659536606561,
+      "lastModificationDate": 1661475442046,
       "contentHash": "3ed54232559dee44f0ca11123a6020ef",
       "sourceName": "contracts/Greeter.sol",
       "solcConfig": {
@@ -1493,7 +1493,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectNftToken.sol": {
-      "lastModificationDate": 1660676942360,
+      "lastModificationDate": 1661539238888,
       "contentHash": "e214e6e753336ce4748e0ffe180d4930",
       "sourceName": "contracts/ProjectNftToken.sol",
       "solcConfig": {
@@ -1542,7 +1542,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectGovernor.sol": {
-      "lastModificationDate": 1660679562998,
+      "lastModificationDate": 1661475442048,
       "contentHash": "76b9afac6ff50036f9e69c9709c80611",
       "sourceName": "contracts/ProjectGovernor.sol",
       "solcConfig": {
@@ -1590,8 +1590,8 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/MyGovernorHelper.sol": {
-      "lastModificationDate": 1660669976398,
-      "contentHash": "a37330e6b45ca3aad81d66d8427144a7",
+      "lastModificationDate": 1661525751595,
+      "contentHash": "45fa0fe1bd010f49a223b318684ef6a2",
       "sourceName": "contracts/MyGovernorHelper.sol",
       "solcConfig": {
         "version": "0.8.6",
@@ -1634,7 +1634,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol": {
-      "lastModificationDate": 1659575243625,
+      "lastModificationDate": 1661539676079,
       "contentHash": "88095889e59d16821879a8083f906503",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
       "solcConfig": {
@@ -1675,7 +1675,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/security/Pausable.sol": {
-      "lastModificationDate": 1659575243605,
+      "lastModificationDate": 1661539676374,
       "contentHash": "25c8108f36fdd472bc78d4c4af240c11",
       "sourceName": "@openzeppelin/contracts/security/Pausable.sol",
       "solcConfig": {
@@ -1715,7 +1715,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/node_modules/@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol": {
-      "lastModificationDate": 1659575243627,
+      "lastModificationDate": 1661539676086,
       "contentHash": "f4dd06783f321aa26179bc2b6e361c29",
       "sourceName": "@openzeppelin/contracts/token/ERC721/extensions/IERC721Enumerable.sol",
       "solcConfig": {
@@ -1755,7 +1755,7 @@
       ]
     },
     "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/BoxLocal.sol": {
-      "lastModificationDate": 1660671045941,
+      "lastModificationDate": 1661475442045,
       "contentHash": "974d20459de4f0566f3f09d76e343d7f",
       "sourceName": "contracts/BoxLocal.sol",
       "solcConfig": {
@@ -1793,6 +1793,289 @@
       "artifacts": [
         "BoxLocal"
       ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ArrayUtils.sol": {
+      "lastModificationDate": 1661557236759,
+      "contentHash": "b06d74dee4e56d5d9d20dfbd83e5b760",
+      "sourceName": "contracts/ArrayUtils.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.6"
+      ],
+      "artifacts": [
+        "ArrayUtils"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectCV.sol": {
+      "lastModificationDate": 1661556841758,
+      "contentHash": "b4185971e231277094d15ca8516c8613",
+      "sourceName": "contracts/ProjectCV.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./lib/TimeHelpers.sol",
+        "@openzeppelin/contracts/utils/math/SafeMath.sol",
+        "@openzeppelin/contracts/governance/Governor.sol",
+        "./Math.sol",
+        "./ArrayUtils.sol"
+      ],
+      "versionPragmas": [
+        "0.8.6"
+      ],
+      "artifacts": [
+        "ConvictionVoting",
+        "IERC721",
+        "IStakeNftToken"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/lib/TimeHelpers.sol": {
+      "lastModificationDate": 1661540176796,
+      "contentHash": "3e602efbbfaa1664071e461d435fd1c7",
+      "sourceName": "contracts/lib/TimeHelpers.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./Uint256Helpers.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.6"
+      ],
+      "artifacts": [
+        "TimeHelpers"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/Math.sol": {
+      "lastModificationDate": 1661535983968,
+      "contentHash": "a786c53703497fa8c7bc6e75c41b5e40",
+      "sourceName": "contracts/Math.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.6"
+      ],
+      "artifacts": [
+        "Math"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/lib/Uint256Helpers.sol": {
+      "lastModificationDate": 1661540977161,
+      "contentHash": "8e7e4a37ac9d2030bc1028ab77919d8d",
+      "sourceName": "contracts/lib/Uint256Helpers.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.6"
+      ],
+      "artifacts": [
+        "Uint256Helpers"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/StakeNftToken.sol": {
+      "lastModificationDate": 1661543629744,
+      "contentHash": "bc83e741461dfff68941086db470503d",
+      "sourceName": "contracts/StakeNftToken.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        "@openzeppelin/contracts/access/Ownable.sol",
+        "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol",
+        "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol",
+        "@openzeppelin/contracts/utils/Counters.sol",
+        "@openzeppelin/contracts/security/Pausable.sol",
+        "@openzeppelin/contracts/utils/Strings.sol",
+        "@openzeppelin/contracts/governance/utils/Votes.sol"
+      ],
+      "versionPragmas": [
+        "0.8.6"
+      ],
+      "artifacts": [
+        "IProjectGovernor",
+        "StakeNftToken"
+      ]
+    },
+    "/Users/julia/Desktop/dao-examples/nft-dao/my-nft-dao/contracts/ProjectConvictionVoting.sol": {
+      "lastModificationDate": 1661533335459,
+      "contentHash": "035c424f54b2e85c2ada1b558c65881e",
+      "sourceName": "contracts/ProjectConvictionVoting.sol",
+      "solcConfig": {
+        "version": "0.8.6",
+        "settings": {
+          "metadata": {
+            "bytecodeHash": "none"
+          },
+          "optimizer": {
+            "enabled": true,
+            "runs": 1
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [],
+      "artifacts": []
     }
   }
 }

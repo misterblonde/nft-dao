@@ -215,7 +215,7 @@ export function testVotingOnSubDAO(): void {
         `Box value: ${await this.box.isAdmin(this.signers.admin.address)}`
       );
   
-      const newContract = await this.governorHelper.getTokenAddress(
+      const newContract = await this.governorHelper.getChildAddress(
         proposalIdInput
       );
       const childBalance = await this.provider.getBalance(newContract);

@@ -15,7 +15,6 @@ import "@openzeppelin/contracts/governance/extensions/GovernorTimelockCompound.s
 //         _;
 //     }
 // }
-
 interface IERC721 {
      function balanceOf(address account) external view returns (uint256);
 }
@@ -29,7 +28,7 @@ interface IMyGovernorHelper {
 contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorTimelockCompound {
 
     address public tokenAddress;
-    ICompoundTimelock public timelockAddress; 
+    address public timelockAddress; 
     address public owner;
     address public helper;
 
@@ -50,7 +49,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         Governor("MyGovernor")
         GovernorSettings(
             1, /* 1 block voting delay*/
-            20,  /* how long it is active default 9 */
+            24,  /* how long it is active default 9 */
             2
         )
         GovernorVotes(_token)
@@ -58,7 +57,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
     { 
         tokenAddress = address(_token);
         helper = address(_helper);
-        timelockAddress = _timelock; 
+        timelockAddress = address(_timelock); 
         owner = msg.sender;
      }
 
@@ -249,7 +248,9 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         require(nTokens <= nVotes, "You cannot use more tokens than you own");
         uint256 quadcost = (nTokens * nTokens);
         uint256 fee;
-        uint256 multiplier = 10000000000000000; // 0.01 ether == 16 euro
+        uint256 multiplier = 100000000000000;
+        // new attempt: 100000000000000 // 0.0001 ether
+        // too expensive: 10000000000000000; // 0.01 ether == 16 euro
         if (nVotes == 1){
             fee = 0;
         } else {
@@ -258,7 +259,7 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
         require(msg.value >= fee, "You need more ether to vote with all NFTs: cost = (nVotes)^2 * 0.01 ether");
 
         address voter = _msgSender();
-        return  _castVoteAllIn(proposalId, voter, support, "", "");
+        return  _castVoteQuadratic(nTokens, proposalId, voter, support, "", "");
     }
 
 
@@ -321,6 +322,25 @@ contract MyGovernor is Governor, GovernorSettings, GovernorCountingSimple, Gover
             emit VoteCastWithParams(account, proposalId, support, weight, reason, params);
         }
         return weight;
+    }
+ 
+    function _castVoteQuadratic(
+            uint256 nTokens, 
+            uint256 proposalId,
+            address account,
+            uint8 support,
+            string memory reason,
+            bytes memory params
+        ) internal virtual returns (uint256) {
+        require(state(proposalId) == ProposalState.Active, "Governor: vote not currently active");
+        _countVote(proposalId, account, support, nTokens, params);
+
+        if (params.length == 0) {
+            emit VoteCast(account, proposalId, support, nTokens, reason);
+        } else {
+            emit VoteCastWithParams(account, proposalId, support, nTokens, reason, params);
+        }
+        return nTokens;
     }
  
 }

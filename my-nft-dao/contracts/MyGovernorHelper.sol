@@ -59,7 +59,7 @@ contract MyGovernorHelper {
         return address(this).balance;
     }
     
-    function getTokenAddress(uint256 proposalId) public view returns(address) {
+    function getChildAddress(uint256 proposalId) external view returns(address) {
         return address(_children[proposalId]);
     }
 

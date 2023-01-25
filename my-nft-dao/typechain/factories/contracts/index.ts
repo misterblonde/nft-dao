@@ -3,8 +3,10 @@
 /* eslint-disable */
 export * as myGovernorSol from "./MyGovernor.sol";
 export * as myGovernorHelperSol from "./MyGovernorHelper.sol";
+export * as projectCvSol from "./ProjectCV.sol";
 export * as projectGovernorSol from "./ProjectGovernor.sol";
 export * as projectNftTokenSol from "./ProjectNftToken.sol";
+export * as stakeNftTokenSol from "./StakeNftToken.sol";
 export { Box__factory } from "./Box__factory";
 export { BoxLocal__factory } from "./BoxLocal__factory";
 export { Greeter__factory } from "./Greeter__factory";

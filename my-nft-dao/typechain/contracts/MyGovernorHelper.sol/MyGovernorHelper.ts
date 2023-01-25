@@ -34,7 +34,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   functions: {
     "_children(uint256)": FunctionFragment;
     "getBalance()": FunctionFragment;
-    "getTokenAddress(uint256)": FunctionFragment;
+    "getChildAddress(uint256)": FunctionFragment;
     "linkLocalGov(address,uint256)": FunctionFragment;
     "myGovernor()": FunctionFragment;
     "newProject(uint256,address,bool)": FunctionFragment;
@@ -44,7 +44,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
     nameOrSignatureOrTopic:
       | "_children"
       | "getBalance"
-      | "getTokenAddress"
+      | "getChildAddress"
       | "linkLocalGov"
       | "myGovernor"
       | "newProject"
@@ -59,7 +59,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "getTokenAddress",
+    functionFragment: "getChildAddress",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
@@ -82,7 +82,7 @@ export interface MyGovernorHelperInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "_children", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getBalance", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "getTokenAddress",
+    functionFragment: "getChildAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -140,7 +140,7 @@ export interface MyGovernorHelper extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<[BigNumber]>;
 
-    getTokenAddress(
+    getChildAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string]>;
@@ -168,7 +168,7 @@ export interface MyGovernorHelper extends BaseContract {
 
   getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-  getTokenAddress(
+  getChildAddress(
     proposalId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -196,7 +196,7 @@ export interface MyGovernorHelper extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTokenAddress(
+    getChildAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -230,7 +230,7 @@ export interface MyGovernorHelper extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<BigNumber>;
 
-    getTokenAddress(
+    getChildAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -259,7 +259,7 @@ export interface MyGovernorHelper extends BaseContract {
 
     getBalance(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    getTokenAddress(
+    getChildAddress(
       proposalId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;

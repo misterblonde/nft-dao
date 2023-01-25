@@ -4,6 +4,10 @@ pragma solidity 0.8.6;
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "hardhat/console.sol";
 
+interface IBoxLocal {
+    function withdraw(address _receiver) external;
+}
+
 contract Timelock {
     using SafeMath for uint256;
 
@@ -34,6 +38,7 @@ contract Timelock {
         bytes data,
         uint256 eta
     );
+    event Log(uint256 gas);
 
     // NOTE: THESE VALUES ARE FOR TESTING ONLY!
     uint256 public constant GRACE_PERIOD = 2 days;
@@ -55,6 +60,12 @@ contract Timelock {
     }
 
     receive() external payable {}
+
+    // only governor can call this.
+    function transferFundsToGov(address boxAddress) external payable {
+        require(msg.sender == admin, "You do not have permission to move funds.");
+        IBoxLocal(boxAddress).withdraw(msg.sender);
+    }
 
     function setDelay(uint256 delay_) public {
         require(msg.sender == address(this), "Timelock::setDelay: Call must come from Timelock.");
@@ -156,5 +167,9 @@ contract Timelock {
     function getBlockTimestamp() internal view returns (uint256) {
         // solium-disable-next-line security/no-block-members
         return block.timestamp;
+    }
+
+    fallback() external payable {
+        emit Log(gasleft());
     }
 }

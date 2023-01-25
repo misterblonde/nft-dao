@@ -211,7 +211,6 @@ export function transferBudgetToNewContract(): void {
       await moveBlocks(1);
     }
     console.log("Executing...");
-    console.log("Proposal State: ", await this.governor.state(proposalIdInput));
     // // this will fail on a testnet because you need to wait for the MIN_DELAY!
     const executeTx = await this.governor
       .connect(this.signers.admin)
@@ -228,7 +227,7 @@ export function transferBudgetToNewContract(): void {
     await executeTx.wait(1);
 
     console.log(`Box value: ${await this.box.retrieve()}`);
-
+    console.log("--- Proposal State: ", await this.governor.state(proposalIdInput));
     // _______________ Balances after execution _______________
     console.log(
       "Governor balance: ",
@@ -240,7 +239,7 @@ export function transferBudgetToNewContract(): void {
       ethers.utils.formatEther(await this.governorHelper.getBalance())
     );
 
-    const newContract = await this.governorHelper.getTokenAddress(
+    const newContract = await this.governorHelper.getChildAddress(
       proposalIdInput
     );
     console.log(newContract);
@@ -256,6 +255,9 @@ export function transferBudgetToNewContract(): void {
       await (proposalBudget * 10 ** 9) // gwei to wei
     );
 
+
+    let newAddress = this.governor.getChildBoxAddress(proposalIdInput);
+    console.log("The new child box with budget sitsa at: ", newAddress);
     await expect(nftchildBalance / 10 ** 9).to.equal(await proposalBudget);
   });
 }
@@ -480,7 +482,7 @@ export function userMintsProjectNft(): void {
       ethers.utils.formatEther(await this.governorHelper.getBalance())
     );
 
-    const newBoxContract = await this.governorHelper.getTokenAddress(
+    const newBoxContract = await this.governorHelper.getChildAddress(
       proposalIdInput
     );
     console.log(newBoxContract);
@@ -525,5 +527,143 @@ export function userMintsProjectNft(): void {
     ).toNumber();
 
     await expect(newBalance).to.equal(1);
+  });
+
+  it("Proposal Cancelled? ", async function () {
+    // const test = await loadFixture(setupInitialState);
+    // mint 3 NFTS
+    const myFirstMint = await this.token.safeMint(this.signers.admin.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myFirstMint.wait();
+    const myFirstAMint = await this.token.safeMint(this.signers.admin.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myFirstMint.wait();
+    const mySecondMint = await this.token.safeMint(this.addr1.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await mySecondMint.wait();
+    const myThirdMint = await this.token.safeMint(this.addr2.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myThirdMint.wait();
+
+    const myFourthMint = await this.token.safeMint(this.addr3.address, {
+      value: ethers.utils.parseUnits("0.03", "ether"),
+      gasLimit: 250000,
+    });
+    await myFourthMint.wait();
+
+    await this.token
+      .connect(this.signers.admin)
+      .delegate(this.signers.admin.address);
+    await this.token.connect(this.addr1).delegate(this.addr1.address);
+    await this.token.connect(this.addr2).delegate(this.addr2.address);
+
+    // error somehow as soon as i run this bit:
+    await this.token.connect(this.addr3).delegate(this.addr3.address);
+    const functionToCall = "store";
+    const args = [77];
+    const encodedFunctionCall = this.box.interface.encodeFunctionData(
+      functionToCall,
+      args
+    );
+
+    console.log("Governor balance: ", await this.governor.getBalance());
+    // submit proposal
+    const txn = await this.governor
+      .connect(this.signers.admin)
+      .propose(
+        [this.box.address],
+        [0],
+        [encodedFunctionCall],
+        "test 123 new proposal",
+        {
+          gasLimit: 250000,
+          // value: 0.002,
+        }
+      );
+
+    const proposalTxn = await txn.wait(1);
+    this.proposalId = proposalTxn.events[0].args.proposalId;
+    const proposalIdInput = this.proposalId.toString();
+
+    const proposalBudget = 20000000; // 0.02 ether
+    await this.governor
+      .connect(this.signers.admin) // 0.02 ether
+      .setProposalBudget(proposalIdInput, proposalBudget, {
+        gasLimit: 250000,
+        // value: 0.002,
+      });
+
+    if (developmentChains.includes(network.name)) {
+      await moveBlocks(VOTING_DELAY + 1);
+    }
+
+    const voteTxn = await this.governor
+      .connect(this.signers.admin)
+      .castVoteAllIn(proposalIdInput, 1, {
+        gasLimit: 250000,
+        value: ethers.utils.parseUnits("0.09", "ether"),
+      });
+
+    const voteTxn1 = await this.governor
+      .connect(this.addr1)
+      .castVoteAllIn(proposalIdInput, 1, {
+        gasLimit: 250000,
+        value: ethers.utils.parseUnits("0.09", "ether"),
+      });
+
+    const voteTxn2 = await this.governor
+      .connect(this.addr2)
+      .castVoteAllIn(proposalIdInput, 1, {
+        gasLimit: 250000,
+        value: ethers.utils.parseUnits("0.09", "ether"),
+      });
+
+    const voteTxn3 = await this.governor
+      .connect(this.addr3)
+      .castVoteAllIn(proposalIdInput, 1, {
+        gasLimit: 250000,
+        value: ethers.utils.parseUnits("0.09", "ether"),
+      });
+
+    
+    // _______________ CANCEL PROPOSAL ______________
+
+    const descriptionHash = ethers.utils.id("test 123 new proposal");
+
+
+    const cancelTxn = await this.governor
+      .connect(this.signers.admin)
+      .cancel(
+        [this.box.address],
+        [0],
+        [encodedFunctionCall],
+        descriptionHash,
+        {
+          gasLimit: 250000,
+          // value: 0.002,
+        }
+      );
+
+    console.log(
+      "State (2) == cancelled: ",
+      await this.governor.state(proposalIdInput)
+    );
+    await moveBlocks(100);
+
+    const newState = await this.governor.state(proposalIdInput);
+    console.log(
+      "State (2) == cancelled: ",
+      await this.governor.state(proposalIdInput)
+    );
+    assert(newState == 2);
+  
   });
 }

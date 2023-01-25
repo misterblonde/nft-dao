@@ -5,16 +5,22 @@
 /* eslint-disable */
 import type * as myGovernorSol from "./MyGovernor.sol";
 import type * as myGovernorHelperSol from "./MyGovernorHelper.sol";
+import type * as projectCvSol from "./ProjectCV.sol";
 import type * as projectGovernorSol from "./ProjectGovernor.sol";
 import type * as projectNftTokenSol from "./ProjectNftToken.sol";
+import type * as stakeNftTokenSol from "./StakeNftToken.sol";
 
 export type { myGovernorSol };
 
 export type { myGovernorHelperSol };
 
+export type { projectCvSol };
+
 export type { projectGovernorSol };
 
 export type { projectNftTokenSol };
+
+export type { stakeNftTokenSol };
 export type { Box } from "./Box";
 export type { BoxLocal } from "./BoxLocal";
 export type { Greeter } from "./Greeter";
