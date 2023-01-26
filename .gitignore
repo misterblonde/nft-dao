@@ -4,5 +4,10 @@ my-nft--dao/node_modules/
 my-nft-dao/.DS_Store
 my-nft-dao/veryLatestCodeJsons/
 lastWorking/my-nft-dao/
+lastWorking/my-nft-dao/
+lastWorking/my-nft-dao/.DS_Store
+lastWorking/my-nft-dao/.env
+lastWorking/my-nft-dao/backup.txt
+lastWorking/my-nft-dao/*.txt
 lastWorking/
 README-private.md
